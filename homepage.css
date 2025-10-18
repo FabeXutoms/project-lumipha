@@ -430,29 +430,32 @@ html, body {
 .sidebar {
     position: fixed;
     top: 0;
-    right: -402px;
-    width: 402px;
+    right: 0;
+    transform: translateX(100%); 
+    max-width: 402px; 
+    width: 100%;
     height: 100vh;
     background-color: #f5f5f5;
-    transition: right 0.3s ease;
+    transition: transform 0.3s ease; 
     z-index: 5;
-    padding-top: 96px;
+    padding-top: 96px; 
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(3, 0fr);
+    box-sizing: border-box; 
+    overflow-y: auto; 
 }
 
 .opensidebar{
-    right: 0;
+    transform: translateX(0);
 }
 
 .noscroll {
     overflow: hidden;
-    height: 100vh; /*body’yi tamamen sabitlemek için */
+    height: 100vh;
 }
 
 .sidebarmedium{
-    width: 200px;
     height: 200px;
     background-color: #F5F5F5;
     box-sizing: border-box;
@@ -460,7 +463,6 @@ html, body {
 }
 
 .sidebarsmall{
-    width: 200px;
     height: 200px;
     background-color: #F5F5F5;
     box-sizing: border-box;
@@ -468,8 +470,7 @@ html, body {
 }
 
 .sidebarlarge{
-    width: 400px;
-    height: 260px;
+    height: 200px;
     background-color: #F5F5F5;
     border-top: 2px solid #EEEEEE;
     box-sizing: border-box;
@@ -490,49 +491,53 @@ html, body {
 }
 
 #popup {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.85);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-  opacity: 1;
-  transition: opacity 0.3s ease;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.95);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+    overflow: hidden; 
 }
 
 #popup.hidden {
-  opacity: 0;
-  pointer-events: none;
+    opacity: 0;
+    pointer-events: none;
 }
 
-/* İçerik kısmı */
 .popup-content {
-  position: relative;
-  background: #ffffff; /* açık renk, görünür olsun */
-  color: #111; /* kontrast yazı rengi */
-  padding: 60px 40px;
-  border-radius: 24px;
-  text-align: center;
-  width: 85%;
-  max-width: 600px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
-  z-index: 10000; /* Arka planın üstünde */
+    position: relative;
+    background: #ffffff;
+    color: #111;
+    padding: 60px 40px;
+    border-radius: 0;
+    text-align: left;
+    width: 100%;
+    height: 100%; 
+    max-width: none; 
+    z-index: 10000;
 }
 
-/* Çarpı ikonu */
+
 .close-icon {
-  position: absolute;
+  position: fixed;
   top: 20px;
   right: 25px;
   width: 30px;
   height: 30px;
   cursor: pointer;
-  filter: invert(0); /* siyah svg için görünürlük */
+  filter: invert(0);
   transition: opacity 0.2s ease;
+  z-index: 10001;
+  background-color: white;
+  border-radius: 50%;
+  padding: 5px;
 }
 
 .close-icon:hover {

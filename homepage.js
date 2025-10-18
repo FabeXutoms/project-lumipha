@@ -3,14 +3,16 @@ const sidebar = document.querySelector('.sidebar');
 const menuicon = document.querySelector('.menuicon');
 const closeicon = document.querySelector('.closeicon');
 
+
 headermenu.addEventListener('click', () => {
     sidebar.classList.toggle('opensidebar');
-    
-    menuicon.style.display = sidebar.classList.contains('opensidebar') ? 'none' : 'block';
-    closeicon.style.display = sidebar.classList.contains('opensidebar') ? 'block' : 'none';
+    const isOpen = sidebar.classList.contains('opensidebar');
+    menuicon.style.display = isOpen ? 'none' : 'block';
+    closeicon.style.display = isOpen ? 'block' : 'none';
 
-    document.body.classList.toggle('noscroll', sidebar.classList.contains('opensidebar'));
+    document.body.classList.toggle('noscroll', isOpen);
 });
+
 
 const surecSection = document.querySelector('.partsurec');
 const popup = document.querySelector('#popup');
@@ -22,7 +24,7 @@ const observer = new IntersectionObserver(entries => {
   entries.forEach(entry => {
     if (entry.isIntersecting && !popupShown) {
       popup.classList.remove('hidden');
-      document.body.style.overflow = 'hidden';
+      document.body.classList.add('noscroll');
       popupShown = true;
     }
   });
@@ -32,5 +34,5 @@ observer.observe(surecSection);
 
 closePopupBtn.addEventListener('click', () => {
   popup.classList.add('hidden');
-  document.body.style.overflow = '';
+  document.body.classList.remove('noscroll');
 });
