@@ -18,6 +18,10 @@ headermenu.addEventListener('click', () => {
     
     const isOpen = sidebar.classList.contains('opensidebar');
 
+    // sınıf bazlı kontrol (inline style kaldırıldı)
+    headerSection.classList.toggle('sidebar-open', isOpen);
+    headerSection.classList.remove('homepage-style'); // sidebar açıldığında transparan moddan çık
+
     if (isOpen) {
         headerlogo.src = PATH.LOGO_SIDEBAR;
         
@@ -25,21 +29,18 @@ headermenu.addEventListener('click', () => {
         closeicon.style.display = 'block';
         closeicon.src = PATH.CLOSE_SIDEBAR; 
         
-        headerSection.style.backgroundColor = '#f5f5f5';
-
     } else {
         headerlogo.src = PATH.LOGO_VARSAYILAN;
         
         menuicon.style.display = 'block';
         closeicon.style.display = 'none';
         menuicon.src = PATH.MENU_ACIK_VARSAYILAN;
-        
-        headerSection.style.backgroundColor = '#333333';
     }
 
     document.body.classList.toggle('noscroll', isOpen);
 });
 
+// yeni: about-hero tamamen ekrandan çıktığında header'ı homepage-style yap
 document.addEventListener('DOMContentLoaded', function() {
 
     const headers = document.querySelectorAll('.accordion-header');
@@ -69,5 +70,33 @@ document.addEventListener('DOMContentLoaded', function() {
             header.classList.add('active');
         });
     });
+
+    // scroll listener
+    const aboutHero = document.querySelector('.about-hero');
+    if (aboutHero) {
+        const checkHero = () => {
+            // eğer sidebar açıksa scroll modunu değiştirme
+            if (sidebar.classList.contains('opensidebar')) return;
+
+            const rect = aboutHero.getBoundingClientRect();
+            const fullyOut = rect.bottom <= 0; // hero tamamen yukarı gitti mi
+
+            if (fullyOut) {
+                headerSection.classList.add('homepage-style');
+                // logo renkli, menu ikonu beyaz
+                headerlogo.src = PATH.LOGO_SIDEBAR;
+                menuicon.src = PATH.MENU_ACIK_VARSAYILAN;
+            } else {
+                headerSection.classList.remove('homepage-style');
+                headerlogo.src = PATH.LOGO_VARSAYILAN;
+                menuicon.src = PATH.MENU_ACIK_VARSAYILAN;
+            }
+        };
+
+        // initial check + on scroll
+        checkHero();
+        window.addEventListener('scroll', checkHero, { passive: true });
+        window.addEventListener('resize', checkHero);
+    }
 });
 
