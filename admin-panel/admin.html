@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="tr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,23 +8,23 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="admin.css">
 </head>
+
 <body>
     <main class="admin-page">
         <div class="login-card">
             <img src="images/Symbol.svg" alt="Logo" style="margin-bottom: 24px;">
-            <form class="admin-form" action="lumiphadashboard.html" method="get">
-                <label for="username">Kullanıcı Adı</label>
-                <input id="username" name="username" type="text" placeholder="Kullanıcı adınızı girin" required>
-
-                <label for="password">Parola</label>
-                <input id="password" name="password" type="password" placeholder="Parolanızı girin" required>
+            <form class="admin-form" onsubmit="loginAdmin(event)">
+                <label for="apikey">API Key</label>
+                <input id="apiKeyInput" name="apikey" type="password" placeholder="API Key'inizi girin" required>
 
                 <div style="display:flex; justify-content:center; width:100%;">
-                    <button type="submit" class="adminbutton">Giriş Yap</button>
+                    <button type="button" class="adminbutton" onclick="loginAdmin()">Giriş Yap</button>
                 </div>
             </form>
         </div>
     </main>
 
+    <script src="admin.js"></script>
 </body>
+
 </html>

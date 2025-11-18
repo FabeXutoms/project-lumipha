@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Siparişler</title>
+    <title>Aktif Siparişler</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
     <section class="navbar">
         <div class="navbartexts">
             <a href="" class="navbartext2 colorizedtext">Siparişler</a>
@@ -27,105 +28,25 @@
             <a href="activeorders.html" class="headerctext colorizedtext">Aktif Siparişler</a>
             <a href="orders-past.html" class="headerctext">Geçmiş Siparişler</a>
         </div>
+        
         <div class="orderscontainer">
-            <div class="order">
-                <div class="orderidinfo">
-                    <a href="" class="ordernameid">Yavuz <span href="" class="orderlastnameid">Çankaya</span></a>
-                    <a href="" class="orderdateid">30.10.2025</a>
-                    <a href="" class="durumid">Sipariş Ödemesi Tamamlanmadı</a>
-                </div>
-
-                <div class="ordernumber">
-                    <a href="" class="ordernumbertext">X</a>
-                </div>
-
-                <div class="buttonorder">
-                    <a href="active-orders-detail.html" class="orderbutton">Siparişi İncele</a>
-                </div>
-            </div>
-
-            <div class="order">
-                <div class="orderidinfo">
-                    <a href="" class="ordernameid">Yavuz <span href="" class="orderlastnameid">Çankaya</span></a>
-                    <a href="" class="orderdateid">30.10.2025</a>
-                    <a href="" class="durumid">Sipariş Ödemesi Tamamlanmadı</a>
-                </div>
-
-                <div class="ordernumber">
-                    <a href="" class="ordernumbertext">X</a>
-                </div>
-
-                <div class="buttonorder">
-                    <a href="active-orders-detail.html" class="orderbutton">Siparişi İncele</a>
-                </div>
-            </div>
-
-            <div class="order">
-                <div class="orderidinfo">
-                    <a href="" class="ordernameid">Yavuz <span href="" class="orderlastnameid">Çankaya</span></a>
-                    <a href="" class="orderdateid">30.10.2025</a>
-                    <a href="" class="durumid">Sipariş Ödemesi Tamamlanmadı</a>
-                </div>
-
-                <div class="ordernumber">
-                    <a href="" class="ordernumbertext">X</a>
-                </div>
-
-                <div class="buttonorder">
-                    <a href="active-orders-detail.html" class="orderbutton">Siparişi İncele</a>
-                </div>
-            </div>
-
-            <div class="order">
-                <div class="orderidinfo">
-                    <a href="" class="ordernameid">Yavuz <span href="" class="orderlastnameid">Çankaya</span></a>
-                    <a href="" class="orderdateid">30.10.2025</a>
-                    <a href="" class="durumid">Sipariş Ödemesi Tamamlanmadı</a>
-                </div>
-
-                <div class="ordernumber">
-                    <a href="" class="ordernumbertext">X</a>
-                </div>
-
-                <div class="buttonorder">
-                    <a href="active-orders-detail.html" class="orderbutton">Siparişi İncele</a>
-                </div>
-            </div>
-
-            <div class="order">
-                <div class="orderidinfo">
-                    <a href="" class="ordernameid">Yavuz <span href="" class="orderlastnameid">Çankaya</span></a>
-                    <a href="" class="orderdateid">30.10.2025</a>
-                    <a href="" class="durumid">Sipariş Ödemesi Tamamlanmadı</a>
-                </div>
-
-                <div class="ordernumber">
-                    <a href="" class="ordernumbertext">X</a>
-                </div>
-
-                <div class="buttonorder">
-                    <a href="active-orders-detail.html" class="orderbutton">Siparişi İncele</a>
-                </div>
-            </div>
-
-            <div class="order">
-                <div class="orderidinfo">
-                    <a href="" class="ordernameid">Yavuz <span href="" class="orderlastnameid">Çankaya</span></a>
-                    <a href="" class="orderdateid">30.10.2025</a>
-                    <a href="" class="durumid">Sipariş Ödemesi Tamamlanmadı.</a>
-                </div>
-
-                <div class="ordernumber">
-                    <a href="" class="ordernumbertext">X</a>
-                </div>
-
-                <div class="buttonorder">
-                    <a href="active-orders-detail.html" class="orderbutton">Siparişi İncele</a>
-                </div>
-            </div>
+            <div style="padding: 20px; text-align: center; color: #666;">Siparişler yükleniyor...</div>
         </div>
     </section>
 
-    <script src="panel-popup.js"></script>
+    <script src="admin.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Sadece API Key varsa listeyi çek
+            if (sessionStorage.getItem('lumipha_admin_api_key')) {
+                // Aynı listeleme fonksiyonunu kullanıyoruz
+                // İleride sadece 'Aktif' olanları filtrelemek istersen admin.js içinde yeni bir fonksiyon yazarız
+                fetchAndDisplayOrders(); 
+            } else {
+                // Güvenlik
+                window.location.href = 'admin.html';
+            }
+        });
+    </script>
 </body>
 </html>

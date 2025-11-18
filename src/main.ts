@@ -10,6 +10,8 @@ async function bootstrap() {
     bufferLogs: true,
   });
 
+  app.enableCors();
+
   const logger = app.get(AppLogger); // Logger servisini al
   app.useLogger(logger); // Uygulama genelinde logger'ı ayarla
 

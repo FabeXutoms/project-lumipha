@@ -646,12 +646,12 @@ body {
 
 .orderrequestnameid{
     margin-top: 32px;
-    color: #00000080 !important;
+    color: #000000 !important;
 }
 
 .orderrequestdateid{
     margin-top: 9px;
-    color: #DA3D2F !important;
+    color: #ff0000 !important;
     margin-bottom: 32px;
 }
 
