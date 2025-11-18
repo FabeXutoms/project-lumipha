@@ -1,126 +1,158 @@
 <!DOCTYPE html>
 <html lang="tr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sipariş Detayı - [Sipariş Kodu]</title>
+    <title>Sipariş Detayı</title>
     <style></style>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
     <section class="navbar">
         <div class="navbartexts">
-            <a href="" class="navbartext2 colorizedtext">Siparişler</a>
+            <a href="orders.html" class="navbartext2 colorizedtext">Siparişler</a>
             <a href="" class="navbartext2">Akademi</a>
-       </div>
+        </div>
         <a href="lumiphadashboard.html">
             <img src="images/Symbol.svg" alt="Logo" class="headerlink logo">
-       </a>
-       <div class="navbartexts">
-            <a href="adminsignout.html" class="navbartext1">Admin</a>  
+        </a>
+        <div class="navbartexts">
+            <a href="adminsignout.html" class="navbartext1">Admin</a>
             <a href="notifications.html" class="navbartext1">Bildirimler</a>
-       </div>
+        </div>
     </section>
 
     <div class="orders">
         <div class="headercontainer detail-header">
             <a href="orders.html" class="backbutton"><</a>
             <p class="headerctext">Sipariş Yönetimi</p>
-            <p class="headerctext colorizedtext"><span class="ordernumbertext">X</span></p>
+            <p class="headerctext colorizedtext"><span class="ordernumbertext" id="headerTrackingCode">X</span></p>
         </div>
 
         <div class="detail-container">
-            
+
             <div class="detail-info-box">
                 <h2 class="detail-maintext">Sipariş Bilgileri</h2>
-                
+
                 <div class="info-group">
                     <p class="info-label">İsim Soyisim</p>
-                    <p class="info-value"><span class="colorizedtext isimdata">Ali Osman</span></p>
+                    <p class="info-value"><span class="colorizedtext isimdata" id="detailClientName">Ali Osman</span></p>
                 </div>
-                
+
                 <div class="info-group">
                     <p class="info-label">İşletme Adı</p>
-                    <p class="info-value"><span class="colorizedtext isletmedata">Master Dalyaraklar</span></p>
+                    <p class="info-value"><span class="colorizedtext isletmedata" id="detailCompanyName">Master Dalyaraklar</span></p>
                 </div>
 
                 <div class="info-group">
                     <p class="info-label">İşletme Türü</p>
-                    <p class="info-value"><span class="colorizedtext türdata">E-Ticaret</span></p>
+                    <p class="info-value"><span class="colorizedtext türdata" id="detailBusinessType">E-Ticaret</span></p>
                 </div>
 
                 <div class="info-group">
                     <p class="info-label">İşletme Ölçeği</p>
-                    <p class="info-value"><span class="colorizedtext türdata">Yerel</span></p>
+                    <p class="info-value"><span class="colorizedtext türdata" id="detailBusinessScale">Yerel</span></p>
                 </div>
 
                 <div class="info-group">
                     <p class="info-label">Alınacak Hizmet</p>
-                    <p class="info-value colorizedtext"><span class="colorizedtext hizmetdata">Web Tasarımı</span></p>
+                    <p class="info-value colorizedtext"><span class="colorizedtext hizmetdata" id="detailPackage">Web Tasarımı</span></p>
                 </div>
 
                 <div class="info-group">
                     <p class="info-label">İletişim Kanalı</p>
-                    <p class="info-value">E-posta <span class="colorizedtext iletisimdata">(masterdalyarak@gmail.com)</span></p>
+                    <p class="info-value">E-posta <span class="colorizedtext iletisimdata" id="detailEmail">(masterdalyarak@gmail.com)</span></p>
                 </div>
 
                 <div class="info-group">
                     <p class="info-label">Sipariş Kodu</p>
-                    <p class="info-value colorizedtext">#20231030-1432</p>
+                    <p class="info-value colorizedtext" id="detailTrackingCode">#20231030-1432</p>
+                </div>
+
+                <div class="info-group">
+                    <p class="info-label">Toplam Tutar</p>
+                    <p class="info-value"><span id="detailTotalAmount">-</span> TL</p>
                 </div>
 
                 <div class="info-group">
                     <p class="info-label">Talep Tarihi</p>
-                    <p class="info-value">30 Ekim 2025</p>
+                    <p class="info-value" id="detailDate">30 Ekim 2025</p>
+                </div>
+
+                <div class="info-group">
+                    <p class="info-label">Durum</p>
+                    <p class="info-value"><span class="colorizedtext" id="detailStatus">...</span></p>
                 </div>
 
                 <div class="detail-actions">
-                        <button class="action-button approve-button" id="fiyatBelirleOnayla">Fiyat Belirle/Onayla</button>
-                        <button class="action-button reject-button" id="siparisSil">Siparişi Sil</button>
+                    <button type="button" class="action-button approve-button" id="fiyatBelirleOnayla">Fiyat Belirle/Onayla</button>
+                    <button type="button" class="action-button reject-button" id="siparisSil">Siparişi Sil</button>
                 </div>
-
-                    <div id="onayModal" class="modal">
-                        <div class="modal-icerik">
-                            <div class="butonlar">
-                                <h3>Sipariş Durumunu Seçin</h3>
-                                <button id="readyButonu" class="btn btn-ready">Sipariş Hazırlanıyor</button>
-                                <button id="completedButonu" class="btn btn-completed">Sipariş Tamamlandı</button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div id="silOnayModal" class="modal">
-                        <div class="modal-son-icerik">
-                            <div class="son-modal-butonlar">
-                                <h3>Siparişi silmeyi onaylıyor musunuz?</h3>
-                                <button id="silModalEvet" class="btn btn-evet">Evet</button>
-                                <button id="silModalHayir" class="btn btn-hayir">Hayır</button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div id="fiyatModal" class="modal">
-                        <div class="modal-fiyat-icerik">
-                            <h3>Fiyat Belirle</h3>
-                            <input type="number" id="fiyatInput" placeholder="Fiyatı Girin" min="0" class="fiyatinputmodal">
-                            <button id="fiyatOnaylaButonu" class="btn btn-ready">Onayla</button>
-                        </div>
-                    </div>
-
-                    <div id="islemOnayModal" class="modal">
-                        <div class="modal-son-icerik">
-                            <div class="son-modal-butonlar">
-                                <h3>Girilen fiyat ile işlemi onaylıyor musunuz?</h3>
-                                <button id="islemModalEvet" class="btn btn-evet">Evet</button>
-                                <button id="islemModalHayir" class="btn btn-hayir">Hayır</button>
-                            </div>
-                        </div>
-                    </div>
 
             </div>
         </div>
     </div>
+
+    <div id="onayModal" class="modal">
+        <div class="modal-icerik">
+            <div class="butonlar">
+                <h3>Sipariş Durumunu Seçin</h3>
+                <button type="button" id="readyButonu" class="btn btn-ready">Sipariş Hazırlanıyor</button>
+                <button type="button" id="completedButonu" class="btn btn-completed">Sipariş Tamamlandı</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="silOnayModal" class="modal">
+        <div class="modal-son-icerik">
+            <div class="son-modal-butonlar">
+                <h3>Siparişi silmeyi onaylıyor musunuz?</h3>
+                <button type="button" id="silModalEvet" class="btn btn-evet">Evet</button>
+                <button type="button" id="silModalHayir" class="btn btn-hayir">Hayır</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="fiyatModal" class="modal">
+        <div class="modal-fiyat-icerik">
+            <h3>Fiyat Belirle</h3>
+            <input type="number" id="fiyatInput" placeholder="Fiyatı Girin" min="0" class="fiyatinputmodal"
+                onkeydown="if(event.key === 'Enter') event.preventDefault()">
+            <button type="button" id="fiyatOnaylaButonu" class="btn btn-ready">Onayla</button>
+        </div>
+    </div>
+
+    <div id="islemOnayModal" class="modal">
+        <div class="modal-son-icerik">
+            <div class="son-modal-butonlar">
+                <h3>Girilen fiyat ile işlemi onaylıyor musunuz?</h3>
+                <button type="button" id="islemModalEvet" class="btn btn-evet">Evet</button>
+                <button type="button" id="islemModalHayir" class="btn btn-hayir">Hayır</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="admin.js"></script>
     <script src="request-panel-popup.js"></script>
+    
+    <script>
+        // Sayfa açıldığında verileri çekme kodu
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const projectId = urlParams.get('id');
+
+            if (projectId && sessionStorage.getItem('lumipha_admin_api_key')) {
+                fetchOrderDetails(projectId);
+            } else {
+                alert('Hata: Sipariş ID bulunamadı veya giriş yapılmamış.');
+                // Test ederken yönlendirmeyi kaldırabilirsin:
+                // window.location.href = 'orders.html';
+            }
+        });
+    </script>
 </body>
+
 </html>

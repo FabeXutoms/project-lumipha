@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Geçmiş Siparişler</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-        <section class="navbar">
+
+    <section class="navbar">
         <div class="navbartexts">
-            <a href="" class="navbartext2 colorizedtext">Siparişler</a>
+            <a href="orders.html" class="navbartext2 colorizedtext">Siparişler</a>
             <a href="" class="navbartext2">Akademi</a>
        </div>
         <a href="lumiphadashboard.html">
@@ -25,117 +26,24 @@
         <div class="headercontainer">
             <a href="orders.html" class="headerctext">Sipariş Talepleri</a>
             <a href="activeorders.html" class="headerctext">Aktif Siparişler</a>
-            <a href="" class="headerctext colorizedtext">Geçmiş Siparişler</a>
+            <a href="orders-past.html" class="headerctext colorizedtext">Geçmiş Siparişler</a>
         </div>
+        
         <div class="orderscontainer">
-            <div class="order">
-                <div class="orderidinfo">
-                    <a href="" class="orderrequestnameid">Yavuz <span href="" class="orderlastnameid">Çankaya</span></a>
-                    <a href="" class="orderrequestdateid">30.10.2025</a>
-                </div>
-
-                <div class="ordernumber">
-                    <a href="" class="ordernumbertext">X</a>
-                </div>
-
-                <div class="buttonorder">
-                    <a href="" class="takeitback">Geri AL!</a>
-                    <a href="orders-past-details.html" class="orderbutton">Siparişi İncele</a>
-                </div>
-            </div>
-
-            <div class="order">
-                <div class="orderidinfo">
-                    <a href="" class="orderrequestnameid">Yavuz <span href="" class="orderlastnameid">Çankaya</span></a>
-                    <a href="" class="orderrequestdateid">30.10.2025</a>
-                </div>
-
-                <div class="ordernumber">
-                    <a href="" class="ordernumbertext">X</a>
-                </div>
-
-                <div class="buttonorder">
-                    <a href="" class="takeitback">Geri AL!</a>
-                    <a href="orders-past-details.html" class="orderbutton">Siparişi İncele</a>
-                </div>
-            </div>
-
-            <div class="order">
-                <div class="orderidinfo">
-                    <a href="" class="orderrequestnameid">Yavuz <span href="" class="orderlastnameid">Çankaya</span></a>
-                    <a href="" class="orderrequestdateid">30.10.2025</a>
-                </div>
-
-                <div class="ordernumber">
-                    <a href="" class="ordernumbertext">X</a>
-                </div>
-
-                <div class="buttonorder">
-                    <a href="" class="takeitback">Geri AL!</a>
-                    <a href="orders-past-details.html" class="orderbutton">Siparişi İncele</a>
-                </div>
-            </div>
-
-            <div class="order">
-                <div class="orderidinfo">
-                    <a href="" class="orderrequestnameid">Yavuz <span href="" class="orderlastnameid">Çankaya</span></a>
-                    <a href="" class="orderrequestdateid">30.10.2025</a>
-                </div>
-
-                <div class="ordernumber">
-                    <a href="" class="ordernumbertext">X</a>
-                </div>
-
-                <div class="buttonorder">
-                    <a href="" class="takeitback">Geri AL!</a>
-                    <a href="orders-past-details.html" class="orderbutton">Siparişi İncele</a>
-                </div>
-            </div>
-
-            <div class="order">
-                <div class="orderidinfo">
-                    <a href="" class="orderrequestnameid">Yavuz <span href="" class="orderlastnameid">Çankaya</span></a>
-                    <a href="" class="orderrequestdateid">30.10.2025</a>
-                </div>
-
-                <div class="ordernumber">
-                    <a href="" class="ordernumbertext">X</a>
-                </div>
-
-                <div class="buttonorder">
-                    <a href="" class="takeitback">Geri AL!</a>
-                    <a href="orders-past-details.html" class="orderbutton">Siparişi İncele</a>
-                </div>
-            </div>
-
-            <div class="order">
-                <div class="orderidinfo">
-                    <a href="" class="orderrequestnameid">Yavuz <span href="" class="orderlastnameid">Çankaya</span></a>
-                    <a href="" class="orderrequestdateid">30.10.2025</a>
-                </div>
-
-                <div class="ordernumber">
-                    <a href="" class="ordernumbertext">X</a>
-                </div>
-
-                <div class="buttonorder">
-                    <a href="" class="takeitback">Geri AL!</a>
-                    <a href="orders-past-details.html" class="orderbutton">Siparişi İncele</a>
-                </div>
-            </div>
-
-            <div id="geriAlModal" class="modal">
-                <div class="modal-icerik-geriAl">
-                    <div class="butonlar-geriAl">
-                        <h3>Siparişi, "Aktif Siparişlere" almak istediğinize emin misiniz?</h3>
-                        <button id="geriAlButon" class="btn btn-geriAl">Evet, Geri Al.</button>
-                        <button id="iptalEtButon" class="btn btn-iptal">Hayır, İptal Et.</button>
-                    </div>
-                </div>
-            </div>
-
+            <div style="padding: 20px; text-align: center; color: #666;">Yükleniyor...</div>
         </div>
     </section>
-    <script src="past-panel-popup.js"></script>
+
+    <script src="admin.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (sessionStorage.getItem('lumipha_admin_api_key')) {
+                // admin.js içindeki akıllı fonksiyon sayfayı tanıyıp doğru filtreyi uygulayacak
+                fetchAndDisplayOrders(); 
+            } else {
+                window.location.href = 'admin.html';
+            }
+        });
+    </script>
 </body>
 </html>

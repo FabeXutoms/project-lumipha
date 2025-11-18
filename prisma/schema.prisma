@@ -67,10 +67,11 @@ model Payment {
 
 // Durumlar için PostgreSQL ENUM tanımı
 enum Status {
-  Pending    @map("Beklemede")
-  InProgress @map("Devam Ediyor")
-  Completed  @map("Tamamlandı")
-  Cancelled  @map("İptal Edildi")
+  WaitingForApproval @map("Onay Bekliyor") // <-- YENİ EKLENEN DURUM
+  Pending            @map("Beklemede")     // Artık "Ödeme Bekleniyor" olarak kullanacağız
+  InProgress         @map("Devam Ediyor")
+  Completed          @map("Tamamlandı")
+  Cancelled          @map("İptal Edildi")
   
-  @@map("project_status") // Veritabanındaki ENUM tipi adı
+  @@map("project_status")
 }

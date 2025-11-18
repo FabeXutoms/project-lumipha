@@ -3,7 +3,7 @@ import { IsString, IsIn, IsNotEmpty } from 'class-validator';
 
 // Enum değerlerini doğrudan TypeScript'e giriyoruz
 // (Veritabanındaki Türkçe map'lemeler ile uyumlu olmalı)
-const validStatuses = ['Pending', 'InProgress', 'Completed', 'Cancelled'];
+const validStatuses = ['WaitingForApproval', 'Pending', 'InProgress', 'Completed', 'Cancelled'];
 
 export class UpdateStatusDto {
   @IsString()
