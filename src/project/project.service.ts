@@ -1,4 +1,4 @@
-// src/project/project.service.ts - TAM VE DÜZELTİLMİŞ VERSİYON
+// src/project/project.service.ts
 
 import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
@@ -6,9 +6,7 @@ import { CreateProjectDto } from './dto/create-project.dto';
 import { Prisma } from '@prisma/client';
 import { UpdateStatusDto } from './dto/update-status.dto';
 import { CreatePaymentDto } from './dto/create-payment.dto';
-// UpdateProjectDto dosyasını oluşturmadıysan bu satırı sil veya yorum satırı yap, 
-// ama PATCH işlemi için gereklidir.
-import { UpdateProjectDto } from './dto/update-project.dto'; 
+import { UpdateProjectDto } from './dto/update-project.dto';
 
 @Injectable()
 export class ProjectService {
@@ -48,10 +46,24 @@ export class ProjectService {
 
     // 2. YENİ PROJE OLUŞTURMA
     async createNewProject(dto: CreateProjectDto) {
-        const client = await this.prisma.client.upsert({
+        const existingEmail = await this.prisma.client.findUnique({
             where: { email: dto.clientEmail },
-            update: { name: dto.clientName, phone: dto.clientPhone },
-            create: {
+        });
+        if (existingEmail) {
+            throw new ConflictException('Bu e-posta adresi zaten sistemde kayıtlı! Lütfen farklı bir e-posta kullanın.');
+        }
+
+        if (dto.clientPhone) {
+            const existingPhone = await this.prisma.client.findFirst({
+                where: { phone: dto.clientPhone },
+            });
+            if (existingPhone) {
+                throw new ConflictException('Bu telefon numarası zaten sistemde kayıtlı! Lütfen farklı bir numara kullanın.');
+            }
+        }
+
+        const client = await this.prisma.client.create({
+            data: {
                 name: dto.clientName,
                 email: dto.clientEmail,
                 phone: dto.clientPhone,
@@ -59,8 +71,6 @@ export class ProjectService {
         });
 
         const trackingCode = this.generateTrackingCode();
-        
-        // Prisma Decimal dönüşümü
         const decimalAmount = new Prisma.Decimal(dto.totalAmount);
 
         const newProject = await this.prisma.projectAction.create({
@@ -70,16 +80,17 @@ export class ProjectService {
                 packageName: dto.packageName,
                 totalAmount: decimalAmount,
                 startDate: new Date(),
-                status: 'WaitingForApproval', // Varsayılan durum
+                status: 'Pending',
             },
         });
 
         return {
             success: true,
-            message: 'Project and Client created successfully.',
+            message: 'Proje ve Müşteri başarıyla oluşturuldu.',
             trackingCode: newProject.trackingCode,
             projectId: newProject.id,
             clientId: client.id,
+            clientName: client.name
         };
     }
 
@@ -102,7 +113,6 @@ export class ProjectService {
             },
         });
 
-        // Ödeme yapıldı, durumu InProgress (İşlemde) yapalım
         await this.prisma.projectAction.update({
             where: { id: dto.projectId },
             data: { status: 'InProgress' },
@@ -110,7 +120,7 @@ export class ProjectService {
 
         return {
             success: true,
-            message: 'Ödeme başarıyla kaydedildi ve proje durumu güncellendi.',
+            message: 'Ödeme başarıyla kaydedildi.',
             paymentId: payment.id,
             projectId: payment.projectActionId,
             projectStatus: 'InProgress',
@@ -127,12 +137,15 @@ export class ProjectService {
                 startDate: true,
                 status: true,
                 totalAmount: true,
+                projectLink: true,
                 payments: {
                     select: { amount: true }
                 },
                 client: {
                     select: {
                         name: true,
+                        email: true,
+                        phone: true
                     }
                 }
             }
@@ -148,8 +161,11 @@ export class ProjectService {
                 startDate: p.startDate,
                 status: p.status,
                 clientName: p.client.name,
-                // Toplam tutar ile ödenen tutarı karşılaştır
-                isPaid: totalPaid >= amount && amount > 0
+                clientEmail: p.client.email,
+                clientPhone: p.client.phone,
+                isPaid: totalPaid >= amount && amount > 0,
+                totalAmount: amount,
+                projectLink: p.projectLink
             };
         });
     }
@@ -179,18 +195,38 @@ export class ProjectService {
             clientName: project.client.name,
             clientEmail: project.client.email,
             clientPhone: project.client.phone,
-            payments: project.payments
+            payments: project.payments,
+            projectLink: project.projectLink
         };
     }
 
-    // 6. PROJE GÜNCELLEME (FİYAT VB.) - PATCH
-    async updateProject(id: number, data: any) { 
+    // 6. PROJE GÜNCELLEME
+    async updateProject(id: number, data: any) {
         return this.prisma.projectAction.update({
             where: { id },
             data: {
                 totalAmount: data.totalAmount,
+                projectLink: data.projectLink,
             },
         });
     }
 
-} // <--- SINIF BURADA KAPANIYOR (TS1128 Hatasının Çözümü)
+    // 7. SİLME METODU (Sınıfın içine eklendi)
+    async deleteProject(id: number) {
+        const deletePayments = this.prisma.payment.deleteMany({
+            where: { projectActionId: id },
+        });
+
+        const deleteProject = this.prisma.projectAction.delete({
+            where: { id },
+        });
+
+        await this.prisma.$transaction([deletePayments, deleteProject]);
+
+        return {
+            success: true,
+            message: `Proje ${id} ve tüm ödeme kayıtları kalıcı olarak silindi.`
+        };
+    }
+
+} // <--- SINIF BURADA KAPANIYOR

@@ -8,6 +8,7 @@ import {
     ValidationPipe,
     UseGuards,
     Param,
+    Delete,
     // ConflictException'ı serviste kullandık, burada kullanmıyorsak silinebilir
     // ConflictException,
     Get // <-- TÜM GET İŞLEMLERİ İÇİN BU IMPORT GEREKLİ!
@@ -27,6 +28,10 @@ export class ProjectController {
     // 1. Durum Güncelleme Metodu (POST /projects/:id/status)
     // Güvenlik ve Doğrulama Gerekli
     @UseGuards(ApiKeyGuard)
+    @Delete(':id')
+    async deleteProject(@Param('id') id: string) {
+        return this.projectService.deleteProject(parseInt(id, 10));
+    }
     @UsePipes(new ValidationPipe({ transform: true }))
     @Post(':projectId/status')
     async updateStatus(

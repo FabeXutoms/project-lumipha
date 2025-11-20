@@ -4,20 +4,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const geriAlModal = document.getElementById('geriAlModal');
     const geriAlEvet = document.getElementById('geriAlEvet');
     const geriAlHayir = document.getElementById('geriAlHayir');
-    
+
     const linkDegistirBtn = document.getElementById('linkDegistir');
     const inputModal = document.getElementById('input-modal');
     const saveLinkBtn = document.getElementById('saveLinkBtn');
     const linkInput = document.getElementById('linkInput');
 
     // --- YARDIMCI FONKSİYONLAR ---
-    const showModal = (el) => { if(el) el.style.display = 'block'; };
-    const hideModal = (el) => { if(el) el.style.display = 'none'; };
+    const showModal = (el) => { if (el) el.style.display = 'block'; };
+    const hideModal = (el) => { if (el) el.style.display = 'none'; };
 
-    window.onclick = function(event) {
+    window.onclick = function (event) {
         if (event.target.classList.contains('modal')) event.target.style.display = 'none';
     }
-    
+
     const modalContents = document.querySelectorAll('.modal-icerik-geriAl, .modal-input-icerik');
     modalContents.forEach(el => el.addEventListener('click', e => e.stopPropagation()));
 
@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
         geriAlEvet.addEventListener('click', async (e) => {
             e.preventDefault();
             hideModal(geriAlModal);
-            
+
             const urlParams = new URLSearchParams(window.location.search);
             const projectId = urlParams.get('id');
 
@@ -60,12 +60,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (linkDegistirBtn) {
         linkDegistirBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            
+
             // Mevcut linki inputa getir (Varsa)
             const mevcutLinkEl = document.getElementById('detailProjectLink');
-            if(mevcutLinkEl && linkInput) {
+            if (mevcutLinkEl && linkInput) {
                 const mevcutText = mevcutLinkEl.innerText.trim();
-                if(mevcutText !== 'Yok' && mevcutText !== '...') {
+                if (mevcutText !== 'Yok' && mevcutText !== '...') {
                     linkInput.value = mevcutText;
                 } else {
                     linkInput.value = '';
@@ -74,32 +74,42 @@ document.addEventListener('DOMContentLoaded', () => {
             showModal(inputModal);
         });
     }
-    
+
     if (saveLinkBtn) {
         saveLinkBtn.addEventListener('click', async (e) => {
-             e.preventDefault();
-             
-             const yeniLink = linkInput.value.trim();
-             
-             if(!yeniLink) {
-                 alert("Lütfen geçerli bir link giriniz.");
-                 return;
-             }
+            e.preventDefault();
 
-             // --- BACKEND'E KAYIT (İsteğe Bağlı) ---
-             // Şu an 'projectLink' diye bir alanımız yok, o yüzden sadece Ekranda güncelliyoruz.
-             // İleride eklersen: await sendApiRequest(..., 'PATCH', { projectLink: yeniLink });
+            const yeniLink = linkInput.value.trim();
+            const urlParams = new URLSearchParams(window.location.search);
+            const projectId = urlParams.get('id');
 
-             // --- EKRANI GÜNCELLE (Dinamik Değişim) ---
-             const linkDisplay = document.getElementById('detailProjectLink');
-             if(linkDisplay) {
-                 // Linki tıklanabilir yapalım mı? İstersen sadece metin olarak da kalabilir.
-                 // Şimdilik sadece metin olarak güncelliyoruz:
-                 linkDisplay.innerText = yeniLink;
-             }
+            if (!yeniLink) {
+                alert("Lütfen geçerli bir link giriniz.");
+                return;
+            }
 
-             alert('Link başarıyla güncellendi!');
-             hideModal(inputModal);
+            if (projectId && typeof sendApiRequest === 'function') {
+                try {
+                    // BACKEND'E KAYIT (PATCH İSTEĞİ)
+                    await sendApiRequest(`/projects/${projectId}`, 'PATCH', {
+                        projectLink: yeniLink
+                    });
+
+                    // Ekrana Yansıt
+                    const linkDisplay = document.getElementById('detailProjectLink');
+                    if (linkDisplay) {
+                        linkDisplay.innerHTML = `<a href="${yeniLink}" target="_blank" style="color:#2196F3;">${yeniLink}</a>`;
+                    }
+
+                    alert('✅ Link başarıyla kaydedildi!');
+                    hideModal(inputModal);
+
+                } catch (error) {
+                    alert("Hata: " + error.message);
+                }
+            } else {
+                alert("Hata: API bağlantısı yok.");
+            }
         });
     }
 });

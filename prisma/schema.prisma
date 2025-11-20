@@ -33,19 +33,20 @@ model Client {
 // Proje hareketlerini ve takip kodunu tutan model
 model ProjectAction {
   id                    Int      @id @default(autoincrement())
-  clientId              Int      @map("client_id") // client_id olarak tabloya yazar
+  clientId              Int      @map("client_id")
   trackingCode          String   @unique @db.VarChar(20) @map("tracking_code")
   packageName           String   @db.VarChar(255) @map("package_name")
   totalAmount           Decimal  @db.Decimal(10, 2) @map("total_amount")
-  status                Status   @default(Pending) // Enum kullanacağız
+  status                Status   @default(Pending)
   startDate             DateTime @db.Date @map("start_date")
   estimatedEndDate      DateTime? @db.Date @map("estimated_end_date")
+  
+  // --- YENİ EKLENEN ALAN ---
+  projectLink           String?   @map("project_link") // Link boş olabilir (?)
+  // -------------------------
 
-  // İlişki: Bu ProjectAction, hangi Client'a ait?
   client                Client    @relation(fields: [clientId], references: [id])
-
-  // İlişki: Bir ProjectAction'ın birden çok Ödeme kaydı olabilir
-  payments Payment[]
+  payments              Payment[]
 
   @@map("project_actions")
 }
