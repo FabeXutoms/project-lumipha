@@ -72,7 +72,7 @@ body {
     align-items: center;
     flex-direction: column;
     width: 762px;
-    height: 400px;
+    height: auto;
     background-color: #f0f0f0;
     box-sizing: border-box;
     border-radius: 0 0 16px 16px;
@@ -180,6 +180,7 @@ body {
     font-family: CustomFontMedium, sans-serif;
     text-decoration: none !important;
     color: #FFFFFF;
+    margin-bottom: 18px;
 }
 
 
@@ -294,7 +295,7 @@ body {
 
 .orderscontainer{
     width: 100%;
-    height: 665px;
+    height: auto;
     background-color: #f0f0f0;
     box-sizing: border-box;
 }

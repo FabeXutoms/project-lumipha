@@ -1,22 +1,24 @@
 <!DOCTYPE html>
 <html lang="tr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lumipha Dashboard</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <section class="navbar">
         <div class="navbartexts">
             <a href="orders.html" class="navbartext2">Siparişler</a>
             <a href="" class="navbartext2">Akademi</a>
-       </div>
-       
-       <div class="navbartexts">
-            <a href="adminsignout.html" class="navbartext1">Admin</a>  
+        </div>
+
+        <div class="navbartexts">
+            <a href="adminsignout.html" class="navbartext1">Admin</a>
             <a href="notifications.html" class="navbartext1">Bildirimler</a>
-       </div>
+        </div>
     </section>
 
     <section class="dashboard">
@@ -24,58 +26,13 @@
         <div class="containerbig">
             <h1 class="maintext">Bildirimler</h1>
             <div class="n-container">
-                <div href="" class="lastnotifications">
-
-                    <div class="idinfo">
-                        <a href="" class="nameid">Yavuz <span href="" class="lastnameid">Çankaya</span></a>
-                        <a href="" class="dateid">30.10.2025</a>
-                    </div>
-
-                    <div class="isleminfo">
-                        <a href="" class="islemtext">Teklif Oluşturdu!</a>
-                    </div>
-
-                    <div class="butonincele">
-                        <a href="" class="inceletext">Detayı Gör</a>
-                    </div>
-                </div>
-
-                <div href="" class="lastnotifications">
-
-                    <div class="idinfo">
-                        <a href="" class="nameid">Yavuz <span href="" class="lastnameid">Çankaya</span></a>
-                        <a href="" class="dateid">30.10.2025</a>
-                    </div>
-
-                    <div class="isleminfo">
-                        <a href="" class="islemtext">Teklif Oluşturdu!</a>
-                    </div>
-
-                    <div class="butonincele">
-                        <a href="" class="inceletext">Detayı Gör</a>
-                    </div>
-                </div>
-
-                <div href="" class="lastnotifications">
-
-                    <div class="idinfo">
-                        <a href="" class="nameid">Yavuz <span href="" class="lastnameid">Çankaya</span></a>
-                        <a href="" class="dateid">30.10.2025</a>
-                    </div>
-
-                    <div class="isleminfo">
-                        <a href="" class="islemtext">Teklif Oluşturdu!</a>
-                    </div>
-
-                    <div class="butonincele">
-                        <a href="" class="inceletext">Detayı Gör</a>
-                    </div>
+                <div id="notificationsContainer" style="width: 100%;">
+                    <div style="padding: 20px; text-align: center; color: #666;">Yükleniyor...</div>
                 </div>
 
                 <div>
                     <a href="notifications.html" class="buttoncontinue">Devamını Gör</a>
                 </div>
-
             </div>
         </div>
 
@@ -83,25 +40,46 @@
             <h1 class="maintext">Siparişler</h1>
             <div class="n-container2">
                 <div class="s-aktifnumber">
-                    <a href="" class="aktifnumber">3</a>
+                    <a href="activeorders.html" class="aktifnumber" id="statActiveCount">-</a>
                     <h4 class="n-container2-texts">Aktif Siparişler</h4>
                 </div>
+
                 <div class="s-talepnumber">
-                    <a href="" class="talepnumber">4</a>
+                    <a href="orders.html" class="talepnumber" id="statPendingCount">-</a>
                     <h4 class="n-container2-texts">Sipariş Talepleri</h4>
-                    <h4 class="new-order"><span href=""class="ordernumber">X</span> Yeni</h4>
+                    <h4 class="new-order" id="newOrderBadge"
+                        style="display: none; color: #4CAF50; margin-top: 5px; font-size: 14px;">
+                        <span class="ordernumber" id="newOrderCount">0</span> Yeni
+                    </h4>
                 </div>
+
                 <div class="s-gecmisnumber">
-                    <a href="" class="gecmisnumber">9</a>
+                    <a href="orders-past.html" class="gecmisnumber" id="statPastCount">-</a>
                     <h4 class="n-container2-texts">Geçmiş Siparişler</h4>
                 </div>
 
                 <div>
-                    <a href="" class="buttoncontinue2">Devamını Gör</a>
+                    <a href="orders-past.html" class="buttoncontinue2">Devamını Gör</a>
                 </div>
             </div>
         </div>
-        
+
     </section>
+
+    <script src="admin.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (sessionStorage.getItem('lumipha_admin_api_key')) {
+                // admin.js içindeki fonksiyonu çalıştır
+                if (typeof loadDashboardData === 'function') {
+                    loadDashboardData();
+                }
+            } else {
+                // Key yoksa giriş sayfasına at
+                window.location.href = 'admin.html';
+            }
+        });
+    </script>
 </body>
+
 </html>
