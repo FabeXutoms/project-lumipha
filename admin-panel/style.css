@@ -1,0 +1,731 @@
+@font-face {
+    font-family: 'CustomFontBlack';
+    src: url('fonts/Epilogue-Black.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'CustomFontMedium';
+    src: url('fonts/Epilogue-Medium.ttf') format('truetype');
+}
+
+body {
+    margin: 0;
+    background-color: #e6e6e6 !important;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 0px;
+  background-color: #f0f0f0 !important;
+  padding-left: 160px;
+  padding-right: 160px;
+  border-bottom: #0000000e 2px solid;
+}
+
+.logo {
+  width: 42px !important;
+  height: auto !important;
+  padding: 0 !important;
+}
+
+.logo:hover {
+    cursor: pointer;
+}
+
+.navbartext1{
+    font-family: CustomFontMedium, sans-serif;
+    font-size: 16px;
+    color: #000;
+    text-decoration: none !important;
+    cursor: pointer;
+}
+
+.navbartext2{
+    font-family: CustomFontMedium, sans-serif;
+    font-size: 16px;
+    color: #000;
+    text-decoration: none !important;
+    cursor: pointer;
+}
+
+.navbartext1:hover, .navbartext2:hover{
+    color: #da3d2f;
+}
+
+.navbartexts{
+    display: flex;
+    gap: 32px;
+}
+
+.dashboard{
+    display: flex;
+    justify-content: space-between;
+    padding: 0 160px;
+    margin-top: 12px;
+    box-sizing: border-box;
+}
+
+.n-container{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 762px;
+    height: 400px;
+    background-color: #f0f0f0;
+    box-sizing: border-box;
+    border-radius: 0 0 16px 16px;
+}
+
+@media (max-width: 1868px) {
+    .n-container{
+        width: 650px;
+        height: 400px;
+    }
+}
+
+@media (max-width: 1568px) {
+    .n-container{
+        width: 500px;
+        height: 400px;
+    }
+}
+
+
+.maintext{
+    font-family: CustomFontMedium, sans-serif;
+    font-size: 24px;
+    color: #000;
+    display: flex;
+    justify-content: flex-start;
+    margin: 0;
+    margin-top: 64px;
+    margin-bottom: 12px;
+}
+
+.lastnotifications{
+    width: 100%;
+    height: 100px;
+    border-top: #00000008 2px solid;
+    border-bottom: #00000008 2px solid;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.idinfo{
+    display: flex;
+    flex-direction: column;
+    margin-left: 24px;
+}
+
+.nameid{
+    margin-bottom: 8px;
+}
+
+.butonincele{
+    width: 120px;
+    height: 40px;
+    background-color: #da3d2f00;
+    border-radius: 100px;
+    margin-right: 24px;
+    cursor: pointer;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    border: #00000050 2px solid;
+}
+
+.inceletext{
+    color: #00000070;
+    font-size: 16px;
+}
+
+.nameid, .dateid, .inceletext{
+    font-family: CustomFontMedium, sans-serif;
+    text-decoration: none !important;
+}
+
+.nameid{
+    font-size: 16px;
+    color: #00000080;
+    pointer-events: none;
+}
+
+.dateid{
+    font-size: 16px;
+    color: #da3d2fc5;
+    pointer-events: none;
+}
+
+.islemtext{
+    font-family: CustomFontMedium, sans-serif;
+    font-size: 16px;
+    color: #da3d2f;
+    pointer-events: none;
+}
+
+.buttoncontinue{
+    width: 200px;
+    height: 50px;
+    background-color: #DA3D2F;
+    border-radius: 100px;
+    margin-top: 18px;
+    cursor: pointer;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    border: none;
+    font-family: CustomFontMedium, sans-serif;
+    text-decoration: none !important;
+    color: #FFFFFF;
+}
+
+
+.n-container2{
+    display: flex;
+    justify-content: center;
+    width: 762px;
+    height: 400px;
+    background-color: #f0f0f0;
+    box-sizing: border-box;
+    border-radius: 0 0 16px 16px;
+    position: relative;
+}
+
+@media (max-width: 1868px) {
+    .n-container2{
+        width: 650px;
+        height: 400px;
+    }
+}
+
+@media (max-width: 1568px) {
+    .n-container2{
+        width: 500px;
+        height: 400px;
+    }
+}
+
+.s-aktifnumber, .s-talepnumber, .s-gecmisnumber{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px;
+    margin-top: 32px;
+    
+}
+
+.aktifnumber, .talepnumber, .gecmisnumber{
+    font-family: CustomFontBlack, sans-serif;
+    font-size: 48px;
+    color:  #DA3D2F;
+    text-decoration: none !important;
+    pointer-events: none;
+}
+
+
+
+.n-container2-texts{
+    font-family: CustomFontMedium, sans-serif;
+    font-size: 16px;
+    color: #00000080;
+    pointer-events: none;
+    margin-bottom: 0px !important;
+}
+
+.new-order{
+    color: #DA3D2F;
+    margin: 0;
+    margin-top: 4px;
+    font-family: CustomFontMedium, sans-serif;
+    font-size: 14px;
+}
+
+.buttoncontinue2{
+    width: 200px;
+    height: 50px;
+    background-color: #DA3D2F;
+    border-radius: 100px;
+    position: absolute;
+    left: 50%;
+    top: 89%;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    border: none;
+    font-family: CustomFontMedium, sans-serif;
+    text-decoration: none !important;
+    color: #FFFFFF;
+}
+
+.colorizedtext{
+    color: #DA3D2F !important;
+}
+
+.orders{
+    padding: 0px 160px;
+    margin-top: 32px;
+}
+
+.headercontainer{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    height: auto;
+    background-color: #f0f0f0;
+    padding: 24px;
+    gap: 24px;
+    border-radius: 16px 16px 0 0;
+    box-sizing: border-box;
+}
+
+.headerctext{
+    font-family: CustomFontMedium, sans-serif;
+    font-size: 16px;
+    color: #000;
+    margin: 0;
+    text-decoration: none;
+}
+
+.orderscontainer{
+    width: 100%;
+    height: 665px;
+    background-color: #f0f0f0;
+    box-sizing: border-box;
+}
+
+.ordernameid, .orderdateid, .durumid{
+    font-family: CustomFontMedium, sans-serif;
+    text-decoration: none !important;
+    pointer-events: none;
+}
+.orderidinfo{
+    display: flex;
+    flex-direction: column;
+    margin-left: 24px;
+}
+
+.ordernameid{
+    margin-top: 24px;
+    color: #00000080;
+}
+
+.orderdateid{
+    margin-top: 4px;
+    color: #DA3D2F;
+    margin-bottom: 4px;
+}
+.durumid{
+    margin-bottom: 24px;
+}
+
+.order{
+    border-bottom: #00000004 2px solid;
+    border-top: #00000004 2px solid;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.orderbutton{
+    width: 120px;
+    height: 40px;
+    background-color: #da3d2f00;
+    border-radius: 100px;
+    margin-right: 24px;
+    cursor: pointer;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    border: #00000050 2px solid;
+    text-decoration: none;
+    color: #00000060;
+    font-family: CustomFontMedium, sans-serif;
+    padding: 4px 8px;
+}
+
+.ordernumbertext{
+    font-family: CustomFontMedium, sans-serif;
+    font-size: 16px;
+    color: #DA3D2F;
+}
+
+.detail-header {
+    border-radius: 16px 16px 0 0;
+}
+
+.detail-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    background-color: #f0f0f0;
+    box-sizing: border-box;
+    border-radius: 0 0 16px 16px;
+    padding: 32px; 
+    gap: 32px;
+}
+
+.detail-info-box, .detail-durum-box {
+    flex: 1; 
+    padding: 0 16px; 
+    box-sizing: border-box;
+}
+
+
+.detail-maintext {
+    font-family: 'CustomFontMedium', sans-serif;
+    font-size: 24px;
+    color: #000;
+    margin-top: 0;
+    margin-bottom: 24px;
+    border-bottom: #0000000e 1px solid;
+    padding-bottom: 12px;
+}
+
+
+.info-group {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: #00000008 1px dotted;
+}
+
+.info-label {
+    font-family: 'CustomFontMedium', sans-serif;
+    font-size: 16px;
+    color: #00000080; 
+    margin: 0;
+}
+
+.info-value {
+    font-family: 'CustomFontMedium', sans-serif;
+    font-size: 16px;
+    color: #000;
+    margin: 0;
+    font-weight: bold;
+}
+
+.colorizedtext {
+    color: #DA3D2F !important;
+}
+
+
+.detail-actions {
+    display: flex;
+    justify-content: flex-start;
+    gap: 16px;
+    margin-top: 40px;
+}
+
+.action-button {
+    height: 50px;
+    border-radius: 100px;
+    cursor: pointer;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    border: none;
+    font-family: 'CustomFontMedium', sans-serif;
+    text-decoration: none !important;
+    color: #FFFFFF;
+    padding: 0 24px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.approve-button {
+    background-color: #DA3D2F;
+}
+
+.approve-button:hover {
+    background-color: #c4352a; 
+}
+
+.reject-button {
+    background-color: #a0a0a0; 
+}
+
+.reject-button:hover {
+    background-color: #888888;
+}
+
+.file-info-text {
+    font-family: 'CustomFontMedium', sans-serif;
+    font-size: 14px;
+    color: #00000070;
+    margin-top: -10px;
+    margin-bottom: 20px;
+}
+
+.durum-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.durum-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background-color: #e6e6e6;
+    border-radius: 8px;
+    text-decoration: none;
+    pointer-events: none;
+}
+
+
+.durum-icon {
+    font-size: 20px;
+    margin-right: 12px;
+}
+
+.durum-name {
+    flex-grow: 1;
+    font-family: 'CustomFontMedium', sans-serif;
+    font-size: 16px;
+    color: #000;
+}
+
+.durum-size {
+    font-family: 'CustomFontMedium', sans-serif;
+    font-size: 14px;
+    color: #DA3D2F;
+}
+@media (max-width: 1200px) {
+    .detail-container {
+        flex-direction: column;
+    }
+
+    .detail-info-box, .detail-durum-box {
+        padding: 0;
+        margin-bottom: 24px;
+    }
+}
+
+.backbutton {
+    font-family: 'CustomFontBlack', sans-serif;
+    font-size: 24px;
+    color: #000;
+    text-decoration: none !important;
+    cursor: pointer;
+}
+
+.buttonsdurum {
+    display: flex;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.durum-update-button2, .durum-link-button {
+    width: 150px;
+    height: 40px;
+    border-radius: 8px;
+    cursor: pointer;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    border: none;
+    font-family: 'CustomFontMedium', sans-serif;
+    text-decoration: none !important;
+    background-color: #DA3D2F;
+    color: #FFFFFF;
+}
+
+.butonlar {
+    text-align: right;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    gap: 24px;
+}
+
+.btn {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    font-family: 'CustomFontMedium', sans-serif;
+}
+
+.btn-ready {
+    background-color: #dda200;
+    color: white;
+}
+
+.btn-ready:hover {
+    background-color: #c4a002;
+}
+
+.btn-completed {
+    background-color: #2c990b;
+    color: white;
+}
+
+.btn-completed:hover {
+    background-color: #3b9408;
+}
+
+.modal {
+    display: none;
+    position: fixed; 
+    z-index: 1; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%;
+    overflow: auto; 
+    background-color: rgba(0,0,0,0.4); 
+}
+
+.modal-icerik {
+    background-color: #fefefe;
+    margin: 15% auto; 
+    padding: 20px;
+    border: 1px solid #888;
+    width: 400px;
+    max-width: 90%;
+    border-radius: 8px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-input-icerik {
+    background-color: #fefefe;
+    margin: 15% auto; 
+    padding: 20px;
+    border: 1px solid #888;
+    width: 400px;
+    max-width: 90%;
+    border-radius: 8px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-son-icerik {
+    font-family: 'CustomFontMedium', sans-serif;
+    background-color: #fefefe;
+    margin: 15% auto; 
+    padding: 20px;
+    border: 1px solid #888;
+    width: 400px;
+    max-width: 90%;
+    border-radius: 8px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-evet {
+    background-color: #0d8613;
+    color: white;
+}
+
+.btn-hayir {
+    background-color: #c4302b;
+    color: white;
+}
+
+.orderrequestnameid, .orderrequestdateid {
+    font-family: CustomFontMedium, sans-serif;
+    text-decoration: none !important;
+    pointer-events: none;
+}
+
+.orderrequestnameid{
+    margin-top: 32px;
+    color: #00000080 !important;
+}
+
+.orderrequestdateid{
+    margin-top: 9px;
+    color: #DA3D2F !important;
+    margin-bottom: 32px;
+}
+
+.modal-fiyat-icerik {
+    font-family: 'CustomFontMedium', sans-serif;
+    background-color: #fefefe;
+    margin: 15% auto; 
+    padding: 20px;
+    border: 1px solid #888;
+    width: 400px;
+    max-width: 90%;
+    border-radius: 8px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.fiyatinputmodal{
+    margin-bottom: 16px;
+}
+
+.buttonorder {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.takeitback {
+    font-family: 'CustomFontMedium', sans-serif;
+    font-size: 16px;
+    color: #DA3D2F;
+    margin: 0;
+}
+
+.modal-icerik-geriAl {
+    background-color: #fefefe;
+    margin: 15% auto; 
+    padding: 20px;
+    border: 1px solid #888;
+    width: 400px;
+    max-width: 90%;
+    border-radius: 8px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.butonlar-geriAl {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    gap: 24px;
+    flex-direction: column;
+    font-family: 'CustomFontMedium', sans-serif;
+}
+
+.btn-geriAl {
+    background-color: #0d8613;
+    color: white;
+}
+
+.btn-iptal {
+    background-color: #c4302b;
+    color: white;
+}
+
+.pastorders-buttons{
+    margin-top: 24px;
+    gap: 24px;
+    display: flex;
+    align-items: center;
+}

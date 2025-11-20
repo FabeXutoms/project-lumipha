@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teklif Alın!</title>
+    <link rel="stylesheet" href="offer.css">
+</head>
+<body class="bodyforoffer">
+    <section class="multistepform">
+        <div class="formheader">
+            <div class="formheaderalignment">
+                <img src="images/Symbol.svg" alt="" class="formheaderlogo">
+                <h1 class="formtitle">Teklif Alın</h1>
+            </div>
+            <img class="formheadericon" src="images/close.svg" alt="">
+        </div>
+
+        <div class="formsteps">
+            <div class="bgeffect" id="bgEffect"></div>
+            <div class="formstep" id="step1">
+                <div class="formstepinside">
+                    <div class="formsteprectangle"></div> 
+                    <div class="formsteprectangle"></div> 
+                </div>
+                <h2>1. Aşama</h2>
+            </div>
+
+            <div class="formstep" id="step2">
+                <div class="formstepinside2">
+                    <div class="formsteprectangle"></div> </div>
+                <h2>2. Aşama</h2>
+            </div>
+
+            <div class="formstep" id="step3">
+                <div class="formstepinside">
+                    <div class="formsteprectangle"></div> <div class="formsteprectangle"></div> </div>
+                <h2>3. Aşama</h2>
+            </div>
+        </div>
+
+        <div class="formicerik formtab">
+            <h1 class="form-main-title">Başlayalım...</h1>
+            <p class="form-title">Açıklama Yazısı...</p>
+            <h5 class="form-input-title">İşletme Adı</h5>
+            <input class="form-input" type="text" placeholder="İşletmenizin Adı">
+        </div>
+
+        <div class="formicerik-second formtab">
+            <h1 class="form-main-title">Temel Bilgiler<h1>
+            <p class="form-title">Açıklama Yazısı...</p>
+            <h5 class="form-radiobox-title">İşletme Ölçeği</h5>
+            <form class="radioboxform">
+                <div class="rb-buttons-alignment-styles">
+                    <input type="radio" value="International" name="business-scale" class="radioboxbuttons" id="isletme_yerel">
+                    <label for="isletme_yerel" class="radiobox-titles">Yerel İşletme</label>
+                </div>
+                <div class="rb-buttons-alignment-styles">
+                    <input type="radio" value="National" name="business-scale" class="radioboxbuttons" id="isletme_uluslararasi">
+                    <label for="isletme_uluslararasi" class="radiobox-titles">Uluslararası İşletme</label>
+                </div>
+            </form>
+            <h5 class="form-radiobox-title">İşletme Türü</h5>
+            <input class="form-input-second" type="text" placeholder="Seçiniz">
+        </div>
+
+        <div class="formicerik-third formtab">
+            <h1 class="form-main-title">Hizmet Seçiniz</h1>
+            <p class="form-title">Açıklama Yazısı...</p>
+            <div class="pcontainersmallgroup">
+                <a class="pcontainer pcontainersmall">
+                    <img src="images/offericonbase.svg" alt="" class="offercontainericon">
+                    <div class="containerptext">Web Tasarımı</div>
+                </a>
+                <a class="pcontainer pcontainersmall">
+                    <img src="images/offericonbase.svg" alt="" class="offercontainericon">
+                    <div class="containerptext">Web Mobil & Uygulama</div>
+                </a>
+            </div>
+            
+            <div class="pcontainersmallgroup">
+                <a class="pcontainer pcontainersmall">
+                    <img src="images/offericonbase.svg" alt="" class="offercontainericon">
+                    <div class="containerptext">Seo Hizmeti</div>
+                </a>
+                <a class="pcontainer pcontainersmall">
+                    <img src="images/offericonbase.svg" alt="" class="offercontainericon">
+                    <div class="containerptext">Reklamcılık</div>
+                </a>
+            </div>
+
+            <div class="pcontainersmallgroup">
+                <a class="pcontainer pcontainersmall">
+                    <img src="images/offericonbase.svg" alt="" class="offercontainericon">
+                    <div class="containerptext">Kurumsal Kimlik</div>
+                </a>
+                <a class="pcontainer pcontainersmall">
+                    <img src="images/offericonbase.svg" alt="" class="offercontainericon">
+                    <div class="containerptext">Reklamcılık</div>
+                </a>
+            </div>
+        </div>
+
+        <div class="formicerik-fourth formtab">
+            <h1 class="form-main-title">Size nasıl hitap edelim?</h1>
+            <p class="form-title">Açıklama Yazısı...</p>
+            <h5 class="form-input-title">Ad Soyad</h5>
+            <input class="form-input" type="text" placeholder="Adınız & Soyadınız">
+        </div>
+
+        <div class="formicerik-fifth formtab">
+            <h1 class="form-main-title">Öyleyse son olarak...</h1>
+            <p class="form-title">Açıklama Yazısı...</p>
+            <h5 class="form-input-title">Telefon Numarası</h5>
+            <input class="form-input-fourth" type="number" placeholder="Telefon Numaranız">
+            <h5 class="form-input-title">E-Posta Adresi (İsteğe Bağlı)</h5>
+            <input class="form-input" type="text" placeholder="E-Posta Adresiniz">
+        </div>
+    </section>
+
+    <div class="formbuttons" id="buttonContainer">
+        <button class="form-button-back" id="backButton">
+            <h1 class="backbuttontitle">Geri Dön</h1>
+        </button>
+        
+        <button class="form-button-next" id="nextButton">
+            <h1 class="nextbuttontitle">İlerle</h1>
+        </button>
+    </div>
+
+    <script src="offer.js"></script>
+</body>
+</html>

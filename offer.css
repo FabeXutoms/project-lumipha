@@ -1,0 +1,497 @@
+@font-face {
+    font-family: 'CustomFontBlack';
+    src: url('fonts/Epilogue-Black.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'CustomFontExtraLight';
+    src: url('fonts/Epilogue-ExtraLight.ttf') format('truetype');
+}
+
+body {
+  margin: 0;
+  background-color: #F5F5F5 !important;
+}
+
+.multistepform {
+  padding: 0px 24px;
+}
+
+.formheader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 34px 0px;
+}
+
+.formheaderalignment {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.formheaderlogo {
+  width: 37px;
+  height: 28px;
+}
+
+.formheadericon {
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+}
+
+.formtitle {
+  font-family: 'CustomFontBlack', sans-serif;
+  font-weight: 700;
+  font-size: 24px;
+  color: #000000;
+}
+
+.formsteps {
+  font-family: 'CustomFontBlack', sans-serif;
+  font-size: 10px;
+  color: #000000c2;
+  display: flex;
+  justify-content: space-between;
+  box-sizing: border-box;
+  background-color: #fff;
+  border-radius: 100px;
+  position: relative;
+}
+
+.formstep{
+    height: 26px;
+    display: flex;
+    align-items: center;
+    padding: 0px 24px;
+    border-radius: 100px;
+    position: relative;
+    flex: 1;
+    justify-content: center;
+}
+
+h2 {
+    margin: 0;
+    z-index: 2;
+}
+
+.active{
+    color: #0015ff;
+}
+
+.bgeffect{
+    position: absolute;
+    background-color: #2F3DDA;
+    opacity: 0.12;
+    width: 118px;
+    height: 26px;
+    border-radius: 100px;
+    z-index: 1;
+    top: 13px;
+    transform: translateY(-50%);
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.form-main-title, .form-title, .form-input-title, .form-input {
+    font-family: 'CustomFontBlack', sans-serif;
+}
+
+.form-main-title {
+    font-size: 40px;
+    font-weight: 700;
+    color: #000000;
+    margin-bottom: 24px;
+    margin-top: 32px;
+}
+
+.form-title {
+    font-size: 20px;
+    font-weight: 500;
+    color: #999999;
+    margin-bottom: 32px;
+    margin-top: 0px;
+}
+
+.form-input-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #000000;
+    margin-bottom: 16px;
+    margin-top: 0px;
+}
+
+.form-input {
+    font-size: 16px;
+    font-weight: 400;
+    color: #000000;
+    width: 100%;
+    padding: 22px 16px;
+    box-sizing: border-box;
+    border-radius: 4px;
+    background-color: #EEEEEE;
+    border: none;
+    margin-bottom: 384px;
+}
+
+.form-button-next {
+    width: 354px;
+    border: none;
+    padding: 20px 16px;
+    border-radius: 8px;
+    background-color: #2F3DDA;
+    height: 44px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: width 0.3s ease;
+}
+
+.form-button-next:hover {
+    cursor: pointer;
+}
+
+.form-button-back {
+    width: 177px;
+    padding: 20px 16px;
+    border-radius: 8px;
+    background-color: #f0f0f0;
+    border: 2px solid #d0d0d05e;
+    height: 44px;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.backbuttontitle{
+    color: #1b1b1b59;
+    font-family: CustomFontBlack, sans-serif;
+    font-size: 16px;
+    margin: 0;
+}
+
+.nextbuttontitle{
+    color: #fff;
+    font-family: CustomFontBlack, sans-serif;
+    font-size: 16px;
+    margin: 0;
+}
+
+.formstepinside {
+    display: flex;
+    position: absolute;
+    bottom: -8px;
+    gap: 4px;
+    left: 30px;
+}
+
+.formsteprectangle {
+    width: 24px;
+    height: 4px;
+    background-color: #E6E7FA;
+    border-radius: 4px;
+    margin: 0;
+}
+
+.formstepinside2 {
+    display: flex;
+    position: absolute;
+    bottom: -8px;
+    gap: 4px;
+    left: 46px;
+}
+
+.fsr-active {
+    background-color: #0015ff;
+}
+
+.form-radiobox-title {
+    font-family: 'CustomFontBlack', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: #000000;
+    margin-bottom: 24px;
+    margin-top: 0px;
+}
+
+.radioboxform {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 16px;
+    margin-bottom: 32px;
+}
+
+.rb-buttons-alignment-styles {
+    background-color: #EEE;
+    padding: 16px 16px;
+    font-family: CustomFontBlack, sans-serif;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.rb-buttons-alignment-styles.rb-active {
+    background-color: #2f3dda38;
+    transition: background-color 0.3s ease;
+}
+
+.rb-buttons-alignment-styles.rb-active .radiobox-titles {
+    color: #2F3DDA !important; 
+}
+
+.radioboxbuttons{
+    margin: 0;
+}
+
+.radiobox-titles{
+    color: #00000064;
+}
+
+.radioboxbuttons {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 24px;
+    height: 24px;
+    margin: 0;
+    border: 2px solid #D0D0D0;
+    border-radius: 50%;
+    background-color: #eee;
+    cursor: pointer;
+    outline: none;
+    position: relative;
+    transition: all 0.2s ease-in-out;
+}
+
+.radioboxbuttons:checked {
+    border-color: #2F3DDA;
+    border: 3px solid #2F3DDA;
+}
+
+.radioboxbuttons:checked::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); 
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #2F3DDA;
+    opacity: 1;
+    transition: all 0.2s ease-in-out;
+}
+
+.radioboxbuttons::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #2F3DDA;
+    opacity: 0;
+    transition: all 0.2s ease-in-out;
+}
+
+.form-input-second {
+    font-size: 16px;
+    font-weight: 400;
+    color: #000000;
+    width: 100%;
+    padding: 22px 16px;
+    box-sizing: border-box;
+    border-radius: 4px;
+    background-color: #EEEEEE;
+    border: none;
+    margin-bottom: 160px;
+}
+
+.pcontainersmall{
+    width: 169px;
+    height: 169px;
+}
+
+.pcontainer{
+    background-color: rgba(238, 238, 238, 1);
+    border-radius: 8px;
+    margin-bottom: 16px;
+    position: relative;
+    transition: background-color 0.3s, border 0.3s;
+    border: 2px solid transparent;
+}
+
+
+.pcontainer.pcontainer-active {
+    background-color: #2F3DDA !important; 
+    border: 2px solid #2F3DDA;
+}
+
+
+.pcontainer.pcontainer-active .containerptext {
+    color: #ffffff !important;
+}
+
+
+.pcontainersmallgroup{
+    display: flex;
+    flex-direction: row !important;
+    gap: 16px;
+}
+
+.containerptext{
+    position: absolute;
+    bottom: 24px;
+    left: 24px;
+    color: #000000;
+    font-family: CustomFontBlack, sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.offercontainericon {
+    position: absolute;
+    top: 24px;
+    left: 24px;
+    transition: all 0.5s ease;
+}
+
+
+.pcontainer.pcontainer-active .offercontainericon {
+    opacity: 1 !important;
+    display: block !important;
+    visibility: visible !important;
+    width: 48px !important; 
+    height: 48px !important; 
+    filter: brightness(0) invert(1) !important; 
+    -webkit-filter: brightness(0) invert(1) !important;
+    mix-blend-mode: normal !important;
+    z-index: 10;
+}
+
+.formbuttons{
+    width: 100%;
+    background-color: white;
+    height: 90px;
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    top: 785px;
+    align-items: center;
+}
+
+.formicerik{
+    display: block;
+}
+
+.formicerik-second{
+    display: none;
+}
+
+.formicerik-third{
+    margin-bottom: 106px;
+    display: none;
+}
+
+.formicerik-fourth{
+    display: none;
+}
+
+.formicerik-fifth{
+    display: none;
+}
+
+.form-input-fourth {
+    font-size: 16px;
+    font-weight: 400;
+    color: #000000;
+    width: 100%;
+    padding: 22px 16px;
+    box-sizing: border-box;
+    border-radius: 4px;
+    background-color: #EEEEEE;
+    border: none;
+    margin-bottom: 12px;
+}
+
+.formbuttons.adim-2 {
+    gap: 10px;
+}
+
+.formbuttons.adim-2 .form-button-back {
+    display: flex;
+}
+
+.formbuttons.adim-2 .form-button-next {
+    width: 177px;
+}
+
+.formtab{
+    display: none;
+}
+
+.formstep.future-step .formsteprectangle {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.formstep.future-step h2 {
+    opacity: 0.4;
+}
+
+.formstep .formsteprectangle {
+    opacity: 0; 
+    transition: opacity 0.3s ease;
+}
+
+.formstep.active .formsteprectangle {
+    opacity: 1;
+}
+
+.formstep:not(.active) h2 {
+    opacity: 0.3;
+    transition: opacity 0.3s ease;
+}
+
+@keyframes sayfaAcilis {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.formtab {
+    display: none;
+    animation: sayfaAcilis 0.5s ease-out;
+}
+
+.formstep .formsteprectangle {
+    opacity: 0;
+    transform: translateY(15px) scale(0.9);
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    background-color: #e0e0e0;
+}
+
+.formstep.active .formsteprectangle {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.formsteprectangle.fsr-active {
+    background-color: #2F3DDA !important;
+    transform: scale(1.1) !important;
+}
+
+.formstep .formsteprectangle:nth-child(2) {
+    transition-delay: 0.1s;
+}

@@ -477,6 +477,11 @@ html, body {
     position: relative;
 }
 
+.sidebarlarge:hover, .sidebarmedium:hover, .sidebarsmall:hover {
+    background-color: #fae6e6;
+    cursor: pointer;
+}
+
 .sidebartext{
     position: absolute;
     bottom: 24px;
