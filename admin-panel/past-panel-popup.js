@@ -44,24 +44,53 @@ document.addEventListener('DOMContentLoaded', () => {
             const urlParams = new URLSearchParams(window.location.search);
             const projectId = urlParams.get('id');
 
+            // Ekranda yazan tutarı kontrol et (Sıfır mı değil mi?)
+            const amountEl = document.getElementById('detailTotalAmount');
+            let amount = 0;
+            if (amountEl) {
+                // Sayısal değeri al
+                amount = parseFloat(amountEl.innerText.replace(/[^0-9.]/g, '')) || 0;
+            }
+
             if (projectId && typeof sendApiRequest === 'function') {
                 try {
-                    await sendApiRequest(`/projects/${projectId}/status`, 'POST', { status: 'InProgress' });
-                    alert('✅ Sipariş geri alındı ve Aktif Siparişler\'e taşındı.');
-                    window.location.href = `active-orders-detail.html?id=${projectId}`;
+                    let newStatus = '';
+                    let redirectUrl = '';
+                    let alertMsg = '';
+
+                    // --- AKILLI YÖNLENDİRME MANTIĞI ---
+                    if (amount === 0) {
+                        // FİYAT YOKSA -> SİPARİŞ TALEPLERİNE DÖN (Onay Bekliyor)
+                        newStatus = 'WaitingForApproval';
+                        redirectUrl = `order-details.html?id=${projectId}`;
+                        alertMsg = '✅ Sipariş geri alındı ve "Sipariş Talepleri" (Onay Bekleyen) listesine taşındı.';
+                    } else {
+                        // FİYAT VARSA -> AKTİF SİPARİŞLERE DÖN (İşlemde)
+                        newStatus = 'InProgress';
+                        redirectUrl = `active-orders-detail.html?id=${projectId}`;
+                        alertMsg = '✅ Sipariş geri alındı ve "Aktif Siparişler" listesine taşındı.';
+                    }
+
+                    // Backend'e durumu güncelle
+                    await sendApiRequest(`/projects/${projectId}/status`, 'POST', { status: newStatus });
+
+                    alert(alertMsg);
+                    window.location.href = redirectUrl;
+
                 } catch (err) {
                     alert('Hata: ' + err.message);
                 }
+            } else {
+                alert('Hata: API bağlantısı yok.');
             }
         });
     }
 
-    // --- 2. LİNK DEĞİŞTİRME İŞLEMLERİ (DİNAMİK GÜNCELLEME) ---
+    // --- 2. LİNK DEĞİŞTİRME İŞLEMLERİ ---
     if (linkDegistirBtn) {
         linkDegistirBtn.addEventListener('click', (e) => {
             e.preventDefault();
 
-            // Mevcut linki inputa getir (Varsa)
             const mevcutLinkEl = document.getElementById('detailProjectLink');
             if (mevcutLinkEl && linkInput) {
                 const mevcutText = mevcutLinkEl.innerText.trim();
@@ -83,25 +112,23 @@ document.addEventListener('DOMContentLoaded', () => {
             const urlParams = new URLSearchParams(window.location.search);
             const projectId = urlParams.get('id');
 
-            if (!yeniLink) {
-                alert("Lütfen geçerli bir link giriniz.");
-                return;
-            }
-
             if (projectId && typeof sendApiRequest === 'function') {
                 try {
-                    // BACKEND'E KAYIT (PATCH İSTEĞİ)
+                    // Linki Güncelle (Boş ise siler)
                     await sendApiRequest(`/projects/${projectId}`, 'PATCH', {
                         projectLink: yeniLink
                     });
 
-                    // Ekrana Yansıt
                     const linkDisplay = document.getElementById('detailProjectLink');
                     if (linkDisplay) {
-                        linkDisplay.innerHTML = `<a href="${yeniLink}" target="_blank" style="color:#2196F3;">${yeniLink}</a>`;
+                        if (yeniLink) {
+                            linkDisplay.innerHTML = `<a href="${yeniLink}" target="_blank" style="color:#2196F3; text-decoration:underline;">${yeniLink}</a>`;
+                            alert('✅ Link güncellendi!');
+                        } else {
+                            linkDisplay.innerText = 'Yok';
+                            alert('🗑️ Link silindi!');
+                        }
                     }
-
-                    alert('✅ Link başarıyla kaydedildi!');
                     hideModal(inputModal);
 
                 } catch (error) {

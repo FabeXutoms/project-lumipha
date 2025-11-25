@@ -4,16 +4,16 @@ import { TrackingService } from './tracking.service';
 import { ThrottlerGuard } from '@nestjs/throttler'; // ThrottlerGuard'ı ekle!
 
 // TÜM KONTROL EDİCİYE KORUMAYI EKLE:
-@UseGuards(ThrottlerGuard) 
+@UseGuards(ThrottlerGuard)
 @Controller('tracking')
 export class TrackingController {
   // TypeScript artık TrackingService'in nereden geldiğini biliyor.
-  constructor(private readonly trackingService: TrackingService) {} 
+  constructor(private readonly trackingService: TrackingService) { }
 
   @Get(':code')
   async getProjectStatus(@Param('code') code: string) {
     const projectData = await this.trackingService.getProjectByTrackingCode(code);
-    
+
     // ... kalan kodun aynı kalacak ...
     return {
       success: true,
@@ -22,9 +22,12 @@ export class TrackingController {
       packageName: projectData.packageName,
       clientName: projectData.client.name,
       totalAmount: projectData.totalAmount,
-      paymentsMade: projectData.payments.reduce((sum, p) => sum + p.amount.toNumber(), 0), 
+      clientEmail: projectData.client.email, // E-posta
+      clientPhone: projectData.client.phone, // Telefon
+      companyName: projectData.companyName,  // Şirket Adı
+      paymentsMade: projectData.payments.reduce((sum, p) => sum + p.amount.toNumber(), 0),
       paymentDetails: projectData.payments.map(p => ({
-        amount: p.amount.toNumber(), 
+        amount: p.amount.toNumber(),
         date: p.paymentDate,
         method: p.paymentMethod
       })),

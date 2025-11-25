@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Teklif Alın!</title>
     <link rel="stylesheet" href="offer.css">
+    
 </head>
+
 <body class="bodyforoffer">
     <section class="multistepform">
         <div class="formheader">
@@ -13,110 +16,160 @@
                 <img src="images/Symbol.svg" alt="Logo" class="formheaderlogo">
                 <h1 class="formtitle">Teklif Alın</h1>
             </div>
-            <a href="homepage.html">
-                <img class="formheadericon" src="images/close.svg" alt="">
-            </a>
+            <img class="formheadericon" src="images/close.svg" alt="" onclick="window.location.href='homepage.html'"
+                style="cursor:pointer;">
         </div>
 
         <div class="formsteps">
             <div class="bgeffect" id="bgEffect"></div>
+
             <div class="formstep" id="step1">
                 <div class="formstepinside">
-                    <div class="formsteprectangle"></div> 
-                    <div class="formsteprectangle"></div> 
+                    <div class="formsteprectangle"></div>
+                    <div class="formsteprectangle"></div>
                 </div>
                 <h2>1. Aşama</h2>
             </div>
 
             <div class="formstep" id="step2">
                 <div class="formstepinside2">
-                    <div class="formsteprectangle"></div> </div>
+                    <div class="formsteprectangle"></div>
+                </div>
                 <h2>2. Aşama</h2>
             </div>
 
             <div class="formstep" id="step3">
                 <div class="formstepinside">
-                    <div class="formsteprectangle"></div> <div class="formsteprectangle"></div> </div>
+                    <div class="formsteprectangle"></div>
+                    <div class="formsteprectangle"></div>
+                </div>
                 <h2>3. Aşama</h2>
             </div>
+
+            <div class="formstep" id="step4" style="display:none;"></div>
+            <div class="formstep" id="step5" style="display:none;"></div>
         </div>
 
-        <div class="formicerik formtab">
+        <div class="formicerik formtab" id="stepContent1">
             <h1 class="form-main-title">Başlayalım...</h1>
             <p class="form-title">Açıklama Yazısı...</p>
             <h5 class="form-input-title">İşletme Adı</h5>
-            <input class="form-input" type="text" placeholder="İşletmenizin Adı">
+            <input class="form-input" type="text" id="companyName" placeholder="İşletmenizin Adı">
         </div>
 
-        <div class="formicerik-second formtab">
+        <div class="formicerik-second formtab" id="stepContent2">
             <h1 class="form-main-title">Temel Bilgiler</h1>
             <p class="form-title">Açıklama Yazısı...</p>
             <h5 class="form-radiobox-title">İşletme Ölçeği</h5>
             <form class="radioboxform">
                 <div class="rb-buttons-alignment-styles">
-                    <input type="radio" value="International" name="business-scale" class="radioboxbuttons" id="isletme_yerel">
+                    <input type="radio" value="Yerel İşletme" name="business-scale" class="radioboxbuttons"
+                        id="isletme_yerel">
                     <label for="isletme_yerel" class="radiobox-titles">Yerel İşletme</label>
                 </div>
                 <div class="rb-buttons-alignment-styles">
-                    <input type="radio" value="National" name="business-scale" class="radioboxbuttons" id="isletme_uluslararasi">
+                    <input type="radio" value="Uluslararası İşletme" name="business-scale" class="radioboxbuttons"
+                        id="isletme_uluslararasi">
                     <label for="isletme_uluslararasi" class="radiobox-titles">Uluslararası İşletme</label>
                 </div>
             </form>
             <h5 class="form-radiobox-title">İşletme Türü</h5>
-            <input class="form-input-second" type="text" placeholder="Seçiniz">
+            <input class="form-input-second" type="text" id="businessType" placeholder="Seçiniz">
         </div>
 
-        <div class="formicerik-third formtab">
+        <div class="formicerik-third formtab" id="stepContent3">
             <h1 class="form-main-title">Hizmet Seçiniz</h1>
             <p class="form-title">Açıklama Yazısı...</p>
             <div class="pcontainersmallgroup">
-                <a class="pcontainer pcontainersmall">
+                <a class="pcontainer pcontainersmall" onclick="selectService(this)">
                     <img src="images/offericonbase.svg" alt="" class="offercontainericon">
                     <div class="containerptext">Web Tasarımı</div>
                 </a>
-                <a class="pcontainer pcontainersmall">
+                <a class="pcontainer pcontainersmall" onclick="selectService(this)">
                     <img src="images/offericonbase.svg" alt="" class="offercontainericon">
                     <div class="containerptext">Web Mobil & Uygulama</div>
                 </a>
             </div>
-            
             <div class="pcontainersmallgroup">
-                <a class="pcontainer pcontainersmall">
+                <a class="pcontainer pcontainersmall" onclick="selectService(this)">
                     <img src="images/offericonbase.svg" alt="" class="offercontainericon">
                     <div class="containerptext">Seo Hizmeti</div>
                 </a>
-                <a class="pcontainer pcontainersmall">
+                <a class="pcontainer pcontainersmall" onclick="selectService(this)">
                     <img src="images/offericonbase.svg" alt="" class="offercontainericon">
                     <div class="containerptext">Reklamcılık</div>
                 </a>
             </div>
-
             <div class="pcontainersmallgroup">
-                <a class="pcontainer pcontainersmall">
+                <a class="pcontainer pcontainersmall" onclick="selectService(this)">
                     <img src="images/offericonbase.svg" alt="" class="offercontainericon">
                     <div class="containerptext">Kurumsal Kimlik</div>
                 </a>
-                <a class="pcontainer pcontainersmall">
+                <a class="pcontainer pcontainersmall" onclick="selectService(this)">
                     <img src="images/offericonbase.svg" alt="" class="offercontainericon">
-                    <div class="containerptext">Reklamcılık</div>
+                    <div class="containerptext">Logo Çalışması</div>
                 </a>
             </div>
         </div>
 
-        <div class="formicerik-fourth formtab">
+        <div class="formicerik-fourth formtab" id="stepContent4">
             <h1 class="form-main-title">Size nasıl hitap edelim?</h1>
             <p class="form-title">Açıklama Yazısı...</p>
             <h5 class="form-input-title">Ad Soyad</h5>
-            <input class="form-input" type="text" placeholder="Adınız & Soyadınız">
+            <input class="form-input" type="text" id="clientName" placeholder="Adınız & Soyadınız">
         </div>
 
-        <div class="formicerik-fifth formtab">
+        <div class="formicerik-fifth formtab" id="stepContent5">
             <h1 class="form-main-title">Öyleyse son olarak...</h1>
             <p class="form-title">Açıklama Yazısı...</p>
             <h5 class="form-input-title">Telefon Numarası</h5>
-            <input class="form-input-fourth" type="number" placeholder="Telefon Numaranız">
-            <h5 class="form-input-title">E-Posta Adresi</h5>
-            <input class="form-input" type="text" placeholder="E-Posta Adresiniz">
+            <input class="form-input-fourth" type="tel" id="clientPhone" placeholder="Telefon Numaranız" maxlength="11">
+            <h5 class="form-input-title">E-Posta Adresi (İsteğe Bağlı)</h5>
+            <input class="form-input" type="text" id="clientEmail" placeholder="E-Posta Adresiniz">
+        </div>
+
+        <div class="formicerik-sixth formtab" id="stepContent6">
+            <h1 class="oo-title">Özet</h1>
+            <p class="oo-title-p"><span class="selectedTextFirst" id="summaryCompany">X</span> için hizmet alıyorsunuz.
+            </p>
+            <p class="oo-title-p"><span class="selectedTextCategories" id="summaryServices">X</span> kategorilerinde
+                hizmet alıyorsunuz.</p>
+            <div class="contacttitlesmain">
+                <img src="images/ri_file-user-line.svg" alt="" class="contact-title-img">
+                <h2 class="contact-title-text">İletişim Bilgileriniz</h2>
+            </div>
+            <div class="contactcontainer">
+                <h3 class="contact-container-text" id="summaryName">X</h3>
+                <div class="contacttitles ctalignment">
+                    <img src="images/ri_phone-line.svg" alt="" class="contact-title-img">
+                    <p class="contact-title-text" id="summaryPhone">X</p>
+                </div>
+                <div class="contacttitles">
+                    <img src="images/ri_mail-line.svg" alt="" class="contact-title-img">
+                    <p class="contact-title-text" id="summaryEmail">X</p>
+                </div>
+            </div>
+            <p class="contacttitleslast">Sizinle Whatsapp üzerinden iletişime geçeceğiz.</p>
+        </div>
+
+        <div class="formicerik-seventh formtab" id="stepContent7">
+            <div class="confirmpart">
+                <img src="images/confirmIcon.svg" alt="" class="confirmicon">
+                <h1 class="confirmtitle">Gönderildi</h1>
+                <p class="confirm-p-title-last">Dakikalar içerisinde bir teklif ile döneceğiz</p>
+            </div>
+            <div class="confirmalignment">
+                <img src="images/ri_barcode-box-line.svg" alt="">
+                <p class="confirm-p-title">Sipariş Kodunuz</p>
+            </div>
+            <div class="contactcontainer"
+                style="text-align: center; display: flex; flex-direction: column; align-items: center;">
+                <h3 class="contact-container-text" id="finalTrackingCode"
+                    style="text-align: center; font-size: 32px; font-weight: bold; color: #000; margin: 20px 0; letter-spacing: 2px;">
+                    X</h3>
+                <button class="confirmbutton" onclick="copyCode()" style="margin: 0 auto;">Kodu Kopyala</button>
+            </div>
+            <p class="contacttitleslast">Sipariş kodu, aldığınız hizmeti takip etmenizi sağlar...</p>
         </div>
 
         <div class="formicerik-sixth formtab">
@@ -161,15 +214,16 @@
     </section>
 
     <div class="formbuttons" id="buttonContainer">
-        <button class="form-button-back" id="backButton">
+        <button class="form-button-back" id="backButton" onclick="prevStep()">
             <h1 class="backbuttontitle">Geri Dön</h1>
         </button>
-        
-        <button class="form-button-next" id="nextButton">
-            <h1 class="nextbuttontitle">İlerle</h1>
+
+        <button class="form-button-next" id="nextButton" onclick="nextStep()">
+            <h1 class="nextbuttontitle" id="nextBtnText">İlerle</h1>
         </button>
     </div>
 
     <script src="offer.js"></script>
 </body>
+
 </html>

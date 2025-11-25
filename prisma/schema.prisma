@@ -40,7 +40,9 @@ model ProjectAction {
   status                Status   @default(Pending)
   startDate             DateTime @db.Date @map("start_date")
   estimatedEndDate      DateTime? @db.Date @map("estimated_end_date")
-  
+  companyName           String?  @map("company_name")   // İşletme Adı
+  businessType          String?  @map("business_type")  // İşletme Türü
+  businessScale         String?  @map("business_scale") // İşletme Ölçeği
   // --- YENİ EKLENEN ALAN ---
   projectLink           String?   @map("project_link") // Link boş olabilir (?)
   // -------------------------

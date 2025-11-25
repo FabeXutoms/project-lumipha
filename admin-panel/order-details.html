@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sipariş Detayı</title>
-    <style></style>
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -29,7 +28,7 @@
         <div class="headercontainer detail-header">
             <a href="orders.html" class="backbutton"><</a>
             <p class="headerctext">Sipariş Yönetimi</p>
-            <p class="headerctext colorizedtext"><span class="ordernumbertext" id="headerTrackingCode">X</span></p>
+            <p class="headerctext colorizedtext"><span class="ordernumbertext" id="headerTrackingCode">...</span></p>
         </div>
 
         <div class="detail-container">
@@ -39,37 +38,37 @@
 
                 <div class="info-group">
                     <p class="info-label">İsim Soyisim</p>
-                    <p class="info-value"><span class="colorizedtext isimdata" id="detailClientName">Ali Osman</span></p>
+                    <p class="info-value"><span class="colorizedtext isimdata" id="detailClientName">...</span></p>
                 </div>
 
                 <div class="info-group">
                     <p class="info-label">İşletme Adı</p>
-                    <p class="info-value"><span class="colorizedtext isletmedata" id="detailCompanyName">Master Dalyaraklar</span></p>
+                    <p class="info-value"><span class="colorizedtext isletmedata" id="detailCompanyName">...</span></p>
                 </div>
 
                 <div class="info-group">
                     <p class="info-label">İşletme Türü</p>
-                    <p class="info-value"><span class="colorizedtext türdata" id="detailBusinessType">E-Ticaret</span></p>
+                    <p class="info-value"><span class="colorizedtext türdata" id="detailBusinessType">...</span></p>
                 </div>
 
                 <div class="info-group">
                     <p class="info-label">İşletme Ölçeği</p>
-                    <p class="info-value"><span class="colorizedtext türdata" id="detailBusinessScale">Yerel</span></p>
+                    <p class="info-value"><span class="colorizedtext türdata" id="detailBusinessScale">...</span></p>
                 </div>
 
                 <div class="info-group">
                     <p class="info-label">Alınacak Hizmet</p>
-                    <p class="info-value colorizedtext"><span class="colorizedtext hizmetdata" id="detailPackage">Web Tasarımı</span></p>
+                    <p class="info-value colorizedtext"><span class="colorizedtext hizmetdata" id="detailPackage">...</span></p>
                 </div>
 
                 <div class="info-group">
                     <p class="info-label">İletişim Kanalı</p>
-                    <p class="info-value">E-posta <span class="colorizedtext iletisimdata" id="detailEmail">(masterdalyarak@gmail.com)</span></p>
+                    <p class="info-value"><span class="colorizedtext iletisimdata" id="detailContact">...</span></p>
                 </div>
 
                 <div class="info-group">
                     <p class="info-label">Sipariş Kodu</p>
-                    <p class="info-value colorizedtext" id="detailTrackingCode">#20231030-1432</p>
+                    <p class="info-value colorizedtext" id="detailTrackingCode">...</p>
                 </div>
 
                 <div class="info-group">
@@ -79,7 +78,7 @@
 
                 <div class="info-group">
                     <p class="info-label">Talep Tarihi</p>
-                    <p class="info-value" id="detailDate">30 Ekim 2025</p>
+                    <p class="info-value" id="detailDate">...</p>
                 </div>
 
                 <div class="info-group">
@@ -139,7 +138,6 @@
     <script src="request-panel-popup.js"></script>
     
     <script>
-        // Sayfa açıldığında verileri çekme kodu
         document.addEventListener('DOMContentLoaded', () => {
             const urlParams = new URLSearchParams(window.location.search);
             const projectId = urlParams.get('id');
@@ -148,11 +146,8 @@
                 fetchOrderDetails(projectId);
             } else {
                 alert('Hata: Sipariş ID bulunamadı veya giriş yapılmamış.');
-                // Test ederken yönlendirmeyi kaldırabilirsin:
-                // window.location.href = 'orders.html';
             }
         });
     </script>
 </body>
-
 </html>
