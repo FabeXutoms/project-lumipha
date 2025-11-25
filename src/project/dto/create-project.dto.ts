@@ -1,27 +1,14 @@
-// src/project/dto/create-project.dto.ts
-import { IsString, IsEmail, IsNotEmpty, IsOptional, IsNumber, Min } from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional, IsNumber, Min } from 'class-validator';
 
 export class CreateProjectDto {
-  // MÜŞTERİ BİLGİLERİ
-  @IsString()
-  @IsNotEmpty()
-  clientName: string;
+  @IsString() @IsNotEmpty() clientName: string;
+  @IsString() @IsNotEmpty() clientEmail: string;
+  @IsString() @IsOptional() clientPhone?: string;
+  @IsString() @IsNotEmpty() packageName: string;
+  @IsNumber() @IsOptional() totalAmount: number; // Teklif formunda fiyat belli değil, 0 gidecek
 
-  @IsEmail()
-  @IsNotEmpty()
-  clientEmail: string;
-
-  @IsString()
-  @IsOptional() // Telefon isteğe bağlı
-  clientPhone?: string;
-
-  // PROJE BİLGİLERİ
-  @IsString()
-  @IsNotEmpty()
-  packageName: string;
-
-  @IsNumber()
-  @Min(0)
-  @IsNotEmpty()
-  totalAmount: number; // JavaScript'te sayılar 'number' tipinde kullanılır
+  // YENİ ALANLAR
+  @IsString() @IsOptional() companyName?: string;
+  @IsString() @IsOptional() businessType?: string;
+  @IsString() @IsOptional() businessScale?: string;
 }

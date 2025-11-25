@@ -1,5 +1,3 @@
-// src/project/project.service.ts
-
 import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateProjectDto } from './dto/create-project.dto';
@@ -37,15 +35,17 @@ export class ProjectService {
         }
     }
 
-    // Yardımcı Fonksiyon
+    // Yardımcı Fonksiyon: Takip Kodu Oluşturucu
     private generateTrackingCode(): string {
         const randomPart = Math.random().toString(36).substring(2, 8).toUpperCase();
         const datePart = new Date().getFullYear().toString().substring(2);
         return `AJ${datePart}${randomPart}`;
     }
 
-    // 2. YENİ PROJE OLUŞTURMA
+    // 2. YENİ PROJE OLUŞTURMA (EŞSİZLİK KONTROLLÜ)
     async createNewProject(dto: CreateProjectDto) {
+
+        // A) E-Posta Kontrolü
         const existingEmail = await this.prisma.client.findUnique({
             where: { email: dto.clientEmail },
         });
@@ -53,6 +53,7 @@ export class ProjectService {
             throw new ConflictException('Bu e-posta adresi zaten sistemde kayıtlı! Lütfen farklı bir e-posta kullanın.');
         }
 
+        // B) Telefon Kontrolü
         if (dto.clientPhone) {
             const existingPhone = await this.prisma.client.findFirst({
                 where: { phone: dto.clientPhone },
@@ -62,6 +63,7 @@ export class ProjectService {
             }
         }
 
+        // C) Yeni Müşteri Oluştur
         const client = await this.prisma.client.create({
             data: {
                 name: dto.clientName,
@@ -70,8 +72,10 @@ export class ProjectService {
             },
         });
 
+        // D) Projeyi Oluştur
         const trackingCode = this.generateTrackingCode();
-        const decimalAmount = new Prisma.Decimal(dto.totalAmount);
+        // Teklif formundan geliyorsa totalAmount boş olabilir, 0 varsayıyoruz
+        const decimalAmount = new Prisma.Decimal(dto.totalAmount || 0);
 
         const newProject = await this.prisma.projectAction.create({
             data: {
@@ -80,7 +84,12 @@ export class ProjectService {
                 packageName: dto.packageName,
                 totalAmount: decimalAmount,
                 startDate: new Date(),
-                status: 'Pending',
+                status: 'Pending', // Aktif sayfasına düşmesi için Pending
+
+                // Yeni Eklenen Alanlar
+                companyName: dto.companyName,
+                businessType: dto.businessType,
+                businessScale: dto.businessScale,
             },
         });
 
@@ -113,6 +122,7 @@ export class ProjectService {
             },
         });
 
+        // Ödeme yapıldı, durumu InProgress (İşlemde) yapalım
         await this.prisma.projectAction.update({
             where: { id: dto.projectId },
             data: { status: 'InProgress' },
@@ -192,15 +202,23 @@ export class ProjectService {
             status: project.status,
             startDate: project.startDate,
             estimatedEndDate: project.estimatedEndDate,
+
+            // Müşteri Bilgileri
             clientName: project.client.name,
             clientEmail: project.client.email,
             clientPhone: project.client.phone,
+
+            // Şirket Bilgileri (Yeni Alanlar)
+            companyName: project.companyName,
+            businessType: project.businessType,
+            businessScale: project.businessScale,
+
             payments: project.payments,
             projectLink: project.projectLink
         };
     }
 
-    // 6. PROJE GÜNCELLEME
+    // 6. PROJE GÜNCELLEME (FİYAT VE LİNK)
     async updateProject(id: number, data: any) {
         return this.prisma.projectAction.update({
             where: { id },
@@ -211,7 +229,7 @@ export class ProjectService {
         });
     }
 
-    // 7. SİLME METODU (Sınıfın içine eklendi)
+    // 7. SİLME METODU
     async deleteProject(id: number) {
         const deletePayments = this.prisma.payment.deleteMany({
             where: { projectActionId: id },
@@ -228,5 +246,4 @@ export class ProjectService {
             message: `Proje ${id} ve tüm ödeme kayıtları kalıcı olarak silindi.`
         };
     }
-
-} // <--- SINIF BURADA KAPANIYOR
+}

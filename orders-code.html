@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Siparişlerim</title>
+    <link rel="stylesheet" href="orders-code.css">
+    <style>
+        /* Durum resimlerinin varsayılan olarak gizli olması için */
+        .statusimg {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <section class="orders-code-header">
+        <div class="ordersheader">
+            <div class="ordersheaderalignment">
+                <img src="images/Symbol.svg" alt="Logo" class="ordersheaderlogo">
+                <h1 class="orderstitle">Teklif Alın</h1>
+            </div>
+            <a href="homepage.html">
+                <img class="ordersheadericon" src="images/close.svg" alt="">
+            </a>
+        </div>
+    </section>
+
+    <section class="orders-content">
+        <div class="ordersicerik formtab">
+            <h1 class="order-main-title">Sipariş Kodunuzu Giriniz</h1>
+            <p class="order-title">Geçmiş / Devam eden siparişlerinizi görmek için size verilen sipariş kodunu girin</p>
+            <input class="order-input" type="text" id="orderCodeInput" placeholder="#">
+            <a href="verification.html" class="order-code-nan">Sipariş Kodum Yok</a>
+        </div>
+    </section>
+
+    <section class="orders-content-second">
+        <div class="ordersicerik-second formtab">
+            <h1 class="order-main-contacttitle">Sipariş Bilgileriniz</h1>
+            <div class="order-content-second-alignment">
+
+                <img src="images/Property1-Completed.svg" alt="Tamamlandı" class="statusimg status-completed"
+                    id="imgCompleted">
+                <img src="images/Property1-OnOrder.svg" alt="İşlemde" class="statusimg status-on-order" id="imgOnOrder">
+                <img src="images/Property1-PaymentAwait.svg" alt="Ödeme Bekleniyor" class="statusimg status-payment"
+                    id="imgPayment">
+
+                <p class="oo-title-p"><span class="selectedTextFirst" id="displayOwnerName">...</span> için hizmet
+                    alıyorsunuz.</p>
+                <p class="oo-title-p"><span class="selectedTextCategories" id="displayServiceName">...</span>
+                    kategorilerinde hizmet alıyorsunuz.</p>
+
+                <div class="contacttitlesmain">
+                    <img src="images/ri_file-user-line.svg" alt="" class="contact-title-img">
+                    <h2 class="contact-title-text">İletişim Bilgileriniz</h2>
+                </div>
+
+                <div class="contactcontainer">
+                    <h3 class="contact-container-text" id="contactName">...</h3>
+
+                    <div class="contacttitles ctalignment">
+                        <img src="images/ri_phone-line.svg" alt="" class="contact-title-img">
+                        <p class="contact-title-text" id="contactPhone">...</p>
+                    </div>
+
+                    <div class="contacttitles">
+                        <img src="images/ri_mail-line.svg" alt="" class="contact-title-img">
+                        <p class="contact-title-text" id="contactEmail">...</p>
+                    </div>
+                </div>
+
+                <p class="contacttitleslast">Sizinle Whatsapp üzerinden iletişime geçtik.</p>
+                <a href="" class="downloadlink">Teslim edilmiş dosyayı indir ></a>
+
+                <div class="circle-alignment">
+                    <div class="circle"></div>
+                    <div class="circle"></div>
+                    <div class="circle"></div>
+                    <div class="circle"></div>
+                    <div class="circle"></div>
+                    <div class="circle"></div>
+                    <div class="circle"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="error-ordercode" id="errorBox" style="display: none;">
+        <div class="error-main-title">
+            <img src="images/unhappy-emoji.svg" alt="">
+            <h1 class="error-title-text">Üzgünüz</h1>
+        </div>
+        <p class="error-paragraph-text">Girdiğiniz sipariş kodu bulunamadı. Lütfen tekrar deneyin...</p>
+    </section>
+
+    <div class="orderbuttons" id="buttonContainer">
+        <button class="order-button-back" id="backButton">
+            <h1 class="backbuttontitle">Geri Dön</h1>
+        </button>
+
+        <button class="order-button-next" id="nextButton">
+            <h1 class="nextbuttontitle">İlerle</h1>
+        </button>
+    </div>
+    <script src="orders-code.js"></script>
+</body>
+
+</html>

@@ -1,4 +1,4 @@
-// admin.js - TEK TEK GÖRÜLDÜ (SEEN) MANTIĞI
+// admin.js - TÜM DETAYLAR VE EKSİK VERİLER DÜZELTİLDİ
 
 const API_BASE_URL = 'http://localhost:3000';
 const API_KEY_STORAGE_KEY = 'lumipha_admin_api_key';
@@ -22,29 +22,21 @@ async function sendApiRequest(endpoint, method = 'GET', body = null) {
         return data;
     } catch (error) {
         console.error(error);
-        throw error; // Hatayı yukarı fırlat
+        throw error; 
     }
 }
 
 async function loginAdmin(event) {
-    // Eğer form üzerinden (Enter tuşuyla) geldiyse sayfa yenilenmesini durdur
     if (event) event.preventDefault();
 
-    const inputEl = document.getElementById('apiKeyInput'); // admin.html'deki ID
+    const inputEl = document.getElementById('apiKeyInput');
     
-    if (!inputEl) {
-        alert('Hata: Giriş kutusu bulunamadı!');
-        return;
-    }
+    if (!inputEl) { alert('Hata: Giriş kutusu bulunamadı!'); return; }
 
     const apiKey = inputEl.value.trim();
 
-    if (!apiKey) {
-        alert('Lütfen API Key giriniz!');
-        return;
-    }
+    if (!apiKey) { alert('Lütfen API Key giriniz!'); return; }
 
-    // --- DOĞRULAMA İSTEĞİ BAŞLIYOR ---
     const loginButton = document.querySelector('.adminbutton');
     if(loginButton) {
         loginButton.innerText = "Kontrol Ediliyor...";
@@ -52,21 +44,15 @@ async function loginAdmin(event) {
     }
 
     try {
-        // Backend'e basit bir istek atıp (GET /projects) anahtarın çalışıp çalışmadığını deniyoruz.
         const response = await fetch(`${API_BASE_URL}/projects`, {
             method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'x-api-key': apiKey
-            }
+            headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey }
         });
 
         if (response.ok) {
-            // ✅ BAŞARILI: Anahtar doğru, 200 OK döndü.
             sessionStorage.setItem(API_KEY_STORAGE_KEY, apiKey);
             window.location.href = 'lumiphadashboard.html';
         } else {
-            // ❌ BAŞARISIZ: 401 Unauthorized döndü.
             alert('⛔ Hatalı API Key! Lütfen kontrol edip tekrar deneyin.');
             if(loginButton) {
                 loginButton.innerText = "Giriş Yap";
@@ -85,26 +71,12 @@ async function loginAdmin(event) {
 }
 
 function markOrderAsSeen(orderId) {
+    const SEEN_ORDERS_KEY = 'lumipha_seen_orders';
     let seenList = JSON.parse(localStorage.getItem(SEEN_ORDERS_KEY) || '[]');
     if (!seenList.includes(orderId)) {
         seenList.push(orderId);
         localStorage.setItem(SEEN_ORDERS_KEY, JSON.stringify(seenList));
     }
-}
-
-// Yardımcı: Son kontrol zamanını günceller
-function updateLastCheckTime() {
-    localStorage.setItem(LAST_CHECK_KEY, new Date().toISOString());
-}
-
-// Yeni gelen bildirimleri filtreler (LastCheckTime'dan sonra gelenler)
-function filterNewNotifications(allProjects) {
-    const lastCheckTime = localStorage.getItem(LAST_CHECK_KEY);
-    const lastCheckDate = lastCheckTime ? new Date(lastCheckTime) : new Date(0);
-    const lastCheckTimeMs = lastCheckDate.getTime();
-
-    // YENİ OLANLAR: Başlangıç tarihi son kontrolden sonra VEYA TAM O ANDA olanlar
-    return allProjects.filter(p => new Date(p.startDate).getTime() >= lastCheckTimeMs);
 }
 
 // --- DASHBOARD VERİLERİNİ YÜKLE ---
@@ -117,28 +89,17 @@ async function loadDashboardData() {
     const newOrderCount = document.getElementById('newOrderCount');
 
     try {
-        // Arka planda veri çek (Kullanıcıya hissettirmeden)
         const allProjects = await sendApiRequest('/projects', 'GET');
         if (!allProjects) return;
 
-        // --- GRUPLANDIRMA ---
-        
-        // 1. ONAY BEKLEYENLER (Bildirimler Kısmı): Durumu 'WaitingForApproval' veya ('Pending' ve Fiyat 0)
-        // Bunlar senin "Müdahale etmem gerekenler" listen.
         const waitingList = allProjects.filter(p => p.status === 'WaitingForApproval' || (p.status === 'Pending' && Number(p.totalAmount) === 0));
-
-        // 2. AKTİF SİPARİŞLER: İşlemde olanlar VEYA Fiyatı girilmiş bekleyenler
         const activeList = allProjects.filter(p => p.status === 'InProgress' || (p.status === 'Pending' && Number(p.totalAmount) > 0));
-        
-        // 3. GEÇMİŞ SİPARİŞLER
         const pastList = allProjects.filter(p => p.status === 'Completed' || p.status === 'Cancelled');
 
-        // --- SAYAÇLARI GÜNCELLE ---
         if(statActive) statActive.innerText = activeList.length;
-        if(statPending) statPending.innerText = waitingList.length; // Talep Sayısı = Onay Bekleyen Sayısı
+        if(statPending) statPending.innerText = waitingList.length; 
         if(statPast) statPast.innerText = pastList.length;
 
-        // "Yeni" Rozeti
         if (newOrderBadge && newOrderCount) {
             if (waitingList.length > 0) {
                 newOrderCount.innerText = waitingList.length;
@@ -148,23 +109,16 @@ async function loadDashboardData() {
             }
         }
 
-        // --- BİLDİRİM LİSTESİNİ GÜNCELLE (SADECE ONAY BEKLEYENLER) ---
         if (notifyContainer) {
-            // Mevcut HTML'i temizlemeden önce, eğer veri yoksa temizle
             if (waitingList.length === 0) {
                 notifyContainer.innerHTML = '<div style="text-align:center; padding:20px; color:#999;">Bekleyen yeni sipariş yok.</div>';
             } else {
-                // Listeyi tarihe göre sırala (En yeni en üstte)
                 const sortedWaiting = waitingList.sort((a, b) => new Date(b.startDate) - new Date(a.startDate));
-                
-                // HTML'i baştan oluştur (Refresh etkisi)
                 let htmlContent = '';
                 
                 sortedWaiting.forEach(p => {
                     const names = p.clientName ? p.clientName.split(' ') : ['-', ''];
                     const date = p.startDate ? new Date(p.startDate).toLocaleDateString('tr-TR') : '-';
-                    
-                    // Bu listedekiler kesinlikle onay bekliyor
                     const msg = 'Yeni Sipariş Onay Bekliyor!';
                     const link = 'order-details.html'; 
 
@@ -178,14 +132,13 @@ async function loadDashboardData() {
                             <div class="butonincele"><a href="${link}?id=${p.id}" class="inceletext">Detayı Gör</a></div>
                         </div>`;
                 });
-                
                 notifyContainer.innerHTML = htmlContent;
             }
         }
-    } catch (e) { console.error("Dashboard yenileme hatası (Backend kapalı olabilir):", e); }
+    } catch (e) { console.error("Dashboard yenileme hatası:", e); }
 }
 
-// --- TÜM BİLDİRİMLER SAYFASI FONKSİYONU (GÖRÜLDÜ İŞARETİ) ---
+// --- TÜM BİLDİRİMLER ---
 async function fetchAndDisplayNotifications() {
     const notifyContainer = document.getElementById('notificationsListContainer');
     if (!notifyContainer) return;
@@ -194,13 +147,11 @@ async function fetchAndDisplayNotifications() {
         const allProjects = await sendApiRequest('/projects', 'GET');
         if (!allProjects) return;
 
-        // Burada TÜMÜNÜ gösteriyoruz (Arşiv gibi)
         const sortedProjects = allProjects.sort((a, b) => new Date(b.startDate) - new Date(a.startDate));
 
         if (sortedProjects.length > 0) {
             notifyContainer.innerHTML = '';
             sortedProjects.forEach(p => {
-                // ... (HTML oluşturma kodları aynı kalır) ...
                 const names = p.clientName ? p.clientName.split(' ') : ['-', ''];
                 const dateStr = p.startDate ? new Date(p.startDate).toLocaleDateString('tr-TR') : '-';
                 const amount = Number(p.totalAmount);
@@ -229,10 +180,6 @@ async function fetchAndDisplayNotifications() {
                     </div>`;
                 notifyContainer.innerHTML += itemHtml;
             });
-
-            // NOT: Buraya girince hepsini görüldü yapmak istersen:
-            // sortedProjects.forEach(p => markOrderAsSeen(p.id));
-
         } else { notifyContainer.innerHTML = '<div style="text-align:center;">Kayıt yok.</div>'; }
     } catch (error) { console.error(error); }
 }
@@ -301,7 +248,7 @@ async function fetchAndDisplayOrders() {
     } catch (e) { container.innerHTML = `<div style="color:red; padding:20px; text-align:center;">Hata: ${e.message}</div>`; }
 }
 
-// --- 5. DETAY FONKSİYONU ---
+// --- 5. DETAY FONKSİYONU (GÜNCELLENDİ) ---
 async function fetchOrderDetails(id) {
     try {
         const p = await sendApiRequest(`/projects/${id}`, 'GET');
@@ -309,21 +256,40 @@ async function fetchOrderDetails(id) {
         const setVal = (i, v) => { const e = document.getElementById(i); if (e) e.value = v; };
         const fill = (i, v) => {
             const e = document.getElementById(i); if (!e) return;
-            const grp = e.closest('.info-group');
-            if (v && v !== '' && v !== '-') { e.innerText = v; if (grp) grp.style.display = 'flex'; }
-            else { if (grp) grp.style.display = 'none'; }
+            const grp = e.closest('.info-group'); // Eğer bir grup içindeyse
+            
+            if (v && v !== '' && v !== '-') { 
+                e.innerText = v; 
+                if (grp) grp.style.display = 'flex'; 
+            } else { 
+                // Eğer veri yoksa, bazı tasarımlarda gizlemek isteyebilirsin.
+                // Şimdilik "Belirtilmemiş" yazalım ki boş görünmesin.
+                e.innerText = '-';
+                if (grp) grp.style.display = 'flex';
+            }
         };
 
         setTxt('headerTrackingCode', p.trackingCode);
         fill('detailClientName', p.clientName);
         fill('detailCompanyName', p.companyName);
         fill('detailPackage', p.packageName);
-        fill('detailContact', p.clientEmail || p.clientPhone);
+        
+        // --- GÜNCELLEME 1: İşletme Türü ve Ölçeği Eklendi ---
+        fill('detailBusinessType', p.businessType); 
+        fill('detailBusinessScale', p.businessScale);
+
+        // --- GÜNCELLEME 2: İletişim Kanalı Birleştirildi ---
+        let contactInfo = p.clientPhone || '';
+        if (p.clientEmail && p.clientEmail !== 'no-email@provided.com') {
+            contactInfo += ` / ${p.clientEmail}`;
+        }
+        fill('detailContact', contactInfo);
+        
         fill('detailTrackingCode', p.trackingCode);
         fill('detailDate', p.startDate ? new Date(p.startDate).toLocaleDateString('tr-TR') : null);
         setTxt('detailTotalAmount', p.totalAmount);
 
-        // Durum
+        // Durum Rengi ve Metni
         let statusText = ''; let color = '#FF9800';
         const amount = Number(p.totalAmount);
         
@@ -357,28 +323,35 @@ async function fetchOrderDetails(id) {
     } catch (e) { console.error(e); }
 }
 
-// Dashboard kontrolü
-if (window.location.href.includes('lumiphadashboard.html')) {
-    document.addEventListener('DOMContentLoaded', () => {
+// --- SAYFA YÜKLEME YÖNLENDİRMELERİ ---
+document.addEventListener('DOMContentLoaded', () => {
+    const currentUrl = window.location.href;
+
+    // Dashboard
+    if (currentUrl.includes('lumiphadashboard.html')) {
         if (getApiKey()) {
-             loadDashboardData(); // İlk yükleme
-             
-             // CANLI TAKİP: Her 5 saniyede bir kontrol et
+             loadDashboardData(); 
              setInterval(loadDashboardData, 5000); 
-        }
-        else window.location.href = 'admin.html';
-    });
-}
-// Notifications kontrolü
-if (window.location.href.includes('notifications.html')) {
-    document.addEventListener('DOMContentLoaded', () => {
+        } else window.location.href = 'admin.html';
+    }
+    // Notifications
+    else if (currentUrl.includes('notifications.html')) {
         if (getApiKey()) fetchAndDisplayNotifications();
         else window.location.href = 'admin.html';
-    });
-}
-if (window.location.href.includes('orders.html') || window.location.href.includes('activeorders.html') || window.location.href.includes('orders-past.html')) {
-     document.addEventListener('DOMContentLoaded', () => {
+    }
+    // Lists (Sipariş Listeleri)
+    else if (currentUrl.includes('orders.html') || currentUrl.includes('activeorders.html') || currentUrl.includes('orders-past.html')) {
         if (getApiKey()) fetchAndDisplayOrders();
         else window.location.href = 'admin.html';
-    });
-}
+    }
+    // Details (Detay Sayfaları) - BURAYI EKLEDİM, ARTIK OTOMATİK ÇALIŞIR
+    else if (currentUrl.includes('order-details.html') || currentUrl.includes('active-orders-detail.html') || currentUrl.includes('orders-past-details.html')) {
+        if (getApiKey()) {
+            // URL'den ID'yi al
+            const urlParams = new URLSearchParams(window.location.search);
+            const id = urlParams.get('id');
+            if (id) fetchOrderDetails(id);
+            else alert("ID bulunamadı!");
+        } else window.location.href = 'admin.html';
+    }
+});

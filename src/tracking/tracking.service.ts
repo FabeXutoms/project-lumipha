@@ -4,7 +4,7 @@ import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class TrackingService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   async getProjectByTrackingCode(trackingCode: string) {
     // trackingCode ile ProjectAction kaydını bul.
@@ -16,7 +16,11 @@ export class TrackingService {
       include: {
         client: {
           // Müşterinin sadece adını ve e-postasını çek, hassas verileri gizle.
-          select: { name: true, email: true }, 
+          select: {
+            name: true,
+            email: true,
+            phone: true
+          },
         },
         payments: true,
       },

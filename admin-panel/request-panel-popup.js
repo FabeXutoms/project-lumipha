@@ -2,45 +2,45 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- ELEMENT SEÇİMLERİ ---
     const fiyatBelirleOnaylaBtn = document.getElementById('fiyatBelirleOnayla');
     const siparisSilBtn = document.getElementById('siparisSil');
-    
+
     const onayModal = document.getElementById('onayModal');
     const silOnayModal = document.getElementById('silOnayModal');
     const fiyatModal = document.getElementById('fiyatModal');
     const islemOnayModal = document.getElementById('islemOnayModal');
-    
+
     const silModalEvet = document.getElementById('silModalEvet');
     const silModalHayir = document.getElementById('silModalHayir');
-    
+
     const fiyatInput = document.getElementById('fiyatInput');
     const fiyatOnaylaButonu = document.getElementById('fiyatOnaylaButonu');
-    
+
     const islemModalEvet = document.getElementById('islemModalEvet');
     const islemModalHayir = document.getElementById('islemModalHayir');
-    
+
     const readyButonu = document.getElementById('readyButonu');
     const completedButonu = document.getElementById('completedButonu');
 
     // --- YARDIMCI FONKSİYONLAR ---
     const showModal = (modalElement) => {
-        if(modalElement) modalElement.style.display = 'block';
+        if (modalElement) modalElement.style.display = 'block';
     };
 
     const hideModal = (modalElement) => {
-        if(modalElement) modalElement.style.display = 'none';
+        if (modalElement) modalElement.style.display = 'none';
     };
 
     // Pencere dışına tıklayınca kapatma
-    window.onclick = function(event) {
+    window.onclick = function (event) {
         if (event.target.classList.contains('modal')) {
             event.target.style.display = 'none';
         }
     }
 
-    // Modal içeriğine tıklayınca kapanmayı engelle
+    // Modal içeriğine tıklamayı koru
     const tumModalIcerikleri = document.querySelectorAll('.modal-icerik, .modal-fiyat-icerik, .modal-son-icerik');
     tumModalIcerikleri.forEach(icerik => {
         icerik.addEventListener('click', (e) => {
-            e.stopPropagation(); 
+            e.stopPropagation();
         });
     });
 
@@ -48,8 +48,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (fiyatInput && fiyatOnaylaButonu) {
         fiyatInput.addEventListener('keydown', (event) => {
             if (event.key === 'Enter') {
-                event.preventDefault(); 
-                fiyatOnaylaButonu.click(); 
+                event.preventDefault();
+                fiyatOnaylaButonu.click();
             }
         });
     }
@@ -57,15 +57,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- BUTON OLAYLARI ---
 
     // 1. Fiyat Belirle Modali Aç
-    if(fiyatBelirleOnaylaBtn) {
+    if (fiyatBelirleOnaylaBtn) {
         fiyatBelirleOnaylaBtn.addEventListener('click', (e) => {
-            e.preventDefault(); 
-            
+            e.preventDefault();
+
             // Mevcut fiyatı inputa getir (varsa)
             const mevcutFiyatEl = document.getElementById('detailTotalAmount');
-            if(mevcutFiyatEl && fiyatInput) {
+            if (mevcutFiyatEl && fiyatInput) {
                 const fiyatText = mevcutFiyatEl.innerText.replace(/[^0-9.,]/g, '').trim();
-                if(fiyatText && !isNaN(parseFloat(fiyatText))) {
+                if (fiyatText && !isNaN(parseFloat(fiyatText))) {
                     fiyatInput.value = parseFloat(fiyatText);
                 } else {
                     fiyatInput.value = '';
@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // 2. Sipariş Sil Modali Aç
-    if(siparisSilBtn) {
+    if (siparisSilBtn) {
         siparisSilBtn.addEventListener('click', (e) => {
             e.preventDefault();
             showModal(silOnayModal);
@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // 3. Fiyat Onay Butonu (Ara Adım)
-    if(fiyatOnaylaButonu) {
+    if (fiyatOnaylaButonu) {
         fiyatOnaylaButonu.addEventListener('click', (e) => {
             e.preventDefault();
             const fiyat = fiyatInput.value;
@@ -92,36 +92,36 @@ document.addEventListener('DOMContentLoaded', () => {
                 alert("Lütfen geçerli bir fiyat girin.");
                 return;
             }
-            
+
             hideModal(fiyatModal);
             showModal(islemOnayModal);
         });
     }
-    
-    // 4. SON ONAY VE AKTİF SİPARİŞE GEÇİŞ (KRİTİK KISIM)
-    if(islemModalEvet) {
+
+    // 4. SON ONAY VE AKTİF SİPARİŞE GEÇİŞ (FİYAT)
+    if (islemModalEvet) {
         islemModalEvet.addEventListener('click', async (e) => {
             e.preventDefault();
             hideModal(islemOnayModal);
-            
+
             const belirlenenFiyat = parseFloat(fiyatInput.value);
             const urlParams = new URLSearchParams(window.location.search);
             const projectId = urlParams.get('id');
 
             if (projectId && typeof sendApiRequest === 'function') {
                 try {
-                    // 1. Fiyatı Güncelle
+                    // Fiyatı Güncelle
                     await sendApiRequest(`/projects/${projectId}`, 'PATCH', { totalAmount: belirlenenFiyat });
-                    
-                    // 2. Durumu 'Pending' (Ödeme Bekleniyor) yap
-                    // Bu işlem siparişi 'Orders' listesinden 'Active Orders' listesine taşır.
+
+                    // Durumu 'Pending' (Ödeme Bekleniyor) yap -> Aktif Listeye düşer
                     await sendApiRequest(`/projects/${projectId}/status`, 'POST', { status: 'Pending' });
-                    
-                    alert(`✅ Fiyat onaylandı ve sipariş "Ödeme Bekleniyor" olarak Aktif listeye taşındı.`);
-                    
-                    // Aktif Sipariş Detayına Yönlendir
+
+                    // Görüldü işaretini kaldır (Tekrar bildirim olsun)
+                    if (typeof markOrderAsUnseen === 'function') markOrderAsUnseen(projectId);
+
+                    alert(`✅ Fiyat onaylandı! Sipariş "Aktif Siparişler" listesine taşındı.`);
                     window.location.href = `active-orders-detail.html?id=${projectId}`;
-                    
+
                 } catch (error) {
                     alert("Hata: " + error.message);
                 }
@@ -129,45 +129,70 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- DİĞER İPTAL/KAPAT BUTONLARI ---
-    if(silModalHayir) {
-        silModalHayir.addEventListener('click', (e) => { 
-            e.preventDefault(); 
-            hideModal(silOnayModal); 
-        });
-    }
-    
-    if(islemModalHayir) {
-        islemModalHayir.addEventListener('click', (e) => { 
-            e.preventDefault(); 
-            hideModal(islemOnayModal); 
-            showModal(fiyatModal); // Geri dön
-        });
-    }
-    
-    if(silModalEvet) {
-        silModalEvet.addEventListener('click', (e) => {
+    // 5. SİPARİŞİ SİLME (İPTAL ETME) İŞLEMİ -- GÜNCELLENDİ --
+    if (silModalEvet) {
+        silModalEvet.addEventListener('click', async (e) => {
             e.preventDefault();
             hideModal(silOnayModal);
-            // Silme işlemi eklenebilir...
-            alert('Sipariş silindi.');
-            window.location.href = 'orders.html';
-        });
-    }
-    
-    if(readyButonu) {
-        readyButonu.addEventListener('click', (e) => { 
-            e.preventDefault(); 
-            hideModal(onayModal); 
-            alert('Sipariş durumu güncellendi.'); 
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const projectId = urlParams.get('id');
+
+            if (projectId && typeof sendApiRequest === 'function') {
+                try {
+                    // ESKİ (TEHLİKELİ): await sendApiRequest(`/projects/${projectId}`, 'DELETE');
+
+                    // YENİ (GÜVENLİ): Durumu 'Cancelled' yap (Geçmiş Siparişlere Düşer)
+                    await sendApiRequest(`/projects/${projectId}/status`, 'POST', {
+                        status: 'Cancelled'
+                    });
+
+                    // Görüldü işaretini kaldır (Bildirim olsun)
+                    if (typeof markOrderAsUnseen === 'function') markOrderAsUnseen(projectId);
+
+                    alert('🗑️ Sipariş iptal edildi ve "Geçmiş Siparişler" listesine taşındı.');
+
+                    // Geçmiş Siparişler Listesine Yönlendir
+                    window.location.href = 'orders-past.html';
+
+                } catch (error) {
+                    alert("Hata: " + error.message);
+                }
+            } else {
+                alert('Hata: API bağlantısı yok veya ID bulunamadı.');
+            }
         });
     }
 
-    if(completedButonu) {
-        completedButonu.addEventListener('click', (e) => { 
-            e.preventDefault(); 
-            hideModal(onayModal); 
-            alert('Sipariş durumu güncellendi.'); 
+    // --- DİĞER İPTAL/KAPAT BUTONLARI ---
+    if (silModalHayir) {
+        silModalHayir.addEventListener('click', (e) => {
+            e.preventDefault();
+            hideModal(silOnayModal);
+        });
+    }
+
+    if (islemModalHayir) {
+        islemModalHayir.addEventListener('click', (e) => {
+            e.preventDefault();
+            hideModal(islemOnayModal);
+            showModal(fiyatModal); // Geri dön
+        });
+    }
+
+    if (readyButonu) {
+        readyButonu.addEventListener('click', (e) => {
+            e.preventDefault();
+            hideModal(onayModal);
+            alert('Sipariş durumu güncellendi.');
+        });
+    }
+
+    if (completedButonu) {
+        completedButonu.addEventListener('click', (e) => {
+            e.preventDefault();
+            hideModal(onayModal);
+            alert('Sipariş durumu güncellendi.');
         });
     }
 });
