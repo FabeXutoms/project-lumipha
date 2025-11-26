@@ -226,12 +226,12 @@ h1 {
 }
 
 .otp-input.filled {
-  background-color: #E0E7FF; 
-  color: #4F46E5;
+  background-color: #DFE0F3; 
+  color: #2F3DDA;
 }
 
 .otp-input:focus {
-  background-color: #3742fa;
+  background-color: #2F3DDA;
   color: #fff;
 }
 
