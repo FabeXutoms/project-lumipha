@@ -13,6 +13,7 @@ import {
 import { ProjectService } from './project.service';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateStatusDto } from './dto/update-status.dto';
+import { CheckContactDto } from './dto/check-contact.dto';
 import { ApiKeyGuard } from '../auth/api-key/api-key.guard';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
@@ -40,6 +41,23 @@ export class ProjectController {
     @Post()
     async createProject(@Body() createProjectDto: CreateProjectDto) {
         return this.projectService.createNewProject(createProjectDto);
+    }
+
+    @Post('verify-otp')
+    async verifyOtp(@Body() body: { clientId: number; otp: string }) {
+        return this.projectService.verifyOtp(body.clientId, body.otp);
+    }
+
+    @Post('resend-otp')
+    async resendOtp(@Body() body: { clientId: number; isEmail: boolean }) {
+        return this.projectService.resendOtp(body.clientId, body.isEmail);
+    }
+
+    // YENİ METOT: İletişim Kontrolü (Public)
+    @UsePipes(new ValidationPipe({ transform: true }))
+    @Post('check-contact')
+    async checkContact(@Body() checkContactDto: CheckContactDto) {
+        return this.projectService.checkContact(checkContactDto);
     }
 
     // 3. ÖDEME KAYDETME (Yönetim Paneli - GİZLİ)
