@@ -21,6 +21,10 @@ model Client {
   id        Int      @id @default(autoincrement())
   name      String   @db.VarChar(255)
   email     String   @unique @db.VarChar(255)
+  otpCode      String?   @map("otp_code")       // Doğrulama Kodu
+  otpExpiresAt DateTime? @map("otp_expires_at") // Kodun son kullanma tarihi
+  previousOtpCode      String?   @map("previous_otp_code")       // Önceki Doğrulama Kodu
+  previousOtpExpiresAt DateTime? @map("previous_otp_expires_at") // Önceki Kodun son kullanma tarihi
   phone     String?  @db.VarChar(50)
   createdAt DateTime @default(now()) @map("created_at")
 

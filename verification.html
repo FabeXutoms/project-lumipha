@@ -1,18 +1,40 @@
 <!DOCTYPE html>
 <html lang="tr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Doğrulama</title>
     <link rel="stylesheet" href="verification.css">
+    <style>
+        /* HATA DURUMLARI İÇİN STİLLER (Görseli Bozmaz) */
+        .input-error {
+            border: 1px solid #E53935 !important;
+            background-color: #fffafa;
+        }
+
+        .error-text {
+            color: #E53935;
+            /* Kırmızı Yazı */
+            font-size: 13px;
+            margin-top: 8px;
+            text-align: left;
+            font-family: inherit;
+            /* Fontun aynı kalmasını sağlar */
+            font-weight: 500;
+            display: none;
+            /* Başlangıçta gizli */
+        }
+    </style>
 </head>
+
 <body>
     <section class="verification-code-header">
         <div class="verificationsheader">
             <div class="verificationheaderalignment">
-                <a href="" style="display: flex; align-items: center;">
+                <div style="display: flex; align-items: center; cursor: pointer;">
                     <img src="images/back.svg" alt="Logo" class="verificationheaderlogo" id="backButton">
-                </a>
+                </div>
                 <h1 class="verificationtitle">Sipariş Kodum Yok</h1>
             </div>
         </div>
@@ -20,11 +42,15 @@
 
     <section class="verification-content step-section" id="step1">
         <h2 class="verification-main-title">İletişim Bilgilerinizi Girin</h2>
-        <p class="verification-p-title">Sipariş oluşturmak için kullandığınız iletişim adresinize doğrulama kodu göndereceğiz</p>
+        <p class="verification-p-title">Sipariş oluşturmak için kullandığınız iletişim adresinize doğrulama kodu
+            göndereceğiz</p>
         <div class="input-change">
             <label for="phone" class="verification-label" id="contactLabel">Telefon Numarası</label>
-            <input type="tel" id="contactInput" name="contact" class="verification-input" placeholder="Telefon Numaranız">
-            
+            <input type="tel" id="contactInput" name="contact" class="verification-input"
+                placeholder="Telefon Numaranız">
+
+            <p id="errorText" style="display:none; color: #ff3b30; font-size: 13px; margin-top: 8px; font-weight: 500;">
+            </p>
             <a href="#" class="input-changer" id="inputSwitcher">E-Posta Adresi</a>
         </div>
         <div class="help-container">
@@ -35,7 +61,7 @@
             </button>
         </div>
     </section>
-    
+
     <section class="verification-content-second step-section" id="step2" style="display: none;">
         <div class="container">
             <div class="content">
@@ -50,7 +76,8 @@
                     <input type="text" class="otp-input" maxlength="1" inputmode="numeric" pattern="[0-9]*">
                 </div>
 
-                <p class="timer">Tekrar Gönder (<span id="countdown">0:60</span>)</p>
+                <p id="resendTimer" class="timer" style="display: none;">Kalan Süreniz (<span id="countdown">01:30</span>)</p>
+                <a id="resendLink" class="resendTimertext" style="display: none;">Kodu Tekrar Gönder</a>
             </div>
         </div>
     </section>
@@ -60,19 +87,25 @@
             <img src="images/verificationcheckblack.svg" alt="">
             <h2 class="verification-main-title-second">Başarılı</h2>
         </div>
-        <p class="verification-p-title">Sipariş kodunuzu kopyalayabilir ve kaydedebilirsiniz. Bizimle iletişime geçebileceğinizi unutmayın</p>
+        <p class="verification-p-title">Sipariş kodunuzu kopyalayabilir ve kaydedebilirsiniz. Bizimle iletişime
+            geçebileceğinizi unutmayın</p>
+        <div class="confirmalignment">
+            <img src="images/ri_barcode-box-line.svg" alt="">
+            <p class="confirm-p-title">Sipariş Kodunuz</p>
+        </div>
         <div class="contactcontainer">
-            <h3 class="contact-container-text">Sipariş Kodu: #123456</h3>
-            <button class="confirmbutton">Kodu Kopyala</button>
+            <h3 class="contact-container-text" id="trackingCodeDisplay">Sipariş Kodu: #123456</h3>
+            <button class="confirmbutton" id="copyButton">Kodu Kopyala</button>
         </div>
     </section>
 
-    <div class="verificationbuttons" id="buttonContainer">        
-        <button class="verification-button-next" id="nextButton">
+    <div class="verificationbuttons" id="buttonContainer">
+        <button class="verification-button-next" id="nextButton" type="button">
             <h1 class="verificationbuttontitle" id="btnText">Devam Et</h1>
         </button>
     </div>
 
     <script src="verifications.js"></script>
 </body>
+
 </html>
