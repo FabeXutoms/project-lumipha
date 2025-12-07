@@ -49,13 +49,13 @@ html, body {
 
 .header.homepage-style {
     background-image: linear-gradient(to bottom,
-        rgba(0, 0, 0, 0.30) 0%,
+        rgba(255, 255, 255, 0.3) 0%,
         rgba(0,0,0,0.15) 40%,
         rgba(0,0,0,0) 100%);
     background-color: transparent !important;
-    box-shadow: none;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
+    box-shadow: #f5f5f5d0;
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
 }
 
 
@@ -539,3 +539,75 @@ html, body {
   gap: 16px;
 }
 
+.endlineimage{
+    width: 100%;
+}
+
+.footer {
+    width: 100%;
+    height: auto;
+    background-color: rgba(218, 61, 47, 1);
+    padding: 48px;
+    box-sizing: border-box;
+}
+
+
+.footertoplogowhite{
+    width: 200px;
+    height: auto; 
+    margin-bottom: 48px;
+}
+
+.footerbottomlogowhite{
+    margin-top: 48px;
+    justify-content: center;
+    display: flex;
+}
+
+.interactionpanel{
+    list-style-type: none;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    color: white;
+    font-family: CustomFontBlack, sans-serif;
+    text-align: center;
+    padding: 0;
+    margin: 0;
+    line-height: 24px;
+    width: 147px;
+    height: 128px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+
+
+.footercontainer{
+    display: grid;
+    grid-template-columns: repeat(2, 147px);
+    grid-template-rows: auto auto;
+    justify-content: center;
+    align-content: start;
+    gap: 48px 12px;
+}
+
+.interactionpanel li:nth-child(1){
+    font-weight: 700;
+    color: white;
+    font-family: CustomFontBlack, sans-serif;
+    background-color: rgba(255, 255, 255, 0.16);
+    padding: 0px 12px;
+    border-radius: 24px;
+}
+
+.interactionpanel li:hover{
+    cursor: pointer;
+}
+
+.maintitleinpanel{
+    background-color: #ffffff !important;
+    color: #DA3D2F !important;
+}

@@ -75,7 +75,6 @@ body{
   box-sizing: border-box;
   border-radius: 8px;
   background-color: #EEEEEE;
-  border: none;
 }
 
 .verification-label{
@@ -101,6 +100,7 @@ body{
   padding: 24px;
   border-radius: 8px;
   border: 2px solid #eee;
+  margin-bottom: 150px;
 }
 
 .help-title{
@@ -337,4 +337,54 @@ h1 {
 
 .step-section {
     animation: fadeInUp 0.5s ease-out forwards; 
+}
+
+.input-change .verification-input {
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+    color: #000000;
+}
+
+.input-change .verification-input:focus {
+    border: 2px solid #000000 !important;
+    outline: none;
+    opacity: 1;
+}
+
+.input-change .verification-input:active {
+    background-color: #DDDDDD !important;
+    border-color: #DDDDDD !important;
+    color: #000000 !important;
+}
+
+.input-change .verification-input:active::placeholder {
+    color: #000000 !important;
+    opacity: 1;
+}
+
+.input-change .verification-input:focus::placeholder {
+    color: #000000 !important;
+    opacity: 1;
+}
+
+.verification-button-next:active {
+    background-color: rgba(218, 61, 47, 0.12) !important;
+    border: 2px solid #DA3D2F !important;
+    transform: scale(0.98);
+    transition: ease-in-out 0.1s;
+}
+
+.verification-button-next:active .verificationbuttontitle {
+    color: #DA3D2F !important;
+    transition: none;
+}
+
+.help-button:active {
+  background-color: #DDDDDD;
+  transition: ease-in-out 0.1s;
+}
+
+.confirmbutton:active {
+    background-color: #DDDDDD !important;
+    transition: ease-in-out 0.1s;
 }

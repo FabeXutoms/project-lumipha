@@ -58,6 +58,8 @@ body {
   background-color: #fff;
   border-radius: 100px;
   position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .formstep{
@@ -84,13 +86,15 @@ h2 {
     position: absolute;
     background-color: #2F3DDA;
     opacity: 0.12;
-    width: 118px;
+    width: 120px;
     height: 26px;
     border-radius: 100px;
     z-index: 1;
     top: 13px;
     transform: translateY(-50%);
     transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-sizing: border-box;
+    overflow: hidden;
 }
 
 .form-main-title, .form-title, .form-input-title, .form-input {
@@ -154,14 +158,15 @@ h2 {
     width: 177px;
     padding: 20px 16px;
     border-radius: 8px;
-    background-color: #f0f0f0;
-    border: 2px solid #d0d0d05e;
+    background-color: #f5f5f5;
+    border: 2px solid #DDDDDD;
     height: 44px;
     display: none;
     justify-content: center;
     align-items: center;
     cursor: pointer;
 }
+
 
 .backbuttontitle{
     color: #1b1b1b59;
@@ -376,7 +381,7 @@ h2 {
 
 .formbuttons{
     width: 100%;
-    background-color: white;
+    background-color: #F5F5F5;
     height: 90px;
     display: flex;
     justify-content: center;
@@ -537,7 +542,7 @@ h2 {
 .contactcontainer{
     display: flex;
     flex-direction: column;
-    margin-top: 8px;
+    margin-top: 16px;
     margin-bottom: 32px;
     background-color: #F7F7F7;
     border: 2px solid #fff;
@@ -634,3 +639,85 @@ input[type=number]::-webkit-inner-spin-button {
 input[type=number] { /* Firefox */
   -moz-appearance: textfield;
 }
+
+.form-input, 
+.form-input-second, 
+.form-input-fourth {
+    border: 2px solid transparent;
+    transition: all 0.3s ease; 
+}
+
+.form-input:focus, 
+.form-input-second:focus, 
+.form-input-fourth:focus {
+    border: 2px solid #000000;
+    color: #000000 !important;
+    outline: none;
+    opacity: 1;
+}
+
+.form-input:active, 
+.form-input-second:active, 
+.form-input-fourth:active {
+    background-color: #DDDDDD;
+    color: #000000;
+}
+
+.form-input:active::placeholder,
+.form-input-second:active::placeholder,
+.form-input-fourth:active::placeholder {
+    color: #000 !important;
+    opacity: 1;
+}
+
+.form-input:focus::placeholder,
+.form-input-second:focus::placeholder,
+.form-input-fourth:focus::placeholder {
+    color: #000 !important;
+    opacity: 1;
+}
+
+.rb-buttons-alignment-styles:active, .radiobox-titles:active {
+    background-color: #DDDDDD;
+}
+
+.rb-buttons-alignment-styles:active .radiobox-titles {
+    color: #000000 !important; 
+    transition: ease-in-out 0.2s;
+}
+
+.pcontainer:active {
+    background-color: #e2e2e2;
+}
+
+.formbuttons.adim-2 {
+    z-index: 1000;
+}
+
+.formbuttons{
+    z-index: 1000;
+}
+
+.form-button-back:active {
+    background-color: #EEEEEE;
+    border: 2px solid #dddddd;
+    transition: ease-in-out 0.1s;
+}
+
+.form-button-back:active .backbuttontitle {
+    color: #000000;
+    transition: ease-in-out 0.1s;
+}
+
+.form-button-next:active {
+    background-color: rgba(47, 61, 218, 0.16);
+    border: 2px solid #2F3DDA;
+    transition: ease-in-out 0.1s;
+}
+
+.form-button-next:active .nextbuttontitle {
+    color: #2F3DDA;
+    transition: ease-in-out 0.1s;
+}
+
+

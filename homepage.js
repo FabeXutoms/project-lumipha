@@ -13,26 +13,3 @@ headermenu.addEventListener('click', () => {
     document.body.classList.toggle('noscroll', isOpen);
 });
 
-
-const surecSection = document.querySelector('.partsurec');
-const popup = document.querySelector('#popup');
-const closePopupBtn = document.querySelector('#closePopup');
-
-let popupShown = false;
-
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting && !popupShown) {
-      popup.classList.remove('hidden');
-      document.body.classList.add('noscroll');
-      popupShown = true;
-    }
-  });
-}, { threshold: 0.6 });
-
-observer.observe(surecSection);
-
-closePopupBtn.addEventListener('click', () => {
-  popup.classList.add('hidden');
-  document.body.classList.remove('noscroll');
-});
