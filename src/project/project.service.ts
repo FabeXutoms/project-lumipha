@@ -5,10 +5,28 @@ import { Prisma } from '@prisma/client';
 import { UpdateStatusDto } from './dto/update-status.dto';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
+import { MailService } from '../mail/mail.service';
 
 @Injectable()
 export class ProjectService {
-    constructor(private prisma: PrismaService) { }
+    constructor(
+        private prisma: PrismaService,
+        private mailService: MailService
+    ) { }
+
+    // --- YARDIMCI FONKSİYONLAR ---
+
+    private generateTrackingCode(): string {
+        const randomPart = Math.random().toString(36).substring(2, 8).toUpperCase();
+        const datePart = new Date().getFullYear().toString().substring(2);
+        return `AJ${datePart}${randomPart}`;
+    }
+
+    private generateOtp(): string {
+        return Math.floor(100000 + Math.random() * 900000).toString();
+    }
+
+    // --- PROJE İŞLEMLERİ ---
 
     // 1. DURUM GÜNCELLEME
     async updateProjectStatus(projectId: number, dto: UpdateStatusDto) {
@@ -23,47 +41,36 @@ export class ProjectService {
 
             return {
                 success: true,
-                message: `Project ${projectId} status updated to ${dto.status}.`,
+                message: `Proje durumu güncellendi: ${dto.status}`,
                 projectId: updatedProject.id,
                 newStatus: updatedProject.status,
             };
         } catch (error) {
             if (error.code === 'P2025') {
-                throw new NotFoundException(`Project with ID ${projectId} not found.`);
+                throw new NotFoundException(`Proje ID ${projectId} bulunamadı.`);
             }
             throw error;
         }
     }
 
-    // Yardımcı Fonksiyon: Takip Kodu Oluşturucu
-    private generateTrackingCode(): string {
-        const randomPart = Math.random().toString(36).substring(2, 8).toUpperCase();
-        const datePart = new Date().getFullYear().toString().substring(2);
-        return `AJ${datePart}${randomPart}`;
-    }
-
-    // 2. YENİ PROJE OLUŞTURMA (EŞSİZLİK KONTROLLÜ)
+    // 2. YENİ PROJE OLUŞTURMA
     async createNewProject(dto: CreateProjectDto) {
-
-        // A) E-Posta Kontrolü
         const existingEmail = await this.prisma.client.findUnique({
             where: { email: dto.clientEmail },
         });
         if (existingEmail) {
-            throw new ConflictException('Bu e-posta adresi zaten sistemde kayıtlı! Lütfen farklı bir e-posta kullanın.');
+            throw new ConflictException('Bu e-posta adresi zaten sistemde kayıtlı!');
         }
 
-        // B) Telefon Kontrolü
         if (dto.clientPhone) {
             const existingPhone = await this.prisma.client.findFirst({
                 where: { phone: dto.clientPhone },
             });
             if (existingPhone) {
-                throw new ConflictException('Bu telefon numarası zaten sistemde kayıtlı! Lütfen farklı bir numara kullanın.');
+                throw new ConflictException('Bu telefon numarası zaten sistemde kayıtlı!');
             }
         }
 
-        // C) Yeni Müşteri Oluştur
         const client = await this.prisma.client.create({
             data: {
                 name: dto.clientName,
@@ -72,9 +79,7 @@ export class ProjectService {
             },
         });
 
-        // D) Projeyi Oluştur
         const trackingCode = this.generateTrackingCode();
-        // Teklif formundan geliyorsa totalAmount boş olabilir, 0 varsayıyoruz
         const decimalAmount = new Prisma.Decimal(dto.totalAmount || 0);
 
         const newProject = await this.prisma.projectAction.create({
@@ -84,9 +89,8 @@ export class ProjectService {
                 packageName: dto.packageName,
                 totalAmount: decimalAmount,
                 startDate: new Date(),
-                status: 'Pending', // Aktif sayfasına düşmesi için Pending
+                status: 'Pending',
 
-                // Yeni Eklenen Alanlar
                 companyName: dto.companyName,
                 businessType: dto.businessType,
                 businessScale: dto.businessScale,
@@ -95,11 +99,10 @@ export class ProjectService {
 
         return {
             success: true,
-            message: 'Proje ve Müşteri başarıyla oluşturuldu.',
+            message: 'Proje ve Müşteri oluşturuldu.',
             trackingCode: newProject.trackingCode,
             projectId: newProject.id,
-            clientId: client.id,
-            clientName: client.name
+            clientId: client.id
         };
     }
 
@@ -110,7 +113,7 @@ export class ProjectService {
         });
 
         if (existingPayment) {
-            throw new ConflictException('Bu işlem ID\'si ile daha önce ödeme kaydedilmiştir.');
+            throw new ConflictException('Bu işlem ID\'si daha önce kullanılmış.');
         }
 
         const payment = await this.prisma.payment.create({
@@ -122,7 +125,6 @@ export class ProjectService {
             },
         });
 
-        // Ödeme yapıldı, durumu InProgress (İşlemde) yapalım
         await this.prisma.projectAction.update({
             where: { id: dto.projectId },
             data: { status: 'InProgress' },
@@ -130,10 +132,8 @@ export class ProjectService {
 
         return {
             success: true,
-            message: 'Ödeme başarıyla kaydedildi.',
-            paymentId: payment.id,
-            projectId: payment.projectActionId,
-            projectStatus: 'InProgress',
+            message: 'Ödeme kaydedildi.',
+            paymentId: payment.id
         };
     }
 
@@ -148,16 +148,8 @@ export class ProjectService {
                 status: true,
                 totalAmount: true,
                 projectLink: true,
-                payments: {
-                    select: { amount: true }
-                },
-                client: {
-                    select: {
-                        name: true,
-                        email: true,
-                        phone: true
-                    }
-                }
+                payments: { select: { amount: true } },
+                client: { select: { name: true, email: true, phone: true } }
             }
         });
 
@@ -180,18 +172,15 @@ export class ProjectService {
         });
     }
 
-    // 5. TEK PROJE DETAYI GETİRME
+    // 5. TEK PROJE DETAYI
     async findOneProject(id: number) {
         const project = await this.prisma.projectAction.findUnique({
             where: { id },
-            include: {
-                client: true,
-                payments: true
-            }
+            include: { client: true, payments: true }
         });
 
         if (!project) {
-            throw new NotFoundException(`Project ID ${id} not found`);
+            throw new NotFoundException(`Proje ID ${id} bulunamadı`);
         }
 
         return {
@@ -203,12 +192,10 @@ export class ProjectService {
             startDate: project.startDate,
             estimatedEndDate: project.estimatedEndDate,
 
-            // Müşteri Bilgileri
             clientName: project.client.name,
             clientEmail: project.client.email,
             clientPhone: project.client.phone,
 
-            // Şirket Bilgileri (Yeni Alanlar)
             companyName: project.companyName,
             businessType: project.businessType,
             businessScale: project.businessScale,
@@ -218,7 +205,7 @@ export class ProjectService {
         };
     }
 
-    // 6. PROJE GÜNCELLEME (FİYAT VE LİNK)
+    // 6. PROJE GÜNCELLEME (PATCH)
     async updateProject(id: number, data: any) {
         return this.prisma.projectAction.update({
             where: { id },
@@ -229,7 +216,7 @@ export class ProjectService {
         });
     }
 
-    // 7. SİLME METODU
+    // 7. PROJE SİLME
     async deleteProject(id: number) {
         const deletePayments = this.prisma.payment.deleteMany({
             where: { projectActionId: id },
@@ -241,9 +228,128 @@ export class ProjectService {
 
         await this.prisma.$transaction([deletePayments, deleteProject]);
 
+        return { success: true, message: 'Silindi.' };
+    }
+
+    // --- DOĞRULAMA VE GÜVENLİK ---
+
+    // 8. İLETİŞİM KONTROLÜ VE KOD GÖNDERME
+    async checkContact(dto: { phone?: string; email?: string }) {
+        let client: any = null;
+
+        if (dto.phone) {
+            client = await this.prisma.client.findFirst({ where: { phone: dto.phone } });
+        } else if (dto.email) {
+            client = await this.prisma.client.findUnique({ where: { email: dto.email } });
+        }
+
+        if (!client) {
+            return { found: false };
+        }
+
+        const otp = this.generateOtp();
+        const expiresAt = new Date(Date.now() + 5 * 60 * 1000); // 5 dakika
+
+        await this.prisma.client.update({
+            where: { id: client.id },
+            data: { otpCode: otp, otpExpiresAt: expiresAt }
+        });
+
+        if (dto.email) {
+            await this.mailService.sendOtpEmail(client.email, otp);
+        } else {
+            console.log(`[SMS] Telefon: ${client.phone} - Kod: ${otp}`);
+        }
+
+        return {
+            found: true,
+            clientId: client.id,
+            clientName: client.name
+        };
+    }
+
+    // 9. KOD TEKRAR GÖNDERME
+    async resendOtp(clientId: number, isEmail: boolean) {
+        const client = await this.prisma.client.findUnique({
+            where: { id: clientId }
+        });
+
+        if (!client) {
+            return { success: false, message: 'Müşteri bulunamadı.' };
+        }
+
+        const otp = this.generateOtp();
+        const expiresAt = new Date(Date.now() + 5 * 60 * 1000); // 5 dakika
+
+        // Eski kodu previousOtpCode'a taşı
+        await this.prisma.client.update({
+            where: { id: clientId },
+            data: { 
+                otpCode: otp, 
+                otpExpiresAt: expiresAt,
+                previousOtpCode: client.otpCode,
+                previousOtpExpiresAt: client.otpExpiresAt
+            }
+        });
+
+        if (isEmail) {
+            await this.mailService.sendOtpEmail(client.email, otp);
+        } else {
+            console.log(`[SMS] Telefon: ${client.phone} - Kod: ${otp}`);
+        }
+
         return {
             success: true,
-            message: `Proje ${id} ve tüm ödeme kayıtları kalıcı olarak silindi.`
+            message: 'Kod tekrar gönderildi.'
+        };
+    }
+
+    // 10. KOD DOĞRULAMA (Hem yeni hem eski kodu kontrol et)
+    async verifyOtp(clientId: number, otp: string) {
+        const client = await this.prisma.client.findUnique({
+            where: { id: clientId },
+            include: { projectActions: true }
+        });
+
+        if (!client) {
+            return { success: false, message: 'Müşteri bulunamadı.' };
+        }
+
+        // Yeni kodu kontrol et
+        let isValidCode = false;
+        let isCurrentCode = false;
+
+        // Mevcut kodu kontrol et
+        if (client.otpCode === otp && client.otpExpiresAt && new Date() <= client.otpExpiresAt) {
+            isValidCode = true;
+            isCurrentCode = true;
+        }
+        // Eski kodu kontrol et
+        else if (client.previousOtpCode === otp && client.previousOtpExpiresAt && new Date() <= client.previousOtpExpiresAt) {
+            isValidCode = true;
+            isCurrentCode = false;
+        }
+
+        if (!isValidCode) {
+            return { success: false, message: 'Geçersiz kod.' };
+        }
+
+        // Başarılı - Kodları temizle
+        await this.prisma.client.update({
+            where: { id: clientId },
+            data: { 
+                otpCode: null, 
+                otpExpiresAt: null,
+                previousOtpCode: null,
+                previousOtpExpiresAt: null
+            }
+        });
+
+        const lastProject = client.projectActions[client.projectActions.length - 1];
+
+        return {
+            success: true,
+            trackingCode: lastProject ? lastProject.trackingCode : null
         };
     }
 }
