@@ -286,7 +286,7 @@ body{
     align-items: center;
     gap: 23px;
     position: absolute;
-    bottom: 215px;
+    bottom: 160px;
 }
 
 .circle{
@@ -360,4 +360,43 @@ body{
     font-family: 'CustomFontExtraLight', sans-serif;
     color: #999999;
     font-size: 18px;
+}
+
+.order-input{
+    border: 2px solid transparent;
+    transition: all 0.3s ease; 
+}
+
+.order-input:focus {
+    border: 2px solid #000000;
+    color: #000000 !important;
+    outline: none;
+    opacity: 1;
+}
+
+.order-input:active {
+    background-color: #DDDDDD;
+    color: #000000;
+}
+
+.order-input:active::placeholder {
+    color: #000 !important;
+    opacity: 1;
+}
+
+.order-input:focus::placeholder {
+    color: #000 !important;
+    opacity: 1;
+}
+
+.order-button-next:active {
+    background-color: rgba(218, 61, 47, 0.12) !important;
+    border: 2px solid #DA3D2F !important;
+    transform: scale(0.98);
+    transition: ease-in-out 0.1s;
+}
+
+.order-button-next:active .nextbuttontitle {
+    color: #DA3D2F !important;
+    transition: none;
 }
