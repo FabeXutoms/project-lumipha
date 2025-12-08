@@ -89,7 +89,7 @@ export class ProjectService {
                 packageName: dto.packageName,
                 totalAmount: decimalAmount,
                 startDate: new Date(),
-                status: 'Pending',
+                status: 'WaitingForApproval',
 
                 companyName: dto.companyName,
                 businessType: dto.businessType,
@@ -207,11 +207,18 @@ export class ProjectService {
 
     // 6. PROJE GÜNCELLEME (PATCH)
     async updateProject(id: number, data: any) {
+        // Eğer projectLink gelmişse, URL başındaki localhost/IP'yi temizle
+        let projectLink = data.projectLink;
+        if (projectLink && typeof projectLink === 'string') {
+            // http://localhost:3000/, http://127.0.0.1:3000/, vb başlangıçları kaldır
+            projectLink = projectLink.replace(/^https?:\/\/(localhost|127\.0\.0\.1|192\.168\.\d+\.\d+|10\.\d+\.\d+\.\d+)(:\d+)?\//, '');
+        }
+
         return this.prisma.projectAction.update({
             where: { id },
             data: {
                 totalAmount: data.totalAmount,
-                projectLink: data.projectLink,
+                projectLink: projectLink,
             },
         });
     }

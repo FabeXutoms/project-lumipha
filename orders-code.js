@@ -49,6 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const data = await response.json();
+            console.log('API\'den gelen data:', data);
 
             // Verileri Doldur
             populateOrderData(data);
@@ -87,6 +88,8 @@ document.addEventListener('DOMContentLoaded', () => {
         section2.style.opacity = '0';
         errorSection.style.display = 'none';
 
+        currentTrackingCode = null;
+
         setTimeout(() => {
             section2.style.display = 'none';
             section1.style.display = 'block';
@@ -102,6 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- VERİ DOLDURMA ---
     function populateOrderData(data) {
+        console.log('populateOrderData çağrıldı, status:', data.status, 'totalAmount:', data.totalAmount);
         // Şirket adı varsa onu, yoksa müşteri adını, o da yoksa "Müşteri" yaz
         const ownerName = data.companyName || data.clientName || "Müşteri";
 
@@ -113,31 +117,79 @@ document.addEventListener('DOMContentLoaded', () => {
         setText('contactPhone', data.clientPhone || '-');
         setText('contactEmail', data.clientEmail || '-');
 
-        // Durum Görselleri
+        // Download Butonunu Kontrol Et
+        const downloadLink = document.querySelector('.downloadlink');
+
+        // Durum Açıklaması
+        const statusDescriptionEl = document.getElementById('statusDescription');
+        let statusDescription = '';
+
+        // Durum Görselleri ve Açıklamalar
         const imgCompleted = document.getElementById('imgCompleted');
         const imgOnOrder = document.getElementById('imgOnOrder');
         const imgPayment = document.getElementById('imgPayment');
+        const imgOrderPlaced = document.getElementById('imgOrderPlaced');
+        const imgCanceled = document.getElementById('imgCanceled');
 
         if (imgCompleted) imgCompleted.style.display = 'none';
         if (imgOnOrder) imgOnOrder.style.display = 'none';
         if (imgPayment) imgPayment.style.display = 'none';
+        if (imgOrderPlaced) imgOrderPlaced.style.display = 'none';
+        if (imgCanceled) imgCanceled.style.display = 'none';
+        if (downloadLink) downloadLink.style.display = 'none';
 
         if (data.status === 'Completed') {
             if (imgCompleted) imgCompleted.style.display = 'block';
+            statusDescription = 'Siparişiniz tamamlanmıştır. Bizimle çalıştığınız için teşekkür ederiz.';
+            if (downloadLink) {
+                downloadLink.style.display = 'block'; // Download linki göster
+                downloadLink.href = data.projectLink || '#';
+                console.log('projectLink:', data.projectLink);
+                downloadLink.onclick = (e) => {
+                    e.preventDefault();
+                    console.log('Link tıklandı, açılıyor:', data.projectLink);
+                    if (data.projectLink) {
+                        // Eğer protokol yoksa https:// ekle
+                        const fullUrl = data.projectLink.startsWith('http://') || data.projectLink.startsWith('https://') 
+                            ? data.projectLink 
+                            : 'https://' + data.projectLink;
+                        window.open(fullUrl, '_blank');
+                    }
+                };
+            }
+            setText('displayStatus', 'Tamamlandı');
         }
         else if (data.status === 'InProgress') {
             if (imgOnOrder) imgOnOrder.style.display = 'block';
+            statusDescription = 'Siparişinizi en kısa sürede ve en kaliteli şekilde hazırlıyoruz.';
+            setText('displayStatus', 'İşlemde');
         }
         else if (data.status === 'Pending') {
             if (Number(data.totalAmount) > 0) {
                 if (imgPayment) imgPayment.style.display = 'block';
+                statusDescription = 'Sizinle Whatsapp üzerinden iletişime geçtik';
+                setText('displayStatus', 'Ödeme Bekleniyor');
             } else {
                 // Fiyat henüz girilmemişse (Onay aşaması), işlemde gibi görünsün
                 if (imgOnOrder) imgOnOrder.style.display = 'block';
+                statusDescription = 'Siparişinizi en kısa sürede ve en kaliteli şekilde hazırlıyoruz.';
+                setText('displayStatus', 'Değerlendiriliyor');
             }
         }
         else if (data.status === 'WaitingForApproval') {
-             if (imgOnOrder) imgOnOrder.style.display = 'block';
+            if (imgOrderPlaced) imgOrderPlaced.style.display = 'block';
+            statusDescription = 'Siparişinizi aldık sizinle en kısa sürede Whatsapp üzerinden iletişime geçeceğiz.';
+            setText('displayStatus', 'Onay Bekleniyor');
+        }
+        else if (data.status === 'Cancelled') {
+            if (imgCanceled) imgCanceled.style.display = 'block';
+            statusDescription = 'Sipariş iptal edilmiştir. Bir yanlışlık olduğunu düşünüyorsanız \'Destek Al\' butonu ile bize ulaşabilirsiniz.';
+            setText('displayStatus', 'İptal Edildi');
+        }
+
+        // Açıklamayı ayarla
+        if (statusDescriptionEl) {
+            statusDescriptionEl.innerText = statusDescription;
         }
     }
 

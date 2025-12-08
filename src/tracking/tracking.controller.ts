@@ -25,6 +25,7 @@ export class TrackingController {
       clientEmail: projectData.client.email, // E-posta
       clientPhone: projectData.client.phone, // Telefon
       companyName: projectData.companyName,  // Şirket Adı
+      projectLink: projectData.projectLink,  // Teslim linki
       paymentsMade: projectData.payments.reduce((sum, p) => sum + p.amount.toNumber(), 0),
       paymentDetails: projectData.payments.map(p => ({
         amount: p.amount.toNumber(),
