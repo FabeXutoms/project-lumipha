@@ -271,6 +271,9 @@ body{
     font-size: 14px;
     font-weight: 500;
     color: #2F3DDA;
+    display: none;
+    margin-top: 16px;
+    text-decoration: none;
 }
 
 .statusimg{

@@ -108,9 +108,14 @@ document.addEventListener('DOMContentLoaded', () => {
         saveLinkBtn.addEventListener('click', async (e) => {
             e.preventDefault();
 
-            const yeniLink = linkInput.value.trim();
+            let yeniLink = linkInput.value.trim();
             const urlParams = new URLSearchParams(window.location.search);
             const projectId = urlParams.get('id');
+
+            // URL'nin başındaki localhost/IP'yi temizle (eğer varsa)
+            if (yeniLink) {
+                yeniLink = yeniLink.replace(/^https?:\/\/(localhost|127\.0\.0\.1|192\.168\.\d+\.\d+|10\.\d+\.\d+\.\d+)(:\d+)?\//, '');
+            }
 
             if (projectId && typeof sendApiRequest === 'function') {
                 try {
@@ -122,7 +127,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     const linkDisplay = document.getElementById('detailProjectLink');
                     if (linkDisplay) {
                         if (yeniLink) {
-                            linkDisplay.innerHTML = `<a href="${yeniLink}" target="_blank" style="color:#2196F3; text-decoration:underline;">${yeniLink}</a>`;
+                            // Eğer protokol yoksa https:// ekle
+                            const fullUrl = yeniLink.startsWith('http://') || yeniLink.startsWith('https://') 
+                                ? yeniLink 
+                                : 'https://' + yeniLink;
+                            linkDisplay.innerHTML = `<a href="${fullUrl}" target="_blank" style="color:#2196F3; text-decoration:underline;">${yeniLink}</a>`;
                             alert('✅ Link güncellendi!');
                         } else {
                             linkDisplay.innerText = 'Yok';

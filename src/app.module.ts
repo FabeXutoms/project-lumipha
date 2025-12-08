@@ -21,9 +21,9 @@ import { MailModule } from './mail/mail.module';
     
     // Rate Limiting'i kuruyoruz:
     ThrottlerModule.forRoot([{
-      // 60 saniyede (süre) en fazla 10 istek (limit) izin ver.
+      // 60 saniyede (süre) en fazla 20 istek (limit) izin ver.
       ttl: 60000, // 60 saniye (milisaniye cinsinden)
-      limit: 10,  // Maksimum 10 istek
+      limit: 20,  // Maksimum 20 istek
     }]),
 
     PrismaModule, 
