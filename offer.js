@@ -214,8 +214,14 @@ function validateStep(step) {
     else if (step === 5) {
         const phone = document.getElementById('clientPhone').value.trim();
         const email = document.getElementById('clientEmail').value.trim();
+        
         if (!phone) { alert("Lütfen telefon numaranızı giriniz."); return false; }
-        if (email && !email.includes('@')) { alert("Geçerli bir e-posta giriniz (@ işareti olmalı)."); return false; }
+        if (phone.length !== 11) { alert("Telefon numarası 11 karakter olmalıdır."); return false; }
+        if (!phone.match(/^[0-9]+$/)) { alert("Telefon numarası sadece rakam içerebilir."); return false; }
+        
+        if (!email) { alert("Lütfen e-posta adresinizi giriniz."); return false; }
+        if (!email.includes('@')) { alert("Geçerli bir e-posta giriniz (@ işareti olmalı)."); return false; }
+        if (!email.includes('.')) { alert("Geçerli bir e-posta giriniz (. işareti olmalı)."); return false; }
     }
     return true;
 }

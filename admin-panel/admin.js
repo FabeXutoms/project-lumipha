@@ -160,7 +160,7 @@ async function fetchAndDisplayNotifications() {
 
                 if (p.status === 'Completed') { message = 'Tamamlandı'; targetLink = 'orders-past-details.html'; }
                 else if (p.status === 'Cancelled') { message = 'İptal Edildi'; targetLink = 'orders-past-details.html'; }
-                else if (p.status === 'InProgress') { message = 'İşlemde'; targetLink = 'active-orders-detail.html'; }
+                else if (p.status === 'InProgress') { message = 'Hazırlanıyor'; targetLink = 'active-orders-detail.html'; }
                 else if (p.status === 'Pending') {
                     if (amount > 0) { message = 'Ödeme Bekleniyor'; targetLink = 'active-orders-detail.html'; }
                     else { message = 'Fiyat Bekliyor'; targetLink = 'order-details.html'; }
@@ -228,7 +228,7 @@ async function fetchAndDisplayOrders() {
                 let statusText = '';
                 if (p.status === 'WaitingForApproval' || (p.status === 'Pending' && Number(p.totalAmount) === 0)) statusText = 'Onay Bekliyor';
                 else if (p.status === 'Pending') statusText = 'Ödeme Bekleniyor';
-                else if (p.status === 'InProgress') statusText = 'İşlemde';
+                else if (p.status === 'InProgress') statusText = 'Hazırlanıyor';
                 else if (p.status === 'Completed') statusText = 'Tamamlandı';
                 else if (p.status === 'Cancelled') statusText = 'İptal Edildi';
 
@@ -295,7 +295,7 @@ async function fetchOrderDetails(id) {
         
         if (p.status === 'WaitingForApproval' || (p.status === 'Pending' && amount === 0)) { statusText = 'Onay Bekliyor'; color = '#999'; }
         else if (p.status === 'Pending') { statusText = 'Ödeme Bekleniyor'; color = '#FF9800'; }
-        else if (p.status === 'InProgress') { statusText = 'İşlemde'; color = '#2196F3'; }
+        else if (p.status === 'InProgress') { statusText = 'Hazırlanıyor'; color = '#2196F3'; }
         else if (p.status === 'Completed') { statusText = 'Tamamlandı'; color = '#4CAF50'; }
         else if (p.status === 'Cancelled') { statusText = 'İptal Edildi'; color = '#F44336'; }
 
@@ -307,7 +307,13 @@ async function fetchOrderDetails(id) {
 
         const linkEl = document.getElementById('detailProjectLink');
         if (linkEl) {
-            if (p.projectLink && p.projectLink !== '') linkEl.innerHTML = `<a href="${p.projectLink}" target="_blank" style="color:#2196F3; text-decoration:underline;">${p.projectLink}</a>`;
+            if (p.projectLink && p.projectLink !== '') {
+                // Eğer protokol yoksa https:// ekle
+                const fullUrl = p.projectLink.startsWith('http://') || p.projectLink.startsWith('https://') 
+                    ? p.projectLink 
+                    : 'https://' + p.projectLink;
+                linkEl.innerHTML = `<a href="${fullUrl}" target="_blank" style="color:#2196F3; text-decoration:underline;">${p.projectLink}</a>`;
+            }
             else linkEl.innerText = 'Yok';
         }
 
