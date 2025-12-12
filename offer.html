@@ -55,6 +55,7 @@
             <p class="form-title">Açıklama Yazısı...</p>
             <h5 class="form-input-title">İşletme Adı</h5>
             <input class="form-input" type="text" id="companyName" placeholder="İşletmenizin Adı">
+            <p id="errorStep1" class="error-message"></p>
         </div>
 
         <div class="formicerik-second formtab" id="stepContent2">
@@ -73,42 +74,47 @@
                     <label for="isletme_uluslararasi" class="radiobox-titles">Uluslararası İşletme</label>
                 </div>
             </form>
+            <p id="errorStep2-scale" class="error-message"></p>
             <h5 class="form-radiobox-title">İşletme Türü</h5>
             <input class="form-input-second" type="text" id="businessType" placeholder="Seçiniz">
+            <p id="errorStep2-type" class="error-message"></p>
         </div>
 
         <div class="formicerik-third formtab" id="stepContent3">
             <h1 class="form-main-title">Hizmet Seçiniz</h1>
             <p class="form-title">Açıklama Yazısı...</p>
-            <div class="pcontainersmallgroup">
-                <a class="pcontainer pcontainersmall" onclick="selectService(this)">
-                    <img src="images/offericonbase.svg" alt="" class="offercontainericon">
-                    <div class="containerptext">Web Tasarımı</div>
-                </a>
-                <a class="pcontainer pcontainersmall" onclick="selectService(this)">
-                    <img src="images/offericonbase.svg" alt="" class="offercontainericon">
-                    <div class="containerptext">Web Mobil & Uygulama</div>
-                </a>
-            </div>
-            <div class="pcontainersmallgroup">
-                <a class="pcontainer pcontainersmall" onclick="selectService(this)">
-                    <img src="images/offericonbase.svg" alt="" class="offercontainericon">
-                    <div class="containerptext">Seo Hizmeti</div>
-                </a>
-                <a class="pcontainer pcontainersmall" onclick="selectService(this)">
-                    <img src="images/offericonbase.svg" alt="" class="offercontainericon">
-                    <div class="containerptext">Reklamcılık</div>
-                </a>
-            </div>
-            <div class="pcontainersmallgroup">
-                <a class="pcontainer pcontainersmall" onclick="selectService(this)">
-                    <img src="images/offericonbase.svg" alt="" class="offercontainericon">
-                    <div class="containerptext">Kurumsal Kimlik</div>
-                </a>
-                <a class="pcontainer pcontainersmall" onclick="selectService(this)">
-                    <img src="images/offericonbase.svg" alt="" class="offercontainericon">
-                    <div class="containerptext">Logo Çalışması</div>
-                </a>
+            <p id="errorStep3" class="error-message"></p>
+            <div class="services-group" id="servicesGroup">
+                <div class="pcontainersmallgroup">
+                    <a class="pcontainer pcontainersmall" onclick="selectService(this)">
+                        <img src="images/offericonbase.svg" alt="" class="offercontainericon">
+                        <div class="containerptext">Web Tasarımı</div>
+                    </a>
+                    <a class="pcontainer pcontainersmall" onclick="selectService(this)">
+                        <img src="images/offericonbase.svg" alt="" class="offercontainericon">
+                        <div class="containerptext">Web Mobil & Uygulama</div>
+                    </a>
+                </div>
+                <div class="pcontainersmallgroup">
+                    <a class="pcontainer pcontainersmall" onclick="selectService(this)">
+                        <img src="images/offericonbase.svg" alt="" class="offercontainericon">
+                        <div class="containerptext">Seo Hizmeti</div>
+                    </a>
+                    <a class="pcontainer pcontainersmall" onclick="selectService(this)">
+                        <img src="images/offericonbase.svg" alt="" class="offercontainericon">
+                        <div class="containerptext">Reklamcılık</div>
+                    </a>
+                </div>
+                <div class="pcontainersmallgroup">
+                    <a class="pcontainer pcontainersmall" onclick="selectService(this)">
+                        <img src="images/offericonbase.svg" alt="" class="offercontainericon">
+                        <div class="containerptext">Kurumsal Kimlik</div>
+                    </a>
+                    <a class="pcontainer pcontainersmall" onclick="selectService(this)">
+                        <img src="images/offericonbase.svg" alt="" class="offercontainericon">
+                        <div class="containerptext">Logo Çalışması</div>
+                    </a>
+                </div>
             </div>
         </div>
 
@@ -117,6 +123,7 @@
             <p class="form-title">Açıklama Yazısı...</p>
             <h5 class="form-input-title">Ad Soyad</h5>
             <input class="form-input" type="text" id="clientName" placeholder="Adınız & Soyadınız">
+            <p id="errorStep4" class="error-message"></p>
         </div>
 
         <div class="formicerik-fifth formtab" id="stepContent5">
@@ -124,8 +131,10 @@
             <p class="form-title">Açıklama Yazısı...</p>
             <h5 class="form-input-title">Telefon Numarası</h5>
             <input class="form-input-fourth" type="tel" id="clientPhone" placeholder="Telefon Numaranız" maxlength="11">
+            <p id="errorStep5-phone" class="error-message"></p>
             <h5 class="form-input-title">E-Posta Adresi</h5>
             <input class="form-input" type="text" id="clientEmail" placeholder="E-Posta Adresiniz">
+            <p id="errorStep5-email" class="error-message"></p>
         </div>
 
         <div class="formicerik-sixth formtab" id="stepContent6">

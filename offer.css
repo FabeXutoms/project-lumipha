@@ -14,7 +14,7 @@ body {
 }
 
 .multistepform {
-  padding: 0px 24px;
+  padding: 0px 24px 120px 24px;
 }
 
 .formheader {
@@ -134,7 +134,7 @@ h2 {
     border-radius: 8px;
     background-color: #EEEEEE;
     border: none;
-    margin-bottom: 384px;
+    margin-bottom: 0;
 }
 
 .form-button-next {
@@ -314,7 +314,7 @@ h2 {
     border-radius: 8px;
     background-color: #EEEEEE;
     border: none;
-    margin-bottom: 160px;
+    margin-bottom: 0;
 }
 
 .pcontainersmall{
@@ -389,6 +389,7 @@ h2 {
     bottom: 0;
     left: 0;
     align-items: center;
+    z-index: 1;
 }
 
 .formicerik{
@@ -413,7 +414,7 @@ h2 {
     border-radius: 8px;
     background-color: #EEEEEE;
     border: none;
-    margin-bottom: 12px;
+    margin-bottom: 0;
 }
 
 .formbuttons.adim-2 {
@@ -720,4 +721,38 @@ input[type=number] { /* Firefox */
     transition: ease-in-out 0.1s;
 }
 
+/* Error Styling */
+.error-message {
+    color: #da3d2f;
+    font-size: 13px;
+    margin: 6px 0 0 0 !important;
+    margin-block: 0 !important;
+    margin-top: 6px !important;
+    font-weight: 500;
+    padding: 0 !important;
+    line-height: 1.4;
+    min-height: 18px;
+    word-wrap: break-word;
+    white-space: normal;
+    height: 0;
+    overflow: hidden;
+    position: relative;
+    z-index: 100;
+}
+
+.error-message.show-error {
+    display: block !important;
+    visibility: visible !important;
+    height: auto;
+}
+
+.input-error {
+    border: 2px solid #da3d2f !important;
+    background-color: rgba(255, 59, 48, 0.05) !important;
+}
+
+.pcontainer.pcontainersmall.error {
+    border: 2px solid #da3d2f !important;
+    background-color: rgba(255, 59, 48, 0.05) !important;
+}
 

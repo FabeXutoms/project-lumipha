@@ -13,6 +13,39 @@ document.addEventListener("DOMContentLoaded", function () {
     if (phoneInput) {
         phoneInput.addEventListener('input', function () {
             this.value = this.value.replace(/[^0-9]/g, '');
+            hideErrorStep5Phone();
+        });
+    }
+
+    // Email input - error efektini kaldır
+    const emailInput = document.getElementById('clientEmail');
+    if (emailInput) {
+        emailInput.addEventListener('input', function () {
+            hideErrorStep5Email();
+        });
+    }
+
+    // Company name input - error efektini kaldır
+    const companyInput = document.getElementById('companyName');
+    if (companyInput) {
+        companyInput.addEventListener('input', function () {
+            hideError(1);
+        });
+    }
+
+    // Business type input - error efektini kaldır
+    const businessInput = document.getElementById('businessType');
+    if (businessInput) {
+        businessInput.addEventListener('input', function () {
+            hideErrorStep2Type();
+        });
+    }
+
+    // Client name input - error efektini kaldır
+    const nameInput = document.getElementById('clientName');
+    if (nameInput) {
+        nameInput.addEventListener('input', function () {
+            hideError(4);
         });
     }
 
@@ -20,6 +53,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const allContainers = document.querySelectorAll('.rb-buttons-alignment-styles');
     allContainers.forEach(container => {
         container.addEventListener('click', function (e) {
+            hideErrorStep2Scale();
             if (e.target.tagName !== 'INPUT') {
                 const radio = container.querySelector('input[type="radio"]');
                 if (radio) {
@@ -165,6 +199,9 @@ function handleServiceSelection() {
         card.addEventListener('click', function (event) {
             event.preventDefault();
 
+            // Error efektini kaldır
+            hideError(3);
+
             // Toggle (Seç / Kaldır)
             const isActive = this.classList.toggle('pcontainer-active');
             const iconElement = this.querySelector('.offercontainericon');
@@ -190,38 +227,223 @@ function selectService(element) {
 }
 
 
+// --- HATA MESAJI GÖSTER/GİZLE ---
+function showError(stepNum, message) {
+    console.log(`showError çağrıldı: step${stepNum}, message: ${message}`);
+    const errorEl = document.getElementById(`errorStep${stepNum}`);
+    console.log('errorEl:', errorEl);
+    if (errorEl) {
+        // Step 3 için error mesajını gösterme, sadece border efekti yap
+        if (stepNum !== 3) {
+            errorEl.innerText = message;
+            errorEl.classList.add('show-error');
+        }
+        console.log('Error gösterildi');
+        
+        // Input'a error class ekle
+        if (stepNum === 1) {
+            document.getElementById('companyName')?.classList.add('input-error');
+        } else if (stepNum === 2) {
+            document.getElementById('businessType')?.classList.add('input-error');
+        } else if (stepNum === 3) {
+            // Tüm pcontainer pcontainersmall div'lerine error class ekle
+            document.querySelectorAll('.pcontainer.pcontainersmall').forEach(el => {
+                el.classList.add('error');
+            });
+        } else if (stepNum === 4) {
+            document.getElementById('clientName')?.classList.add('input-error');
+        } else if (stepNum === 5) {
+            document.getElementById('clientPhone')?.classList.add('input-error');
+            document.getElementById('clientEmail')?.classList.add('input-error');
+        }
+    } else {
+        console.log(`errorStep${stepNum} elementi bulunamadı`);
+    }
+}
+
+function showErrorStep5Phone(message) {
+    const errorEl = document.getElementById('errorStep5-phone');
+    if (errorEl) {
+        errorEl.innerText = message;
+        errorEl.classList.add('show-error');
+        document.getElementById('clientPhone')?.classList.add('input-error');
+    }
+}
+
+function showErrorStep5Email(message) {
+    const errorEl = document.getElementById('errorStep5-email');
+    if (errorEl) {
+        errorEl.innerText = message;
+        errorEl.classList.add('show-error');
+        document.getElementById('clientEmail')?.classList.add('input-error');
+    }
+}
+
+function showErrorStep2Scale(message) {
+    const errorEl = document.getElementById('errorStep2-scale');
+    if (errorEl) {
+        errorEl.innerText = message;
+        errorEl.classList.add('show-error');
+        // Radio butonları kırmızı yap
+        document.querySelectorAll('.rb-buttons-alignment-styles').forEach(el => {
+            el.classList.add('input-error');
+        });
+    }
+}
+
+function showErrorStep2Type(message) {
+    const errorEl = document.getElementById('errorStep2-type');
+    if (errorEl) {
+        errorEl.innerText = message;
+        errorEl.classList.add('show-error');
+        document.getElementById('businessType')?.classList.add('input-error');
+    }
+}
+
+function hideErrorStep5Phone() {
+    const errorEl = document.getElementById('errorStep5-phone');
+    if (errorEl) {
+        errorEl.classList.remove('show-error');
+        errorEl.innerText = '';
+        document.getElementById('clientPhone')?.classList.remove('input-error');
+    }
+}
+
+function hideErrorStep5Email() {
+    const errorEl = document.getElementById('errorStep5-email');
+    if (errorEl) {
+        errorEl.classList.remove('show-error');
+        errorEl.innerText = '';
+        document.getElementById('clientEmail')?.classList.remove('input-error');
+    }
+}
+
+function hideErrorStep2Scale() {
+    const errorEl = document.getElementById('errorStep2-scale');
+    if (errorEl) {
+        errorEl.classList.remove('show-error');
+        errorEl.innerText = '';
+        document.querySelectorAll('.rb-buttons-alignment-styles').forEach(el => {
+            el.classList.remove('input-error');
+        });
+    }
+}
+
+function hideErrorStep2Type() {
+    const errorEl = document.getElementById('errorStep2-type');
+    if (errorEl) {
+        errorEl.classList.remove('show-error');
+        errorEl.innerText = '';
+        document.getElementById('businessType')?.classList.remove('input-error');
+    }
+}
+
+function hideError(stepNum) {
+    if (stepNum === 2) {
+        hideErrorStep2Scale();
+        hideErrorStep2Type();
+        return;
+    }
+    
+    if (stepNum === 5) {
+        hideErrorStep5Phone();
+        hideErrorStep5Email();
+        return;
+    }
+    
+    const errorEl = document.getElementById(`errorStep${stepNum}`);
+    if (errorEl) {
+        errorEl.classList.remove('show-error');
+        errorEl.innerText = '';
+        
+        // Input'dan error class'ı kaldır
+        if (stepNum === 1) {
+            document.getElementById('companyName')?.classList.remove('input-error');
+        } else if (stepNum === 3) {
+            // Tüm pcontainer pcontainersmall div'lerden error class'ı kaldır
+            document.querySelectorAll('.pcontainer.pcontainersmall').forEach(el => {
+                el.classList.remove('error');
+            });
+        } else if (stepNum === 4) {
+            document.getElementById('clientName')?.classList.remove('input-error');
+        }
+    }
+}
+
 // --- DOĞRULAMA ---
 function validateStep(step) {
+    console.log(`validateStep çağrıldı: step ${step}`);
+    // Önce hataları gizle
+    hideError(step);
+    
     if (step === 1) {
         const val = document.getElementById('companyName').value.trim();
-        if (!val) { alert("Lütfen işletme adını giriniz."); return false; }
+        console.log(`Step 1 validation: val="${val}"`);
+        if (!val) { 
+            console.log('Step 1: Boş, error göster');
+            showError(1, "Lütfen İşletme adınızı giriniz.");
+            return false; 
+        }
     }
     else if (step === 2) {
         const scale = document.querySelector('input[name="business-scale"]:checked');
         const type = document.getElementById('businessType').value.trim();
-        if (!scale) { alert("Lütfen işletme ölçeğini seçiniz."); return false; }
-        if (!type) { alert("Lütfen işletme türünü giriniz."); return false; }
+        if (!scale) { 
+            showErrorStep2Scale("Lütfen işletme ölçeği seçiniz.");
+            return false; 
+        }
+        if (!type) { 
+            showErrorStep2Type("Lütfen işletme türünüzü giriniz.");
+            return false; 
+        }
     }
     else if (step === 3) {
         const selected = document.querySelectorAll('.pcontainer.pcontainer-active');
-        if (selected.length === 0) { alert("Lütfen en az bir hizmet seçiniz."); return false; }
+        if (selected.length === 0) { 
+            showError(3, "Lütfen en az bir hizmet seçiniz.");
+            return false; 
+        }
     }
     else if (step === 4) {
         const val = document.getElementById('clientName').value.trim();
-        if (!val) { alert("Lütfen adınızı giriniz."); return false; }
-        if (!val.includes(' ')) { alert("Lütfen Ad ve Soyad arasına boşluk bırakarak tam adınızı giriniz."); return false; }
+        if (!val) { 
+            showError(4, "Lütfen adınızı ve soyadınızı arasında bir adet boşluk olacak şekilde doldurunuz.");
+            return false; 
+        }
+        if (!val.includes(' ')) { 
+            showError(4, "Lütfen adınızı ve soyadınızı arasında bir adet boşluk olacak şekilde doldurunuz.");
+            return false; 
+        }
     }
     else if (step === 5) {
         const phone = document.getElementById('clientPhone').value.trim();
         const email = document.getElementById('clientEmail').value.trim();
         
-        if (!phone) { alert("Lütfen telefon numaranızı giriniz."); return false; }
-        if (phone.length !== 11) { alert("Telefon numarası 11 karakter olmalıdır."); return false; }
-        if (!phone.match(/^[0-9]+$/)) { alert("Telefon numarası sadece rakam içerebilir."); return false; }
+        if (!phone) { 
+            showErrorStep5Phone("Lütfen telefon numaranızı giriniz.");
+            return false; 
+        }
+        if (phone.length !== 11) { 
+            showErrorStep5Phone("Lütfen telefon numaranızı giriniz.");
+            return false; 
+        }
+        if (!phone.match(/^[0-9]+$/)) { 
+            showErrorStep5Phone("Lütfen telefon numaranızı giriniz.");
+            return false; 
+        }
         
-        if (!email) { alert("Lütfen e-posta adresinizi giriniz."); return false; }
-        if (!email.includes('@')) { alert("Geçerli bir e-posta giriniz (@ işareti olmalı)."); return false; }
-        if (!email.includes('.')) { alert("Geçerli bir e-posta giriniz (. işareti olmalı)."); return false; }
+        if (!email) { 
+            showErrorStep5Email("Lütfen E-posta adresinizi doğru giriniz.");
+            return false; 
+        }
+        if (!email.includes('@')) { 
+            showErrorStep5Email("Lütfen E-posta adresinizi doğru giriniz.");
+            return false; 
+        }
+        if (!email.includes('.')) { 
+            showErrorStep5Email("Lütfen E-posta adresinizi doğru giriniz.");
+            return false; 
+        }
     }
     return true;
 }
@@ -282,17 +504,19 @@ async function submitForm() {
             currentStep = 7;
             showTab(7);
         } else {
+            let errorMessage = "Bir sorun oluştu. Lütfen tekrar deneyin.";
             if (response.status === 409 || response.status === 400) {
-                alert("UYARI: Bu E-Posta veya Telefon numarası zaten sistemde kayıtlı! Lütfen farklı bilgiler kullanın.");
-            } else {
-                alert("Hata: " + (data.message || "Bir sorun oluştu."));
+                errorMessage = "Bu E-Posta veya Telefon numarası zaten sistemde kayıtlı! Lütfen farklı bilgiler kullanın.";
+            } else if (data.message) {
+                errorMessage = data.message;
             }
+            showError(5, errorMessage);
             nextBtn.disabled = false;
             btnText.innerText = 'Talep Oluştur';
         }
     } catch (error) {
         console.error("Hata:", error);
-        alert("Sunucuya bağlanılamadı. Backend çalışıyor mu?");
+        showError(5, "Sunucuya bağlanılamadı. Backend çalışıyor mu?");
         nextBtn.disabled = false;
         btnText.innerText = 'Talep Oluştur';
     }
