@@ -438,4 +438,10 @@ h1 {
   display: none;
 }
 
+#errorText, #otpError {
+    font-family: 'CustomFontBlack', sans-serif !important;
+    color: #DA3D2F !important; 
+    font-size: 14px !important; 
+    margin-top: 8px;
+}
 
