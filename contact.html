@@ -4,16 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="contact.css">
 </head>
 <body>
     <section class="header">
         <a href="homepage.html">
-            <img src="imageswhite/Logo.svg" alt="Ana Sayfa Logosu" class="headerlogo">
+            <img src="images/Logo.svg" alt="Ana Sayfa Logosu" class="headerlogo">
         </a>
 
         <div class="headermenu">
-            <img src="imageswhite/ri_menu-5-line.svg" alt="Menu" class="menuicon">
-            <img src="imageswhite/closewhite.svg" alt="Close" class="closeicon">
+            <img src="images/menuline.svg" alt="Menu" class="menuicon">
+            <img src="images/close.svg" alt="Close" class="closeicon">
         </div>
     </section> 
     <div class="sidebar"> 
@@ -33,6 +34,124 @@
             <div class="sidebartext">Teklif Oluşturun</div>
         </div>
     </div>
+
+    <section class="buttonContainer">
+        <h2 class="contactwithusText">İletişime Geçin</h2>
+        <button class="help-button">
+            <h2 class="help-title-second">Mail Yollayın</h2>
+            <img src="images/ri_arrow-right-line.svg" alt="">
+        </button>
+        <button class="help-button">
+            <h2 class="help-title-second">Telefon ile Arayın</h2>
+            <img src="images/ri_arrow-right-line.svg" alt="">
+        </button>
+        <button class="help-button help-button-alignment">
+            <h2 class="help-title-second">WhatsApp ile Ulaşın</h2>
+            <img src="images/ri_arrow-right-line.svg" alt="">
+        </button>
+    </section>
+
+    <section class="timeContainer">
+        <h2 class="timeText">Başlıca Çalışma Saatleri</h2>
+        <div class="dayRectangle">
+            <h2 class="dayRectangleText">Hafta İçi</h2>
+            <h2 class="dayRectangleText">Hafta Sonu</h2>
+        </div>
+        <div class="timeRectangleContainer">
+            <div class="timeRectangle">
+                <h2 class="timeRectangleNumbers">09:00 - 18:00</h2>
+            </div>
+            <div class="timeRectangle">
+                <h2 class="timeRectangleNumbers">11:00 - 18:00</h2>
+            </div>
+        </div>
+    </section>
+
+    <section class="contactFormContainer">
+        <h2 class="contactMainTitle">İletişim Formu</h2>
+        <p class="contactTitle">Bilgi almak, şikayette veya geri bildirimde bulunmak için bizimle iletişime geçin</p>
+
+        <form action="" class="formcontainer">
+            <input type="tel" id="contactInput" name="contact" class="verification-input" placeholder="Adınız ve Soyadınız">
+            <input type="tel" id="contactInput" name="contact" class="verification-input" placeholder="Mail Adresi">
+            <input type="tel" id="contactInput" name="contact" class="verification-input" placeholder="Telefon Numaranız">
+            <textarea type="tel" id="contactInput" name="contact" class="verification-input inputbig" placeholder="İletiniz"></textarea>
+
+            <div class="formSent" id="formSentContainer" style="display: none;">
+                <img src="images/IconSent.svg" alt="">
+                <h2 class="messageTitle">Mesajınız İletildi.</h2>
+            </div>
+
+            <div class="contactInputAlignment">
+                <label style="display: flex; align-items: center; cursor: pointer;">
+                    <input type="checkbox" id="kvkkOnay" name="kvkk" class="contactRadio"> 
+                    <span class="lawtext">
+                        <a class="colorizedtext" href="#">Kişisel verileri koruma kanunu</a> okudum ve kabul ediyorum.
+                    </span>
+                </label>
+            </div>
+
+            <button class="contactFormButton">Gönder</button>
+
+        </form>
+    </section>
+
+    <section class="contactSocialMedia">
+        <h1 class="socialMediaTitle">Sosyal Medyadan Ulaşın</h1>
+        <div class="mediaButtonsAlignment">
+            <a href="" class="mediaButton">
+                <img src="images/Media-Instagram.svg" alt="">
+            </a>
+            <a href="" class="mediaButton">
+                <img src="images/Media-Twitter.svg" alt="">
+            </a>
+            <a href="" class="mediaButton">
+                <img src="images/Media-Facebook.svg" alt="">
+            </a>
+            <a href="" class="mediaButton">
+                <img src="images/Media-Behance.svg" alt="">
+            </a>
+        </div>
+    </section>
+
+    <section class="footer">
+        <div class="class= footertoplogowhite">
+            <img src="images/LogoWhite.svg" alt="">
+        </div>
+
+        <nav class="footercontainer">
+            <ul class="interactionpanel">
+                <li>Başlık</li>
+                <li>Çerezler</li>
+                <li>Çerezler</li>
+                <li>Çerezler</li>
+            </ul>
+
+            <ul class="interactionpanel">
+                <li>Başlık</li>
+                <li>Çerezler</li>
+                <li>Çerezler</li>
+                <li>Çerezler</li>
+            </ul>
+            <ul class="interactionpanel">
+                <li>Başlık</li>
+                <li>Çerezler</li>
+                <li>Çerezler</li>
+                <li>Çerezler</li>
+            </ul>
+            <ul class="interactionpanel">
+                <li class="maintitleinpanel">Teklif Oluşturun</li>
+                <li>Çerezler</li>
+                <li>Çerezler</li>
+                <li>Çerezler</li>
+            </ul>
+        </nav>
+
+        <div class="footerbottomlogowhite">
+            <img src="images/BottomWhite.svg" alt="" style="width: 298px">
+        </div>
+    </section>
+
     <script src="contact.js"></script>
 </body>
 </html>
