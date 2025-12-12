@@ -1,0 +1,185 @@
+body{
+    margin: 0;
+    font-family: CustomFontBlack, sans-serif;;
+    background-color: #f5f5f5;
+}
+
+h1, p, h2, h3{
+    margin: 0;
+}
+
+.contactContentHeader{
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 32px 24px;
+}
+
+.contentHeaderTitle{
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.invertImage{
+    filter: invert(100%);
+}
+
+.indicatorButtons{
+    padding: 0 24px;
+}
+
+.indicatorButtonHeader{
+    background-color: black;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    gap: 8px;
+    position: relative;
+}
+
+.indicatorButtonHeaderTitle{
+    color: white;
+    font-size: 16px;
+}
+
+.alignment{display: flex; justify-content: center;}
+
+.indicatorButtonBottom{
+    border-radius: 0 0 8px 8px;
+    background-color: white;
+    width: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    padding: 16px 32px;
+    box-sizing: border-box;
+}
+
+.indicatorButtonBottomTitleAlignment{
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.indicatorButtonBottomTitle{
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.lineIndicator{
+    rotate: calc(90deg);
+    width: 8px;
+    margin: 0;
+    position: absolute;
+    left: 52%;
+}
+
+.marginText{
+    margin-left: 39px !important;
+}
+
+.respondButton{
+    width: 80%;
+    background-color: #f7f7f7;
+    border: 2px solid white;
+    display: flex;
+    align-items: center;
+    padding: 16px 20px;
+    border-radius: 8px;
+    margin-top: 16px;
+    box-sizing: border-box;
+    justify-content: center;
+    gap: 8px;
+}
+
+.respondButtonTitle{
+    opacity: 0.67;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.otherWaysButtons{
+    padding: 0 24px;
+    margin-top: 32px;
+}
+
+.otherWaysButtonsTitle{
+    font-size: 24px;
+    margin-bottom: 32px;
+}
+
+.help-button {
+    font-family: 'CustomFontBlack', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    color: #FFFFFF;
+    background-color: #eee;
+    border: none;
+    border-radius: 8px;
+    padding: 16px;
+    width: 100%;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    box-sizing: border-box;
+    text-decoration: none;
+}
+
+.help-title-second {
+    margin: 0;
+    font-family: 'CustomFontBlack', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    color: #000;
+}
+
+.help-button:active {
+  background-color: #DDDDDD;
+  transition: ease-in-out 0.1s;
+}
+
+.errorMessage{
+    background-color: rgba(218, 61, 47, 0.12);
+    border-radius: 8px;
+    padding: 16px;
+    display: flex;
+    gap: 8px;
+    margin-top: 32px;
+    justify-content: center;
+    align-items: center;
+    display: none;
+}
+
+.errorMessageTitle{
+    font-size: 15px;
+    color: #DA3D2F;
+    font-weight: 500;
+}
+
+.copyMessage {
+    background-color: #DA3D2F;
+    border-radius: 24px;
+    position: absolute;
+    padding: 8px 16px;
+    opacity: 0;
+    visibility: hidden;
+    top: 0px;
+    transition: all 0.4s ease-in-out;
+}
+
+.copyMessage.aktif {
+    opacity: 1;
+    visibility: visible;
+    top: -20px;
+}
+
+.copyMessageTitle{
+    color: #FFFFFF;
+    font-size: 14px;
+}
+

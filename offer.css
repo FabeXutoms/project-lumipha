@@ -224,7 +224,6 @@ h2 {
     flex-direction: column;
     gap: 8px;
     font-size: 16px;
-    margin-bottom: 32px;
 }
 
 .rb-buttons-alignment-styles {
@@ -724,7 +723,7 @@ input[type=number] { /* Firefox */
 /* Error Styling */
 .error-message {
     color: #da3d2f;
-    font-size: 13px;
+    font-size: 14px;
     margin: 6px 0 0 0 !important;
     margin-block: 0 !important;
     margin-top: 6px !important;
@@ -738,12 +737,14 @@ input[type=number] { /* Firefox */
     overflow: hidden;
     position: relative;
     z-index: 100;
+    font-family: 'CustomFontExtraLight', sans-serif;
 }
 
 .error-message.show-error {
     display: block !important;
     visibility: visible !important;
     height: auto;
+    margin-bottom: 6px;
 }
 
 .input-error {
