@@ -40,4 +40,22 @@ export class MailService {
             return false;
         }
     }
+
+    async sendContactEmail(to: string, subject: string, html: string) {
+        const mailOptions = {
+            from: '"Lumipha Ajans" <noreply@lumipha.com>',
+            to: to,
+            subject: subject,
+            html: html,
+        };
+
+        try {
+            await this.transporter.sendMail(mailOptions);
+            console.log(`İletişim e-postası gönderildi: ${to}`);
+            return true;
+        } catch (error) {
+            console.error('İletişim e-postası gönderme hatası:', error);
+            return false;
+        }
+    }
 }

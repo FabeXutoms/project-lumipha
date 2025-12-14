@@ -71,11 +71,11 @@
         <h2 class="contactMainTitle">İletişim Formu</h2>
         <p class="contactTitle">Bilgi almak, şikayette veya geri bildirimde bulunmak için bizimle iletişime geçin</p>
 
-        <form action="" class="formcontainer">
-            <input type="tel" id="contactInput" name="contact" class="verification-input" placeholder="Adınız ve Soyadınız">
-            <input type="tel" id="contactInput" name="contact" class="verification-input" placeholder="Mail Adresi">
-            <input type="tel" id="contactInput" name="contact" class="verification-input" placeholder="Telefon Numaranız">
-            <textarea type="tel" id="contactInput" name="contact" class="verification-input inputbig" placeholder="İletiniz"></textarea>
+        <form action="" class="formcontainer" id="contactForm">
+            <input type="text" id="fullName" name="fullName" class="verification-input" placeholder="Adınız ve Soyadınız">
+            <input type="email" id="email" name="email" class="verification-input" placeholder="Mail Adresi">
+            <input type="tel" id="phone" name="phone" class="verification-input" placeholder="Telefon Numaranız">
+            <textarea id="message" name="message" class="verification-input inputbig" placeholder="İletiniz"></textarea>
 
             <div class="formSent" id="formSentContainer" style="display: none;">
                 <img src="images/IconSent.svg" alt="">
@@ -91,7 +91,7 @@
                 </label>
             </div>
 
-            <button class="contactFormButton">Gönder</button>
+            <button type="submit" class="contactFormButton" id="submitBtn">Gönder</button>
 
         </form>
     </section>

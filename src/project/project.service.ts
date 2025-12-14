@@ -214,12 +214,19 @@ export class ProjectService {
             projectLink = projectLink.replace(/^https?:\/\/(localhost|127\.0\.0\.1|192\.168\.\d+\.\d+|10\.\d+\.\d+\.\d+)(:\d+)?\//, '');
         }
 
+        // Update data'sını dinamik olarak oluştur
+        const updateData: any = {
+            projectLink: projectLink,
+        };
+
+        // TotalAmount varsa Decimal'e çevir ve ekle
+        if (data.totalAmount !== undefined) {
+            updateData.totalAmount = new Prisma.Decimal(data.totalAmount);
+        }
+
         return this.prisma.projectAction.update({
             where: { id },
-            data: {
-                totalAmount: data.totalAmount,
-                projectLink: projectLink,
-            },
+            data: updateData,
         });
     }
 

@@ -1,4 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // --- YARDIMCI FONKSİYONLAR (ÜST KISIM) ---
+    // Sayıyı 1000 ayırıcısı ile formatlayan fonksiyon (15000 -> 15.000)
+    const formatTurkishNumber = (num) => {
+        if (num === null || num === undefined) return '';
+        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    };
+
     // --- ELEMENT SEÇİMLERİ ---
     const fiyatBelirleOnaylaBtn = document.getElementById('fiyatBelirleOnayla');
     const siparisSilBtn = document.getElementById('siparisSil');

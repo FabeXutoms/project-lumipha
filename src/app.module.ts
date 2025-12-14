@@ -9,6 +9,7 @@ import { ConfigModule } from '@nestjs/config'; // İçe aktar
 import { ProjectModule } from './project/project.module';
 import { AppLogger } from './common/logger/logger.service';
 import { MailModule } from './mail/mail.module';
+import { ContactModule } from './contact/contact.module';
 
 
 
@@ -27,7 +28,7 @@ import { MailModule } from './mail/mail.module';
     }]),
 
     PrismaModule, 
-    TrackingModule, ProjectModule, MailModule
+    TrackingModule, ProjectModule, MailModule, ContactModule
   ],
   controllers: [AppController],
   providers: [AppService, AppLogger],

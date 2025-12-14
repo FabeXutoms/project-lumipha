@@ -82,3 +82,16 @@ enum Status {
   
   @@map("project_status")
 }
+
+// İletişim Formu Mesajları
+model ContactMessage {
+  id          Int      @id @default(autoincrement())
+  fullName    String   @db.VarChar(255) @map("full_name")
+  email       String   @db.VarChar(255)
+  phone       String   @db.VarChar(50)
+  message     String   @db.Text
+  createdAt   DateTime @default(now()) @map("created_at")
+  isRead      Boolean  @default(false) @map("is_read")
+
+  @@map("contact_messages")
+}
