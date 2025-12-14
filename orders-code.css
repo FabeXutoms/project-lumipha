@@ -9,49 +9,49 @@
     font-weight: 200;
 }
 
-body{
+body {
     margin: 0;
     background-color: #f5f5f5;
 }
 
 .orders-code-header {
-  padding: 0px 24px;
+    padding: 0px 24px;
 }
 
 .ordersheader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 24px 0px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 0px;
 }
 
 .ordersheaderalignment {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
 .ordersheaderlogo {
-  width: 37px;
-  height: 28px;
+    width: 37px;
+    height: 28px;
 }
 
 .ordersheadericon {
-  width: 40px;
-  height: 40px;
-  cursor: pointer;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
 }
 
 .orderstitle {
-  font-family: 'CustomFontBlack', sans-serif;
-  font-weight: 700;
-  font-size: 24px;
-  color: #000000;
+    font-family: 'CustomFontBlack', sans-serif;
+    font-weight: 700;
+    font-size: 24px;
+    color: #000000;
 }
 
 .orders-content {
-  padding: 0px 24px;
-  display: none;
+    padding: 0px 24px;
+    display: none;
 }
 
 .order-main-title {
@@ -94,7 +94,7 @@ body{
     margin-bottom: 8px;
 }
 
-.order-code-nan{
+.order-code-nan {
     font-family: 'CustomFontBlack', sans-serif;
     color: #DA3D2F;
     text-decoration: none;
@@ -104,13 +104,13 @@ body{
     align-self: center;
 }
 
-.ordersicerik{
+.ordersicerik {
     align-items: center;
     display: flex;
     flex-direction: column;
 }
 
-.orderbuttons{
+.orderbuttons {
     width: 100%;
     background-color: #f5f5f5;
     height: 90px;
@@ -149,25 +149,25 @@ body{
     cursor: pointer;
 }
 
-.nextbuttontitle{
+.nextbuttontitle {
     color: #fff;
     font-family: CustomFontBlack, sans-serif;
     font-size: 16px;
     margin: 0;
 }
 
-.backbuttontitle{
+.backbuttontitle {
     color: #b3b3b3;
     font-family: CustomFontBlack, sans-serif;
     font-size: 16px;
     margin: 0;
 }
 
-.orders-content-second{
+.orders-content-second {
     padding: 0px 24px;
 }
 
-.oo-title{
+.oo-title {
     font-family: 'CustomFontBlack', sans-serif;
     font-size: 40px;
     font-weight: 700;
@@ -176,7 +176,7 @@ body{
     margin-bottom: 32px;
 }
 
-.oo-title-p{
+.oo-title-p {
     font-family: 'CustomFontExtraLight', sans-serif;
     font-size: 16px;
     font-weight: 200;
@@ -185,12 +185,13 @@ body{
     margin-bottom: 32px;
 }
 
-.selectedTextFirst, .selectedTextCategories{
+.selectedTextFirst,
+.selectedTextCategories {
     font-family: 'CustomFontBlack', sans-serif;
     font-weight: 700;
 }
 
-.contact-title-text{
+.contact-title-text {
     font-family: 'CustomFontBlack', sans-serif;
     font-size: 14px;
     font-weight: 500;
@@ -198,7 +199,7 @@ body{
     margin: 0;
 }
 
-.contact-container-text{
+.contact-container-text {
     font-family: 'CustomFontExtraLight', sans-serif;
     font-size: 14px;
     font-weight: 700;
@@ -207,14 +208,14 @@ body{
     margin-top: 0px;
 }
 
-.contacttitles{
+.contacttitles {
     display: flex;
     align-items: center;
     gap: 8px;
     opacity: 0.7;
 }
 
-.contactcontainer{
+.contactcontainer {
     display: flex;
     flex-direction: column;
     margin-top: 8px;
@@ -225,11 +226,11 @@ body{
     padding: 24px;
 }
 
-.ctalignment{
+.ctalignment {
     margin-bottom: 8px;
 }
 
-.contacttitlesmain{
+.contacttitlesmain {
     display: flex;
     align-items: center;
     gap: 8px;
@@ -239,7 +240,7 @@ body{
     color: #000000;
 }
 
-.contacttitleslast{
+.contacttitleslast {
     font-family: 'CustomFontExtraLight', sans-serif;
     font-size: 14px;
     font-weight: 400;
@@ -248,7 +249,7 @@ body{
     margin-bottom: 24px;
 }
 
-.order-main-contacttitle{
+.order-main-contacttitle {
     font-family: 'CustomFontBlack', sans-serif;
     font-size: 40px;
     font-weight: 700;
@@ -257,7 +258,7 @@ body{
     margin-top: 0px;
 }
 
-.order-content-second-alignment{
+.order-content-second-alignment {
     display: flex;
     flex-direction: column;
     background-color: #fff;
@@ -266,7 +267,7 @@ body{
     margin-bottom: 120px;
 }
 
-.downloadlink{
+.downloadlink {
     font-family: 'CustomFontBlack', sans-serif;
     font-size: 14px;
     font-weight: 500;
@@ -276,14 +277,14 @@ body{
     text-decoration: none;
 }
 
-.statusimg{
+.statusimg {
     position: absolute;
     top: 186px;
     align-self: center;
     display: flex;
 }
 
-.circle-alignment{
+.circle-alignment {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -292,7 +293,7 @@ body{
     bottom: 160px;
 }
 
-.circle{
+.circle {
     width: 24px;
     height: 24px;
     border-radius: 50%;
@@ -312,7 +313,7 @@ body{
 
 
 .orderbuttons.step-two-active {
-    gap: 16px; 
+    gap: 16px;
     padding: 0px 24px;
     overflow: hidden;
     box-sizing: border-box;
@@ -329,29 +330,37 @@ body{
 }
 
 @keyframes fadeInBtn {
-    from { opacity: 0; transform: translateX(-10px); }
-    to { opacity: 1; transform: translateX(0); }
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
 .fade-out {
     opacity: 0;
 }
+
 .fade-in {
     opacity: 1;
 }
 
-.error-ordercode{
+.error-ordercode {
     padding: 0px 24px;
     display: none;
 }
 
-.error-main-title{
+.error-main-title {
     display: flex;
     align-items: center;
     gap: 8px;
 }
 
-.error-title-text{
+.error-title-text {
     font-family: 'CustomFontBlack', sans-serif;
     font-size: 40px;
     font-weight: 700;
@@ -359,15 +368,15 @@ body{
     margin: 0;
 }
 
-.error-paragraph-text{
+.error-paragraph-text {
     font-family: 'CustomFontExtraLight', sans-serif;
     color: #999999;
     font-size: 18px;
 }
 
-.order-input{
+.order-input {
     border: 2px solid transparent;
-    transition: all 0.3s ease; 
+    transition: all 0.3s ease;
 }
 
 .order-input:focus {
@@ -404,7 +413,76 @@ body{
     transition: none;
 }
 
-.errorText{
+.errorText {
     font-family: 'CustomFontExtraLight', sans-serif;
 }
 
+.paymentButtonContainer {
+    width: 100%;
+    padding: 0 24px;
+    display: none;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.paymentContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid white;
+    background-color: #f7f7f7;
+    border-radius: 8px 8px 0 0;
+    width: 80%;
+    height: 36px;
+}
+
+.priceText {
+    font-size: 16px;
+    font-family: 'CustomFontExtraLight', sans-serif;
+    font-weight: 500;
+}
+
+.paymentButtonContainer {
+    width: 100%;
+    padding: 0 24px;
+    display: none;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.paymentContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid white;
+    background-color: #f7f7f7;
+    border-radius: 8px 8px 0 0;
+    width: 80%;
+    height: 36px;
+}
+
+.priceText {
+    font-size: 16px;
+    font-family: 'CustomFontExtraLight', sans-serif;
+    font-weight: 500;
+}
+
+.paymentButton {
+    width: 100%;
+    background-color: #000;
+    color: #Ffffff;
+    font-family: 'CustomFontExtraLight', sans-serif;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    padding: 16px;
+    height: 44px;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+}

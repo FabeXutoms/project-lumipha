@@ -2,6 +2,12 @@
 
 const API_BASE_URL = 'http://localhost:3000';
 
+// Sayıyı 1000 ayırıcısı ile formatlayan fonksiyon (15000 -> 15.000)
+const formatTurkishNumber = (num) => {
+    if (num === null || num === undefined) return '';
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+};
+
 document.addEventListener('DOMContentLoaded', () => {
     // Elementleri Seç
     const section1 = document.querySelector('.orders-content');
@@ -49,6 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const data = await response.json();
+            console.log('API\'den gelen data:', data);
             console.log('API\'den gelen data:', data);
 
             // Verileri Doldur
@@ -131,6 +138,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const imgOrderPlaced = document.getElementById('imgOrderPlaced');
         const imgCanceled = document.getElementById('imgCanceled');
 
+        // Butonları Kontrol Et
+        const paymentButtonContainer = document.getElementById('paymentButtonContainer');
+        const nextBtn = document.getElementById('nextButton');
+        const backBtn = document.getElementById('backButton');
+
         if (imgCompleted) imgCompleted.style.display = 'none';
         if (imgOnOrder) imgOnOrder.style.display = 'none';
         if (imgPayment) imgPayment.style.display = 'none';
@@ -158,33 +170,67 @@ document.addEventListener('DOMContentLoaded', () => {
                 };
             }
             setText('displayStatus', 'Tamamlandı');
+            // Butonları normalleştir
+            if (paymentButtonContainer) paymentButtonContainer.style.display = 'none';
+            if (nextBtn) nextBtn.style.display = 'flex';
+            if (backBtn) backBtn.style.display = 'flex';
         }
         else if (data.status === 'InProgress') {
             if (imgOnOrder) imgOnOrder.style.display = 'block';
             statusDescription = 'Siparişinizi en kısa sürede ve en kaliteli şekilde hazırlıyoruz.';
             setText('displayStatus', 'İşlemde');
+            // Butonları normalleştir
+            if (paymentButtonContainer) paymentButtonContainer.style.display = 'none';
+            if (nextBtn) nextBtn.style.display = 'flex';
+            if (backBtn) backBtn.style.display = 'flex';
         }
         else if (data.status === 'Pending') {
             if (Number(data.totalAmount) > 0) {
                 if (imgPayment) imgPayment.style.display = 'block';
                 statusDescription = 'Sizinle Whatsapp üzerinden iletişime geçtik';
                 setText('displayStatus', 'Ödeme Bekleniyor');
+                // Ödeme butonunu göster, diğerlerini gizle
+                if (paymentButtonContainer) paymentButtonContainer.style.display = 'flex';
+                if (nextBtn) nextBtn.style.display = 'none';
+                if (backBtn) backBtn.style.display = 'none';
+                // Fiyatı formatlı şekilde göster (15000 -> 15.000)
+                const priceText = document.querySelector('.priceText');
+                if (priceText) {
+                    priceText.innerText = `${formatTurkishNumber(Math.round(data.totalAmount))}TL`;
+                }
             } else {
                 // Fiyat henüz girilmemişse (Onay aşaması), işlemde gibi görünsün
                 if (imgOnOrder) imgOnOrder.style.display = 'block';
                 statusDescription = 'Siparişinizi en kısa sürede ve en kaliteli şekilde hazırlıyoruz.';
                 setText('displayStatus', 'Değerlendiriliyor');
+                // Butonları normalleştir
+                if (paymentButtonContainer) paymentButtonContainer.style.display = 'none';
+                if (nextBtn) nextBtn.style.display = 'flex';
+                if (backBtn) backBtn.style.display = 'flex';
+                // Fiyatı "0TL" olarak ayarla (gizli olsa da ayarla)
+                const priceText = document.querySelector('.priceText');
+                if (priceText) {
+                    priceText.innerText = '0TL';
+                }
             }
         }
         else if (data.status === 'WaitingForApproval') {
             if (imgOrderPlaced) imgOrderPlaced.style.display = 'block';
             statusDescription = 'Siparişinizi aldık sizinle en kısa sürede Whatsapp üzerinden iletişime geçeceğiz.';
             setText('displayStatus', 'Onay Bekleniyor');
+            // Butonları normalleştir
+            if (paymentButtonContainer) paymentButtonContainer.style.display = 'none';
+            if (nextBtn) nextBtn.style.display = 'flex';
+            if (backBtn) backBtn.style.display = 'flex';
         }
         else if (data.status === 'Cancelled') {
             if (imgCanceled) imgCanceled.style.display = 'block';
             statusDescription = 'Sipariş iptal edilmiştir. Bir yanlışlık olduğunu düşünüyorsanız \'Destek Al\' butonu ile bize ulaşabilirsiniz.';
             setText('displayStatus', 'İptal Edildi');
+            // Butonları normalleştir
+            if (paymentButtonContainer) paymentButtonContainer.style.display = 'none';
+            if (nextBtn) nextBtn.style.display = 'flex';
+            if (backBtn) backBtn.style.display = 'flex';
         }
 
         // Açıklamayı ayarla
