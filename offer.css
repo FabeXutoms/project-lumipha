@@ -720,7 +720,6 @@ input[type=number] { /* Firefox */
     transition: ease-in-out 0.1s;
 }
 
-/* Error Styling */
 .error-message {
     color: #da3d2f;
     font-size: 14px;
