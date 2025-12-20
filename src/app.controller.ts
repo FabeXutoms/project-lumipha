@@ -7,27 +7,32 @@ import { AppService } from './app.service';
 export class AppController {
   constructor(private readonly appService: AppService) { }
 
-  // 1. Ana sayfa - http://IP:3000/ yazınca homepage.html açılır
+  // 1. Ana Sayfa (http://IP:3000/)
   @Get()
   getHomepage(@Res() res: Response) {
-    // Dosyaları public klasörüne taşıdığımız için yolu güncelledik
-    return res.sendFile(join(process.cwd(), 'public', 'homepage.html'));
+    const filePath = join(process.cwd(), 'public', 'homepage.html');
+    return res.sendFile(filePath);
   }
 
-  // 2. Kısa Admin Linki - http://IP:3000/admin yazınca direkt aktif siparişler açılır
+  // 2. Senin İstediğin Kısa Link (http://IP:3000/admin)
   @Get('admin')
   getAdminPanel(@Res() res: Response) {
-    // İstediğin sayfa admin-panel klasörünün içindeki activeorders.html idi
-    return res.sendFile(join(process.cwd(), 'public', 'admin-panel', 'activeorders.html'));
+    // public -> admin-panel -> activeorders.html yolunu tam veriyoruz
+    const filePath = join(process.cwd(), 'public', 'admin-panel', 'activeorders.html');
+
+    // Güvenlik: Dosya gerçekten orada mı diye kontrol etmiyoruz, 
+    // direkt gönderiyoruz; eğer 404 verirse dosya adı veya klasör adı hatalıdır.
+    return res.sendFile(filePath);
   }
 
-  // 3. Eğer sadece admin paneline giriş sayfasını istersen (Alternatif olarak dursun)
+  // 3. Admin Giriş Sayfası (http://IP:3000/login)
   @Get('login')
   getAdminLogin(@Res() res: Response) {
-    return res.sendFile(join(process.cwd(), 'public', 'admin-panel', 'admin.html'));
+    const filePath = join(process.cwd(), 'public', 'admin-panel', 'admin.html');
+    return res.sendFile(filePath);
   }
 
-  // 4. API Sağlık Kontrolü
+  // API Sağlık Kontrolü
   @Get('api/health')
   getHealth(): { status: string; timestamp: string } {
     return {
