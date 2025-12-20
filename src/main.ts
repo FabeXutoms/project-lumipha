@@ -1,4 +1,8 @@
 // src/main.ts
+// ÖNEMLİ: dotenv EN BAŞTA yüklenmeli - diğer tüm import'lardan önce!
+import * as dotenv from 'dotenv';
+dotenv.config();
+
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { AppLogger } from './common/logger/logger.service'; // Logger'ı import et
