@@ -24,11 +24,12 @@ import { ContactModule } from './contact/contact.module';
     
     // Statik dosyaları sun (HTML, CSS, JS, images)
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..'), // dist'ten bir seviye yukarı = proje kök dizini
+      rootPath: join(process.cwd()), // process.cwd() = projenin çalıştırıldığı dizin
       serveRoot: '/', // Root URL'den sun
       exclude: ['/api/*', '/tracking/*', '/project/*', '/contact/*'], // API route'larını hariç tut
       serveStaticOptions: {
         index: ['homepage.html'], // Ana sayfa olarak homepage.html'i sun
+        fallthrough: true, // Dosya bulunamazsa sonraki handler'a geç
       },
     }),
     
