@@ -1,4 +1,5 @@
-const API_BASE_URL = 'http://localhost:3000';
+// API adresi config.js'den alınıyor
+const API_BASE_URL = (typeof CONFIG !== 'undefined') ? CONFIG.API_BASE_URL : 'http://130.61.108.198:3000';
 
 // Validasyon fonksiyonları
 const validateFullName = (fullName) => {

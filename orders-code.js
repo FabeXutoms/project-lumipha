@@ -1,6 +1,7 @@
 // orders-code.js - FİNAL VE DİNAMİK SÜRÜM
 
-const API_BASE_URL = 'http://localhost:3000';
+// API adresi config.js'den alınıyor
+const API_BASE_URL = (typeof CONFIG !== 'undefined') ? CONFIG.API_BASE_URL : 'http://130.61.108.198:3000';
 
 // Sayıyı 1000 ayırıcısı ile formatlayan fonksiyon (15000 -> 15.000)
 const formatTurkishNumber = (num) => {
