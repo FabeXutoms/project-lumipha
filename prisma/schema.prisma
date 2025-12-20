@@ -1,4 +1,4 @@
-// Prisma Schema - PostgreSQL için optimize edilmiş
+// Prisma Schema - MySQL için optimize edilmiş
 // Dokümantasyon: https://pris.ly/d/prisma-schema
 
 generator client {
@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
@@ -15,12 +15,12 @@ model Client {
   id                   Int       @id @default(autoincrement())
   name                 String    @db.VarChar(255)
   email                String    @unique @db.VarChar(255)
-  otpCode              String?   @map("otp_code")
-  otpExpiresAt         DateTime? @map("otp_expires_at") @db.Timestamptz
-  previousOtpCode      String?   @map("previous_otp_code")
-  previousOtpExpiresAt DateTime? @map("previous_otp_expires_at") @db.Timestamptz
+  otpCode              String?   @map("otp_code") @db.VarChar(10)
+  otpExpiresAt         DateTime? @map("otp_expires_at") @db.DateTime(0)
+  previousOtpCode      String?   @map("previous_otp_code") @db.VarChar(10)
+  previousOtpExpiresAt DateTime? @map("previous_otp_expires_at") @db.DateTime(0)
   phone                String?   @db.VarChar(50)
-  createdAt            DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  createdAt            DateTime  @default(now()) @map("created_at") @db.DateTime(0)
 
   // İlişkiler
   projectActions ProjectAction[]
@@ -47,6 +47,7 @@ model ProjectAction {
   client   Client    @relation(fields: [clientId], references: [id])
   payments Payment[]
 
+  @@index([clientId])
   @@map("project_actions")
 }
 
@@ -55,23 +56,24 @@ model Payment {
   id              Int       @id @default(autoincrement())
   projectActionId Int       @map("project_action_id")
   amount          Decimal   @db.Decimal(10, 2)
-  paymentDate     DateTime  @default(now()) @map("payment_date") @db.Timestamptz
+  paymentDate     DateTime  @default(now()) @map("payment_date") @db.DateTime(0)
   paymentMethod   String?   @db.VarChar(100) @map("payment_method")
   transactionId   String    @unique @db.VarChar(255) @map("transaction_id")
 
   // İlişkiler
   projectAction ProjectAction @relation(fields: [projectActionId], references: [id])
 
+  @@index([projectActionId])
   @@map("payments")
 }
 
-// Proje durumları - PostgreSQL yerel ENUM tipi
+// Proje durumları - MySQL ENUM tipi
 enum Status {
   WaitingForApproval @map("Onay Bekliyor")
   Pending            @map("Beklemede")
   InProgress         @map("Devam Ediyor")
   Completed          @map("Tamamlandı")
-  Cancelled          @map("İptal Edildi")
+  Cancelled          @map("Iptal Edildi")
 
   @@map("project_status")
 }
@@ -83,7 +85,7 @@ model ContactMessage {
   email     String   @db.VarChar(255)
   phone     String   @db.VarChar(50)
   message   String   @db.Text
-  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+  createdAt DateTime @default(now()) @map("created_at") @db.DateTime(0)
   isRead    Boolean  @default(false) @map("is_read")
 
   @@map("contact_messages")
