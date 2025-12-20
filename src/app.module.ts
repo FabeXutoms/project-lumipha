@@ -19,20 +19,20 @@ import { ContactModule } from './contact/contact.module';
   imports: [
     // .env dosyasını uygulama genelinde kullanılabilir yap
     ConfigModule.forRoot({
-      isGlobal: true, 
+      isGlobal: true,
     }),
-    
+
     // Statik dosyaları sun (HTML, CSS, JS, images)
     ServeStaticModule.forRoot({
-      rootPath: join(process.cwd()), // process.cwd() = projenin çalıştırıldığı dizin
-      serveRoot: '/', // Root URL'den sun
-      exclude: ['/api/*', '/tracking/*', '/project/*', '/contact/*'], // API route'larını hariç tut
+      rootPath: join(process.cwd(), 'public'), // <--- DİKKAT: Yanına 'public' ekledik!
+      serveRoot: '/',
+      exclude: ['/api/(.*)', '/tracking/(.*)', '/project/(.*)', '/contact/(.*)'], // API çakışmasın diye regex yaptık
       serveStaticOptions: {
-        index: ['homepage.html'], // Ana sayfa olarak homepage.html'i sun
-        fallthrough: true, // Dosya bulunamazsa sonraki handler'a geç
+        index: false, // Otomatik index'i kapattık, kontrol sende olsun
+        fallthrough: true,
       },
     }),
-    
+
     // Rate Limiting'i kuruyoruz:
     ThrottlerModule.forRoot([{
       // 60 saniyede (süre) en fazla 20 istek (limit) izin ver.
@@ -40,10 +40,10 @@ import { ContactModule } from './contact/contact.module';
       limit: 20,  // Maksimum 20 istek
     }]),
 
-    PrismaModule, 
+    PrismaModule,
     TrackingModule, ProjectModule, MailModule, ContactModule
   ],
   controllers: [AppController],
   providers: [AppService, AppLogger],
 })
-export class AppModule {}
+export class AppModule { }
