@@ -23,4 +23,10 @@ export class AppController {
       timestamp: new Date().toISOString(),
     };
   }
+
+  // Admin panel - admin-panel/admin.html'e yönlendir
+  @Get('admin')
+  getAdminPanel(@Res() res: Response) {
+    return res.sendFile(join(process.cwd(), 'admin-panel', 'admin.html'));
+  }
 }
