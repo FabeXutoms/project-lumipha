@@ -10,7 +10,9 @@ export class AppController {
   // Ana sayfa - homepage.html'e yönlendir
   @Get()
   getHomepage(@Res() res: Response) {
-    return res.sendFile(join(__dirname, '..', 'homepage.html'));
+    // __dirname yerine process.cwd() kullanıyoruz.
+    // '..' ifadesini sildik çünkü process.cwd() zaten ana dizindir.
+    return res.sendFile(join(process.cwd(), 'homepage.html'));
   }
 
   // API health check endpoint
