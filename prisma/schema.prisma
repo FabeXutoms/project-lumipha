@@ -1,97 +1,90 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+// Prisma Schema - PostgreSQL için optimize edilmiş
+// Dokümantasyon: https://pris.ly/d/prisma-schema
 
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
-// schema.prisma dosyasında
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  // Burayı PostgreSQL olarak değiştiriyoruz
-  provider = "postgresql" 
-  // Veritabanı bağlantı adresi .env dosyasından çekilecek
-  url      = env("DATABASE_URL") 
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
-// client.id ile diğer tablolarda ilişki kurarken kullanılacak model
+// Müşteri modeli
 model Client {
-  id        Int      @id @default(autoincrement())
-  name      String   @db.VarChar(255)
-  email     String   @unique @db.VarChar(255)
-  otpCode      String?   @map("otp_code")       // Doğrulama Kodu
-  otpExpiresAt DateTime? @map("otp_expires_at") // Kodun son kullanma tarihi
-  previousOtpCode      String?   @map("previous_otp_code")       // Önceki Doğrulama Kodu
-  previousOtpExpiresAt DateTime? @map("previous_otp_expires_at") // Önceki Kodun son kullanma tarihi
-  phone     String?  @db.VarChar(50)
-  createdAt DateTime @default(now()) @map("created_at")
+  id                   Int       @id @default(autoincrement())
+  name                 String    @db.VarChar(255)
+  email                String    @unique @db.VarChar(255)
+  otpCode              String?   @map("otp_code")
+  otpExpiresAt         DateTime? @map("otp_expires_at") @db.Timestamptz
+  previousOtpCode      String?   @map("previous_otp_code")
+  previousOtpExpiresAt DateTime? @map("previous_otp_expires_at") @db.Timestamptz
+  phone                String?   @db.VarChar(50)
+  createdAt            DateTime  @default(now()) @map("created_at") @db.Timestamptz
 
-  // İlişki: Bir Client'ın birden çok Proje Hareket kaydı olabilir
+  // İlişkiler
   projectActions ProjectAction[]
 
-  @@map("clients") // Veritabanındaki tablo adı
+  @@map("clients")
 }
 
-// Proje hareketlerini ve takip kodunu tutan model
+// Proje hareketleri modeli
 model ProjectAction {
-  id                    Int      @id @default(autoincrement())
-  clientId              Int      @map("client_id")
-  trackingCode          String   @unique @db.VarChar(20) @map("tracking_code")
-  packageName           String   @db.VarChar(255) @map("package_name")
-  totalAmount           Decimal  @db.Decimal(10, 2) @map("total_amount")
-  status                Status   @default(Pending)
-  startDate             DateTime @db.Date @map("start_date")
-  estimatedEndDate      DateTime? @db.Date @map("estimated_end_date")
-  companyName           String?  @map("company_name")   // İşletme Adı
-  businessType          String?  @map("business_type")  // İşletme Türü
-  businessScale         String?  @map("business_scale") // İşletme Ölçeği
-  // --- YENİ EKLENEN ALAN ---
-  projectLink           String?   @map("project_link") // Link boş olabilir (?)
-  // -------------------------
+  id               Int       @id @default(autoincrement())
+  clientId         Int       @map("client_id")
+  trackingCode     String    @unique @db.VarChar(20) @map("tracking_code")
+  packageName      String    @db.VarChar(255) @map("package_name")
+  totalAmount      Decimal   @db.Decimal(10, 2) @map("total_amount")
+  status           Status    @default(Pending)
+  startDate        DateTime  @db.Date @map("start_date")
+  estimatedEndDate DateTime? @db.Date @map("estimated_end_date")
+  companyName      String?   @map("company_name") @db.Text
+  businessType     String?   @map("business_type") @db.Text
+  businessScale    String?   @map("business_scale") @db.Text
+  projectLink      String?   @map("project_link") @db.Text
 
-  client                Client    @relation(fields: [clientId], references: [id])
-  payments              Payment[]
+  // İlişkiler
+  client   Client    @relation(fields: [clientId], references: [id])
+  payments Payment[]
 
   @@map("project_actions")
 }
 
-// Ödemeleri tutan model
+// Ödeme modeli
 model Payment {
-  id                Int      @id @default(autoincrement())
-  projectActionId   Int      @map("project_action_id")
-  amount            Decimal  @db.Decimal(10, 2)
-  paymentDate       DateTime @default(now()) @map("payment_date")
-  paymentMethod     String?  @db.VarChar(100) @map("payment_method")
-  transactionId     String   @unique @db.VarChar(255) @map("transaction_id")
+  id              Int       @id @default(autoincrement())
+  projectActionId Int       @map("project_action_id")
+  amount          Decimal   @db.Decimal(10, 2)
+  paymentDate     DateTime  @default(now()) @map("payment_date") @db.Timestamptz
+  paymentMethod   String?   @db.VarChar(100) @map("payment_method")
+  transactionId   String    @unique @db.VarChar(255) @map("transaction_id")
 
-  // İlişki: Bu Payment, hangi ProjectAction'a ait?
-  projectAction     ProjectAction @relation(fields: [projectActionId], references: [id])
+  // İlişkiler
+  projectAction ProjectAction @relation(fields: [projectActionId], references: [id])
 
   @@map("payments")
 }
 
-// Durumlar için PostgreSQL ENUM tanımı
+// Proje durumları - PostgreSQL yerel ENUM tipi
 enum Status {
-  WaitingForApproval @map("Onay Bekliyor")  // Sipariş alındı (müşteride gösterilir)
-  Pending            @map("Beklemede")      // Ödeme Bekleniyor
-  InProgress         @map("Devam Ediyor")   // İşlemde
-  Completed          @map("Tamamlandı")     // Teslim edildi
-  Cancelled          @map("İptal Edildi")   // İptal edildi
-  
+  WaitingForApproval @map("Onay Bekliyor")
+  Pending            @map("Beklemede")
+  InProgress         @map("Devam Ediyor")
+  Completed          @map("Tamamlandı")
+  Cancelled          @map("İptal Edildi")
+
   @@map("project_status")
 }
 
-// İletişim Formu Mesajları
+// İletişim formu mesajları modeli
 model ContactMessage {
-  id          Int      @id @default(autoincrement())
-  fullName    String   @db.VarChar(255) @map("full_name")
-  email       String   @db.VarChar(255)
-  phone       String   @db.VarChar(50)
-  message     String   @db.Text
-  createdAt   DateTime @default(now()) @map("created_at")
-  isRead      Boolean  @default(false) @map("is_read")
+  id        Int      @id @default(autoincrement())
+  fullName  String   @db.VarChar(255) @map("full_name")
+  email     String   @db.VarChar(255)
+  phone     String   @db.VarChar(50)
+  message   String   @db.Text
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+  isRead    Boolean  @default(false) @map("is_read")
 
   @@map("contact_messages")
 }

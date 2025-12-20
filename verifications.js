@@ -126,7 +126,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 nextButton.style.display = 'flex';
                 nextButton.onclick = (e) => {
                     e.preventDefault();
-                    window.location.href = 'orders-code.html';
+                    // Tracking code'u URL parametresi olarak gönder
+                    window.location.href = `orders-code.html?code=${foundTrackingCode}`;
                 };
             }
         }

@@ -26,6 +26,15 @@ document.addEventListener('DOMContentLoaded', () => {
     section2.style.display = 'none';
     errorSection.style.display = 'none';
 
+    // URL'den kod parametresini oku ve input'a yaz (tek seferlik)
+    const urlParams = new URLSearchParams(window.location.search);
+    const codeFromUrl = urlParams.get('code');
+    if (codeFromUrl && codeInput) {
+        codeInput.value = codeFromUrl;
+        // URL'den parametreyi temizle (sayfa yenilendiğinde tekrar yazılmasın)
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }
+
     // --- İLERLE BUTONU ---
     nextBtn.addEventListener('click', async () => {
         // Eğer 2. sayfadaysak (Destek Al modu)
@@ -108,6 +117,10 @@ document.addEventListener('DOMContentLoaded', () => {
         buttonContainer.classList.remove('step-two-active');
         nextBtnTitle.textContent = "İlerle";
         codeInput.value = '';
+        
+        // Back butonunun inline style'ını temizle, CSS'in kontrolüne bırak
+        backBtn.style.display = '';
+        nextBtn.style.display = '';
     });
 
     // --- VERİ DOLDURMA ---
