@@ -10,7 +10,7 @@ export class AppController {
   // Ana sayfa - homepage.html'e yönlendir
   @Get()
   getHomepage(@Res() res: Response) {
-    return res.sendFile(join(__dirname, '..', '..', 'homepage.html'));
+    return res.sendFile(join(__dirname, '..', 'homepage.html'));
   }
 
   // API health check endpoint

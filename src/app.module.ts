@@ -24,9 +24,12 @@ import { ContactModule } from './contact/contact.module';
     
     // Statik dosyaları sun (HTML, CSS, JS, images)
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', '..'), // Proje kök dizini
+      rootPath: join(__dirname, '..'), // dist'ten bir seviye yukarı = proje kök dizini
       serveRoot: '/', // Root URL'den sun
       exclude: ['/api/*', '/tracking/*', '/project/*', '/contact/*'], // API route'larını hariç tut
+      serveStaticOptions: {
+        index: ['homepage.html'], // Ana sayfa olarak homepage.html'i sun
+      },
     }),
     
     // Rate Limiting'i kuruyoruz:
