@@ -2,8 +2,8 @@
 
 let currentStep = 1;
 const totalSteps = 6; // 7 Sayfa (1-7)
-// API adresi config.js'den alınıyor
-const API_BASE_URL = (typeof CONFIG !== 'undefined') ? CONFIG.API_BASE_URL : 'https://lumipha.com';
+// API adresi - Relative path kullanıyoruz (aynı domain üzerinden servis edildiği için)
+const API_BASE_URL = (typeof CONFIG !== 'undefined') ? CONFIG.API_BASE_URL : '';
 
 // --- SAYFA YÜKLENDİĞİNDE ---
 document.addEventListener("DOMContentLoaded", function () {
