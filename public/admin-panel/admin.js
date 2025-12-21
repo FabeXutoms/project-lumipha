@@ -1,7 +1,6 @@
 // admin.js - TÜM DETAYLAR VE EKSİK VERİLER DÜZELTİLDİ
 
-// API adresi - Relative path kullanıyoruz (aynı domain üzerinden servis edildiği için)
-const API_BASE_URL = (typeof CONFIG !== 'undefined') ? CONFIG.API_BASE_URL : '';
+// Relative path kullanıyoruz - CORS sorunu olmaz
 const API_KEY_STORAGE_KEY = 'lumipha_admin_api_key';
 
 // --- YARDIMCI VE GİRİŞ FONKSİYONLARI ---
@@ -17,7 +16,7 @@ async function sendApiRequest(endpoint, method = 'GET', body = null) {
         const headers = { 'Content-Type': 'application/json', 'x-api-key': apiKey };
         const config = { method, headers, body: body ? JSON.stringify(body) : null };
 
-        const response = await fetch(`${API_BASE_URL}${endpoint}`, config);
+        const response = await fetch(endpoint, config);
         const data = await response.json();
         if (!response.ok) throw new Error(data.message || `Hata: ${response.status}`);
         return data;
@@ -45,7 +44,7 @@ async function loginAdmin(event) {
     }
 
     try {
-        const response = await fetch(`${API_BASE_URL}/projects`, {
+        const response = await fetch('/projects', {
             method: 'GET',
             headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey }
         });

@@ -1,9 +1,8 @@
 // offer.js - İKON EFEKTLİ VE BACKEND ENTEGRELİ SÜRÜM
+// Relative path kullanıyoruz - CORS sorunu olmaz
 
 let currentStep = 1;
 const totalSteps = 6; // 7 Sayfa (1-7)
-// API adresi - Relative path kullanıyoruz (aynı domain üzerinden servis edildiği için)
-const API_BASE_URL = (typeof CONFIG !== 'undefined') ? CONFIG.API_BASE_URL : '';
 
 // --- SAYFA YÜKLENDİĞİNDE ---
 document.addEventListener("DOMContentLoaded", function () {
@@ -489,7 +488,7 @@ async function submitForm() {
     };
 
     try {
-        const response = await fetch(`${API_BASE_URL}/projects`, {
+        const response = await fetch('/projects', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

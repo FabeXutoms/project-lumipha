@@ -1,7 +1,5 @@
 // orders-code.js - FİNAL VE DİNAMİK SÜRÜM
-
-// API adresi - Relative path kullanıyoruz (aynı domain üzerinden servis edildiği için)
-const API_BASE_URL = (typeof CONFIG !== 'undefined') ? CONFIG.API_BASE_URL : '';
+// Relative path kullanıyoruz - CORS sorunu olmaz
 
 // Sayıyı 1000 ayırıcısı ile formatlayan fonksiyon (15000 -> 15.000)
 const formatTurkishNumber = (num) => {
@@ -58,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             // API'ye Sor
-            const response = await fetch(`${API_BASE_URL}/tracking/${trackingCode}`);
+            const response = await fetch(`/tracking/${trackingCode}`);
 
             if (!response.ok) {
                 throw new Error("Sipariş bulunamadı");

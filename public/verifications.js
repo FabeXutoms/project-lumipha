@@ -1,7 +1,5 @@
 // verifications.js - DÜZELTİLMİŞ SÜRÜM
-
-// API adresi - Relative path kullanıyoruz (aynı domain üzerinden servis edildiği için)
-const API_BASE_URL = (typeof CONFIG !== 'undefined') ? CONFIG.API_BASE_URL : '';
+// Relative path kullanıyoruz - CORS sorunu olmaz
 
 document.addEventListener('DOMContentLoaded', () => {
     // --- ELEMENTLER ---
@@ -213,7 +211,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (btnText) btnText.innerText = "Kontrol...";
 
                 try {
-                    const response = await fetch(`${API_BASE_URL}/projects/check-contact`, {
+                    const response = await fetch('/projects/check-contact', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(isEmailMode ? { email: value } : { phone: value })
@@ -264,7 +262,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     console.log('Is Email:', isEmailMode);
 
                     // Backend doğrulama
-                    const response = await fetch(`${API_BASE_URL}/projects/verify-otp`, {
+                    const response = await fetch('/projects/verify-otp', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ 
@@ -393,7 +391,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             try {
                 // Backend'e kodu tekrar gönder
-                const response = await fetch(`${API_BASE_URL}/projects/resend-otp`, {
+                const response = await fetch('/projects/resend-otp', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ 

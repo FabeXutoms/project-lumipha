@@ -1,5 +1,4 @@
-// API adresi - Relative path kullanıyoruz (aynı domain üzerinden servis edildiği için)
-const API_BASE_URL = (typeof CONFIG !== 'undefined') ? CONFIG.API_BASE_URL : '';
+// Relative path kullanıyoruz - CORS sorunu olmaz
 
 // Validasyon fonksiyonları
 const validateFullName = (fullName) => {
@@ -127,7 +126,7 @@ if (contactForm) {
 
         try {
             // API'ye gönder
-            const response = await fetch(`${API_BASE_URL}/contact`, {
+            const response = await fetch('/contact', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
