@@ -16,7 +16,12 @@ async function sendApiRequest(endpoint, method = 'GET', body = null) {
         const headers = { 'Content-Type': 'application/json', 'x-api-key': apiKey };
         const config = { method, headers, body: body ? JSON.stringify(body) : null };
 
-        const response = await fetch(endpoint, config);
+        // Eğer endpoint zaten tam URL değilse ana domaini ekle
+        let url = endpoint;
+        if (!/^https?:\/\//.test(endpoint)) {
+            url = 'https://www.lumipha.com' + (endpoint.startsWith('/') ? endpoint : '/' + endpoint);
+        }
+        const response = await fetch(url, config);
         const data = await response.json();
         if (!response.ok) throw new Error(data.message || `Hata: ${response.status}`);
         return data;
@@ -44,7 +49,7 @@ async function loginAdmin(event) {
     }
 
     try {
-        const response = await fetch('/projects', {
+        const response = await fetch('https://www.lumipha.com/projects', {
             method: 'GET',
             headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey }
         });

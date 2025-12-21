@@ -16,8 +16,9 @@ export class ApiKeyGuard implements CanActivate {
     // .env dosyasındaki gizli anahtarı al
     const secretKey = this.configService.get<string>('API_KEY_SECRET');
 
-    // Anahtar kontrolü:
-    if (!apiKey || apiKey !== secretKey) {
+
+    // Anahtar kontrolü (her iki tarafı da trim'le)
+    if (!apiKey || apiKey.trim() !== (secretKey ? secretKey.trim() : '')) {
       // Eğer anahtar yoksa veya eşleşmiyorsa, 401 Unauthorized hatası fırlat
       throw new UnauthorizedException('Invalid API Key');
     }
