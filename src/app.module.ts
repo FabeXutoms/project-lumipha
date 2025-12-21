@@ -1,6 +1,7 @@
 // src/app.module.ts
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
+import { AdminController } from './admin.controller';
 import { AppService } from './app.service';
 import { PrismaModule } from './prisma/prisma.module';
 import { TrackingModule } from './tracking/tracking.module';
@@ -43,7 +44,7 @@ import { ContactModule } from './contact/contact.module';
     PrismaModule,
     TrackingModule, ProjectModule, MailModule, ContactModule
   ],
-  controllers: [AppController],
+  controllers: [AppController, AdminController],
   providers: [AppService, AppLogger],
 })
 export class AppModule { }

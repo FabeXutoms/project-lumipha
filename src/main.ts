@@ -11,10 +11,22 @@ import { NestExpressApplication } from '@nestjs/platform-express'; // Bunu ekle
 import { join } from 'path'; // Bunu ekle
 
 async function bootstrap() {
+
   // Logger'ı NestJS'in kendi logger'ı olarak kullanıyoruz
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     bufferLogs: true,
   });
+
+  // Helmet ile temel güvenlik başlıklarını ekle
+  app.use(require('helmet')());
+
+  // Rate limit: IP başına 15 dakika içinde max 1000 istek
+  app.use(require('express-rate-limit').default({
+    windowMs: 15 * 60 * 1000, // 15 dakika
+    max: 1000, // Her IP için max 1000 istek
+    standardHeaders: true, // RateLimit-* başlıklarını ekle
+    legacyHeaders: false, // X-RateLimit-* başlıklarını kaldır
+  }));
 
   // Public klasörünü statik dosyalar olarak servis et
   app.useStaticAssets(join(__dirname, '..', 'public'));
