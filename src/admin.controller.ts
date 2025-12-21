@@ -1,21 +1,20 @@
-import { Controller, Get, Req, Res, HostParam } from '@nestjs/common';
-import { Response, Request } from 'express';
+import { Controller, Get, Res, Req } from '@nestjs/common';
+import type { Request, Response } from 'express';
 import { join } from 'path';
 
-
-
-@Controller()
+@Controller({ host: 'admin.lumipha.com' }) // Sadece bu subdomain için çalışır
 export class AdminController {
   @Get()
-  @HostParam('admin.lumipha.com')
   getAdminIndex(@Res() res: Response) {
-    return res.sendFile(join(__dirname, '..', '..', 'admin-panel', 'admin.html'));
+    // dist/src'den root/admin-panel'e çıkış
+    const filePath = join(__dirname, '..', '..', 'admin-panel', 'admin.html');
+    return res.sendFile(filePath);
   }
 
-  // Admin panelindeki JS ve CSS dosyalarını çekebilmesi için
-  @Get('admin-panel/*')
+  @Get('*') // Admin panelindeki JS, CSS ve diğer tüm dosyalar için
   getAdminAssets(@Req() req: Request, @Res() res: Response) {
-    const assetPath = req.params[0];
-    return res.sendFile(join(__dirname, '..', '..', 'admin-panel', assetPath));
+    const assetPath = req.path; // Gelen isteğin tam yolu
+    const filePath = join(__dirname, '..', '..', 'admin-panel', assetPath);
+    return res.sendFile(filePath);
   }
 }
