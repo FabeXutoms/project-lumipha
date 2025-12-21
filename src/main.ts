@@ -17,8 +17,20 @@ async function bootstrap() {
     bufferLogs: true,
   });
 
-  // Helmet ile temel güvenlik başlıklarını ekle
-  app.use(require('helmet')());
+  // Helmet ile gelişmiş güvenlik başlıkları ve CSP ekle
+  const helmet = require('helmet');
+  app.use(helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'", "'unsafe-inline'", "https://static.cloudflareinsights.com"],
+        styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+        imgSrc: ["'self'", "data:", "https:"],
+        fontSrc: ["'self'", "https://fonts.gstatic.com"],
+        connectSrc: ["'self'", "https://www.lumipha.com"], // API istekleri için önemli
+      },
+    },
+  }));
 
   // Rate limit: IP başına 15 dakika içinde max 1000 istek
   app.use(require('express-rate-limit').default({
