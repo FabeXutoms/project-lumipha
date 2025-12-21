@@ -1,14 +1,12 @@
-// offer.js - İKON EFEKTLİ VE BACKEND ENTEGRELİ SÜRÜM
-// Relative path kullanıyoruz - CORS sorunu olmaz
-
 let currentStep = 1;
-const totalSteps = 6; // 7 Sayfa (1-7)
+const totalSteps = 6;
 
-// --- SAYFA YÜKLENDİĞİNDE ---
+
 document.addEventListener("DOMContentLoaded", function () {
+
     showTab(currentStep);
 
-    // Telefon Numarası Rakam Kontrolü
+
     const phoneInput = document.getElementById('clientPhone');
     if (phoneInput) {
         phoneInput.addEventListener('input', function () {
@@ -17,18 +15,21 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Email input - error efektini kaldır
+
     const emailInput = document.getElementById('clientEmail');
     if (emailInput) {
         emailInput.addEventListener('input', function () {
+
+            this.value = this.value.replace(/[^a-zA-Z0-9@.\-]/g, '');
             hideErrorStep5Email();
         });
     }
 
-    // Company name input - error efektini kaldır
     const companyInput = document.getElementById('companyName');
     if (companyInput) {
         companyInput.addEventListener('input', function () {
+            // [^a-zA-Z0-9ğüşıöçĞÜŞİÖÇ .\-] -> Harf, rakam, boşluk, nokta ve tire hariç her şeyi sil
+            this.value = this.value.replace(/[^a-zA-Z0-9ğüşıöçĞÜŞİÖÇ .\-]/g, '');
             hideError(1);
         });
     }
@@ -37,6 +38,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const businessInput = document.getElementById('businessType');
     if (businessInput) {
         businessInput.addEventListener('input', function () {
+            this.value = this.value.replace(/[^a-zA-ZğüşıöçĞÜŞİÖÇ ]/g, '');
             hideErrorStep2Type();
         });
     }
@@ -45,10 +47,10 @@ document.addEventListener("DOMContentLoaded", function () {
     const nameInput = document.getElementById('clientName');
     if (nameInput) {
         nameInput.addEventListener('input', function () {
+            this.value = this.value.replace(/[^a-zA-ZğüşıöçĞÜŞİÖÇ ]/g, '');
             hideError(4);
         });
     }
-
     // Radyo Buton Seçimi (Arkadaşının kodu entegre edildi)
     const allContainers = document.querySelectorAll('.rb-buttons-alignment-styles');
     allContainers.forEach(container => {
@@ -239,7 +241,7 @@ function showError(stepNum, message) {
             errorEl.classList.add('show-error');
         }
         console.log('Error gösterildi');
-        
+
         // Input'a error class ekle
         if (stepNum === 1) {
             document.getElementById('companyName')?.classList.add('input-error');
@@ -344,18 +346,18 @@ function hideError(stepNum) {
         hideErrorStep2Type();
         return;
     }
-    
+
     if (stepNum === 5) {
         hideErrorStep5Phone();
         hideErrorStep5Email();
         return;
     }
-    
+
     const errorEl = document.getElementById(`errorStep${stepNum}`);
     if (errorEl) {
         errorEl.classList.remove('show-error');
         errorEl.innerText = '';
-        
+
         // Input'dan error class'ı kaldır
         if (stepNum === 1) {
             document.getElementById('companyName')?.classList.remove('input-error');
@@ -375,74 +377,87 @@ function validateStep(step) {
     console.log(`validateStep çağrıldı: step ${step}`);
     // Önce hataları gizle
     hideError(step);
-    
+
     if (step === 1) {
         const val = document.getElementById('companyName').value.trim();
         console.log(`Step 1 validation: val="${val}"`);
-        if (!val) { 
+        if (!val) {
             console.log('Step 1: Boş, error göster');
             showError(1, "Lütfen İşletme adınızı giriniz.");
-            return false; 
+            return false;
         }
     }
     else if (step === 2) {
         const scale = document.querySelector('input[name="business-scale"]:checked');
         const type = document.getElementById('businessType').value.trim();
-        if (!scale) { 
+        if (!scale) {
             showErrorStep2Scale("Lütfen işletme ölçeği seçiniz.");
-            return false; 
+            return false;
         }
-        if (!type) { 
+        if (!type) {
             showErrorStep2Type("Lütfen işletme türünüzü giriniz.");
-            return false; 
+            return false;
         }
     }
     else if (step === 3) {
         const selected = document.querySelectorAll('.pcontainer.pcontainer-active');
-        if (selected.length === 0) { 
+        if (selected.length === 0) {
             showError(3, "Lütfen en az bir hizmet seçiniz.");
-            return false; 
+            return false;
         }
     }
     else if (step === 4) {
         const val = document.getElementById('clientName').value.trim();
-        if (!val) { 
-            showError(4, "Lütfen adınızı ve soyadınızı arasında bir adet boşluk olacak şekilde doldurunuz.");
-            return false; 
+        if (!val) {
+            showError(4, "Lütfen adınızı ve soyadınızı giriniz.");
+            return false;
         }
-        if (!val.includes(' ')) { 
-            showError(4, "Lütfen adınızı ve soyadınızı arasında bir adet boşluk olacak şekilde doldurunuz.");
-            return false; 
+        // Sadece harf ve boşluk kontrolü
+        if (!/^[a-zA-ZçÇğĞıİöÖşŞüÜ ]+$/.test(val)) {
+            showError(4, "Ad ve soyad sadece harf içermelidir.");
+            return false;
+        }
+        // En az 2 isim 1 soyisim (3 kelime) kontrolü
+        const parts = val.split(' ').filter(Boolean);
+        if (parts.length < 2) {
+            showError(4, "Lütfen en az bir isim ve bir soyisim giriniz.");
+            return false;
+        }
+        if (parts.length > 3) {
+            showError(4, "En fazla 2 isim ve 1 soyisim giriniz.");
+            return false;
         }
     }
     else if (step === 5) {
         const phone = document.getElementById('clientPhone').value.trim();
         const email = document.getElementById('clientEmail').value.trim();
-        
-        if (!phone) { 
+
+        if (!phone) {
             showErrorStep5Phone("Lütfen telefon numaranızı giriniz.");
-            return false; 
+            return false;
         }
-        if (phone.length !== 11) { 
+        if (phone.length !== 11) {
             showErrorStep5Phone("Lütfen telefon numaranızı giriniz.");
-            return false; 
+            return false;
         }
-        if (!phone.match(/^[0-9]+$/)) { 
+        if (!phone.match(/^[0-9]+$/)) {
             showErrorStep5Phone("Lütfen telefon numaranızı giriniz.");
-            return false; 
+            return false;
         }
-        
-        if (!email) { 
-            showErrorStep5Email("Lütfen E-posta adresinizi doğru giriniz.");
-            return false; 
+
+        if (!email) {
+            showErrorStep5Email("Lütfen E-posta adresinizi giriniz.");
+            return false;
         }
-        if (!email.includes('@')) { 
-            showErrorStep5Email("Lütfen E-posta adresinizi doğru giriniz.");
-            return false; 
+        // Sadece izin verilen karakterler
+        if (!/^[a-zA-Z0-9@\-.]+$/.test(email)) {
+            showErrorStep5Email("E-posta adresinde sadece harf, rakam, @, - ve . kullanılabilir.");
+            return false;
         }
-        if (!email.includes('.')) { 
-            showErrorStep5Email("Lütfen E-posta adresinizi doğru giriniz.");
-            return false; 
+        // Temel e-posta formatı kontrolü
+        if (!/^([a-zA-Z0-9_.\-])+@([a-zA-Z0-9\-]+\.)+[a-zA-Z]{2,}$/.test(email)) {
+            showErrorStep5Email("Lütfen geçerli bir e-posta adresi giriniz.");
+            return false;
         }
     }
     return true;
