@@ -7,12 +7,17 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { AppLogger } from './common/logger/logger.service'; // Logger'ı import et
 import { HttpExceptionFilter } from './common/filters/http-exception/http-exception.filter'; // Filter'ı import et
+import { NestExpressApplication } from '@nestjs/platform-express'; // Bunu ekle
+import { join } from 'path'; // Bunu ekle
 
 async function bootstrap() {
   // Logger'ı NestJS'in kendi logger'ı olarak kullanıyoruz
-  const app = await NestFactory.create(AppModule, {
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     bufferLogs: true,
   });
+
+  // Public klasörünü statik dosyalar olarak servis et
+  app.useStaticAssets(join(__dirname, '..', 'public'));
 
   app.enableCors({
     origin: [
