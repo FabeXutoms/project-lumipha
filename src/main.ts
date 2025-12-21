@@ -23,11 +23,13 @@ async function bootstrap() {
     contentSecurityPolicy: {
       directives: {
         defaultSrc: ["'self'"],
+        // 'unsafe-inline' hem scriptSrc hem de scriptSrcAttr için eklenmeli
         scriptSrc: ["'self'", "'unsafe-inline'", "https://static.cloudflareinsights.com"],
+        scriptSrcAttr: ["'unsafe-inline'"],
         styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
-        imgSrc: ["'self'", "data:", "https:"],
-        fontSrc: ["'self'", "https://fonts.gstatic.com"],
-        connectSrc: ["'self'", "https://www.lumipha.com"], // API istekleri için önemli
+        imgSrc: ["'self'", "data:", "https:", "https://www.lumipha.com"],
+        fontSrc: ["'self'", "https://fonts.gstatic.com", "data:"],
+        connectSrc: ["'self'", "https://www.lumipha.com", "https://lumipha.com"],
       },
     },
   }));
@@ -56,8 +58,8 @@ async function bootstrap() {
   app.useLogger(logger); // Uygulama genelinde logger'ı ayarla
 
   // Global Exception Filter'ı uygula
-  app.useGlobalFilters(new HttpExceptionFilter(logger)); 
-  
-  await app.listen(3000); 
+  app.useGlobalFilters(new HttpExceptionFilter(logger));
+
+  await app.listen(3000);
 }
 bootstrap();
