@@ -28,13 +28,12 @@ async function bootstrap() {
     legacyHeaders: false, // X-RateLimit-* başlıklarını kaldır
   }));
 
-  // Public klasörünü statik dosyalar olarak servis et
-  app.useStaticAssets(join(__dirname, '..', 'public'));
 
   app.enableCors({
     origin: [
       'https://lumipha.com',
       'https://www.lumipha.com',
+      'https://admin.lumipha.com',
       'http://localhost:3000', // Geliştirme ortamı için
     ],
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
