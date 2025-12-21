@@ -2,8 +2,8 @@
 // IP değişirse sadece bu dosyayı güncelle!
 
 const CONFIG = {
-    // Production sunucu adresi
-    API_BASE_URL: 'http://130.61.108.198:3000',
+    // Production sunucu adresi (Cloudflare + Nginx ile HTTPS)
+    API_BASE_URL: 'https://lumipha.com',
     
     // Geliştirme ortamı için:
     // API_BASE_URL: 'http://localhost:3000',

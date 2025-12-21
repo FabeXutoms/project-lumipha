@@ -1,7 +1,7 @@
 // orders-code.js - FİNAL VE DİNAMİK SÜRÜM
 
 // API adresi config.js'den alınıyor
-const API_BASE_URL = (typeof CONFIG !== 'undefined') ? CONFIG.API_BASE_URL : 'http://130.61.108.198:3000';
+const API_BASE_URL = (typeof CONFIG !== 'undefined') ? CONFIG.API_BASE_URL : 'https://lumipha.com';
 
 // Sayıyı 1000 ayırıcısı ile formatlayan fonksiyon (15000 -> 15.000)
 const formatTurkishNumber = (num) => {

@@ -14,7 +14,15 @@ async function bootstrap() {
     bufferLogs: true,
   });
 
-  app.enableCors();
+  app.enableCors({
+    origin: [
+      'https://lumipha.com',
+      'https://www.lumipha.com',
+      'http://localhost:3000', // Geliştirme ortamı için
+    ],
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    credentials: true,
+  });
 
   const logger = app.get(AppLogger); // Logger servisini al
   app.useLogger(logger); // Uygulama genelinde logger'ı ayarla
