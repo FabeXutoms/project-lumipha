@@ -44,7 +44,7 @@ import { ContactModule } from './contact/contact.module';
     PrismaModule,
     TrackingModule, ProjectModule, MailModule, ContactModule
   ],
-  controllers: [AppController, AdminController],
+  controllers: [AdminController, AppController],
   providers: [AppService, AppLogger],
 })
 export class AppModule { }
