@@ -305,12 +305,11 @@ async function fetchOrderDetails(id) {
 
         if (!p) {
             console.error("Veri gelmedi (null döndü). Token yok veya yetki hatası.");
-            // Eğer 401 ise zaten logoutAdmin çağrıldı. Değilse:
             alert("Veri yüklenemedi. Lütfen tekrar giriş yapın veya internet bağlantınızı kontrol edin.");
             return;
         }
 
-        console.log("Backend'den Gelen Veri:", p); // F12 Konsolda veriyi kontrol et
+        console.log("Backend'den Gelen Veri:", p);
 
         const setTxt = (i, v) => {
             const e = document.getElementById(i);
@@ -323,7 +322,6 @@ async function fetchOrderDetails(id) {
             e.innerText = (v !== null && v !== undefined && v !== '') ? v : '-';
         };
 
-        // Verileri Basma
         setTxt('headerTrackingCode', p.trackingCode);
         fill('detailClientName', p.clientName);
         fill('detailCompanyName', p.companyName);
@@ -331,7 +329,6 @@ async function fetchOrderDetails(id) {
         fill('detailBusinessType', p.businessType);
         fill('detailBusinessScale', p.businessScale);
 
-        // İletişim Bilgisi
         let contactInfo = p.clientPhone || '-';
         if (p.clientEmail && p.clientEmail !== 'no-email@provided.com') {
             contactInfo += ` / ${p.clientEmail}`;
@@ -340,14 +337,12 @@ async function fetchOrderDetails(id) {
 
         fill('detailTrackingCode', p.trackingCode);
 
-        // Tarih kısmı (Hata payını sıfırladık)
         if (p.startDate) {
             fill('detailDate', new Date(p.startDate).toLocaleDateString('tr-TR'));
         }
 
         setTxt('detailTotalAmount', p.totalAmount);
 
-        // Durum Metni
         let statusText = 'Bilinmiyor';
         const amount = Number(p.totalAmount);
         if (p.status === 'WaitingForApproval' || (p.status === 'Pending' && amount === 0)) statusText = 'Onay Bekliyor';
@@ -364,12 +359,13 @@ async function fetchOrderDetails(id) {
         console.error("fetchOrderDetails HATASI:", e);
     }
 }
+
 // --- SAYFA YÜKLEME YÖNLENDİRMELERİ ---
 document.addEventListener('DOMContentLoaded', () => {
     const currentUrl = window.location.href;
     const token = getToken();
 
-    // Eğer giriş sayfası ise ve zaten token varsa dashboarda at
+    // Giriş sayfasındaysak ve token varsa Dashboard'a at
     if (currentUrl.includes('admin.html') && !currentUrl.includes('lumiphadashboard.html')) {
         if (token) {
             window.location.href = 'lumiphadashboard.html';
@@ -377,12 +373,15 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    // Dashboard ve diğer sayfalar için Token Kontrolü
-    if (currentUrl.includes('lumiphadashboard.html') ||
+    // Admin paneli sayfaları için yetki kontrolü
+    const isAdminPage = currentUrl.includes('lumiphadashboard.html') ||
         currentUrl.includes('notifications.html') ||
         currentUrl.includes('orders') ||
-        currentUrl.includes('active-orders')) {
+        currentUrl.includes('active-orders') ||
+        currentUrl.includes('order-details') ||
+        currentUrl.includes('detail');
 
+    if (isAdminPage) {
         if (!token) {
             console.warn("Token bulunamadı, giriş sayfasına yönlendiriliyor...");
             window.location.href = 'admin.html';
@@ -390,24 +389,23 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         console.log("Admin.js başlatıldı. URL:", currentUrl);
+
         if (currentUrl.includes('lumiphadashboard.html')) {
             loadDashboardData();
-            setInterval(loadDashboardData, 10000); // 10 saniyede bir güncelle
-        }
-        else if (currentUrl.includes('notifications.html')) {
+            setInterval(loadDashboardData, 10000);
+        } else if (currentUrl.includes('notifications.html')) {
             fetchAndDisplayNotifications();
-        }
-        else if (currentUrl.includes('order-details') || currentUrl.includes('detail')) {
+        } else if (currentUrl.includes('order-details') || currentUrl.includes('detail')) {
             const urlParams = new URLSearchParams(window.location.search);
             const id = urlParams.get('id');
             if (id) fetchOrderDetails(id);
-        }
-        else {
+        } else {
             fetchAndDisplayOrders();
         }
     } else {
-        // Token yoksa giriş sayfasına at
-        window.location.href = 'admin.html';
+        // Tanımsız sayfa ise veya ana sayfa ise (güvenlik için)
+        if (!currentUrl.includes('admin.html')) {
+            // Bir şey yapma veya yönlendir
+        }
     }
-}
 });
