@@ -1,65 +1,95 @@
-// admin.js - TÜM DETAYLAR VE EKSİK VERİLER DÜZELTİLDİ
+// admin.js - GÜNCELLENMİŞ JWT (TOKEN) SİSTEMİ
 
-// Relative path kullanıyoruz - CORS sorunu olmaz
-const API_KEY_STORAGE_KEY = 'lumipha_admin_api_key';
+// Token'ı tarayıcıda bu isimle saklayacağız
+const TOKEN_STORAGE_KEY = 'lumipha_admin_token';
+// API adresi (Canlı sunucu)
+const BASE_URL = 'https://www.lumipha.com';
 
 // --- YARDIMCI VE GİRİŞ FONKSİYONLARI ---
-function getApiKey() {
-    return sessionStorage.getItem(API_KEY_STORAGE_KEY);
+
+// 1. Token'ı getiren fonksiyon
+function getToken() {
+    return localStorage.getItem(TOKEN_STORAGE_KEY);
 }
 
+// 2. API İsteklerini Yöneten Ana Fonksiyon (GÜNCELLENDİ)
 async function sendApiRequest(endpoint, method = 'GET', body = null) {
-    const apiKey = getApiKey();
-    if (!apiKey) return null;
+    const token = getToken();
+
+    // Eğer token yoksa ve giriş yapmaya çalışmıyorsak null dön
+    if (!token && !endpoint.includes('/auth/login')) return null;
 
     try {
-        const headers = { 'Content-Type': 'application/json', 'x-api-key': apiKey };
-        const config = { method, headers, body: body ? JSON.stringify(body) : null };
+        // ARTIK HEADER'A 'x-api-key' DEĞİL 'Authorization' EKLİYORUZ
+        const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        };
 
-        // Eğer endpoint zaten tam URL değilse ana domaini ekle
+        const config = { method, headers };
+        if (body) config.body = JSON.stringify(body);
+
+        // URL Düzenleme
         let url = endpoint;
         if (!/^https?:\/\//.test(endpoint)) {
-            url = 'https://www.lumipha.com' + (endpoint.startsWith('/') ? endpoint : '/' + endpoint);
+            url = BASE_URL + (endpoint.startsWith('/') ? endpoint : '/' + endpoint);
         }
+
         const response = await fetch(url, config);
+
+        // Eğer 401 (Yetkisiz) hatası alırsak, token süresi bitmiştir.
+        if (response.status === 401) {
+            console.warn("Oturum süresi doldu, çıkış yapılıyor...");
+            logoutAdmin();
+            return null;
+        }
+
         const data = await response.json();
         if (!response.ok) throw new Error(data.message || `Hata: ${response.status}`);
         return data;
+
     } catch (error) {
-        console.error(error);
-        throw error; 
+        console.error("API Hatası:", error);
+        throw error;
     }
 }
 
+// 3. Giriş Yapma Fonksiyonu (GÜNCELLENDİ - ARTIK ŞİFRE İLE)
 async function loginAdmin(event) {
     if (event) event.preventDefault();
 
+    // HTML'de id="apiKeyInput" yazan yer artık şifre kutusu oldu
     const inputEl = document.getElementById('apiKeyInput');
-    
+
     if (!inputEl) { alert('Hata: Giriş kutusu bulunamadı!'); return; }
 
-    const apiKey = inputEl.value.trim();
+    const password = inputEl.value.trim(); // Artık burası şifre
 
-    if (!apiKey) { alert('Lütfen API Key giriniz!'); return; }
+    if (!password) { alert('Lütfen Şifrenizi giriniz!'); return; }
 
     const loginButton = document.querySelector('.adminbutton');
-    if(loginButton) {
-        loginButton.innerText = "Kontrol Ediliyor...";
+    if (loginButton) {
+        loginButton.innerText = "Giriş Yapılıyor...";
         loginButton.disabled = true;
     }
 
     try {
-        const response = await fetch('https://www.lumipha.com/projects', {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey }
+        // YENİ SİSTEM: POST /auth/login'e şifre gönderiyoruz
+        const response = await fetch(`${BASE_URL}/auth/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ password: password })
         });
 
-        if (response.ok) {
-            sessionStorage.setItem(API_KEY_STORAGE_KEY, apiKey);
+        const data = await response.json();
+
+        if (response.ok && data.access_token) {
+            // Token'ı kaydet
+            localStorage.setItem(TOKEN_STORAGE_KEY, data.access_token);
             window.location.href = 'lumiphadashboard.html';
         } else {
-            alert('⛔ Hatalı API Key! Lütfen kontrol edip tekrar deneyin.');
-            if(loginButton) {
+            alert('⛔ Hatalı Şifre! Lütfen tekrar deneyin.');
+            if (loginButton) {
                 loginButton.innerText = "Giriş Yap";
                 loginButton.disabled = false;
             }
@@ -67,12 +97,18 @@ async function loginAdmin(event) {
 
     } catch (error) {
         console.error("Giriş Hatası:", error);
-        alert('⚠️ Sunucuya bağlanılamadı. Backend çalışıyor mu?');
-        if(loginButton) {
+        alert('⚠️ Sunucuya bağlanılamadı. İnternetini kontrol et.');
+        if (loginButton) {
             loginButton.innerText = "Giriş Yap";
             loginButton.disabled = false;
         }
     }
+}
+
+// 4. Çıkış Yapma Fonksiyonu
+function logoutAdmin() {
+    localStorage.removeItem(TOKEN_STORAGE_KEY);
+    window.location.href = 'admin.html';
 }
 
 function markOrderAsSeen(orderId) {
@@ -95,15 +131,15 @@ async function loadDashboardData() {
 
     try {
         const allProjects = await sendApiRequest('/projects', 'GET');
-        if (!allProjects) return;
+        if (!allProjects) return; // Hata veya oturum yoksa dur
 
         const waitingList = allProjects.filter(p => p.status === 'WaitingForApproval' || (p.status === 'Pending' && Number(p.totalAmount) === 0));
         const activeList = allProjects.filter(p => p.status === 'InProgress' || (p.status === 'Pending' && Number(p.totalAmount) > 0));
         const pastList = allProjects.filter(p => p.status === 'Completed' || p.status === 'Cancelled');
 
-        if(statActive) statActive.innerText = activeList.length;
-        if(statPending) statPending.innerText = waitingList.length; 
-        if(statPast) statPast.innerText = pastList.length;
+        if (statActive) statActive.innerText = activeList.length;
+        if (statPending) statPending.innerText = waitingList.length;
+        if (statPast) statPast.innerText = pastList.length;
 
         if (newOrderBadge && newOrderCount) {
             if (waitingList.length > 0) {
@@ -120,12 +156,12 @@ async function loadDashboardData() {
             } else {
                 const sortedWaiting = waitingList.sort((a, b) => new Date(b.startDate) - new Date(a.startDate));
                 let htmlContent = '';
-                
+
                 sortedWaiting.forEach(p => {
                     const names = p.clientName ? p.clientName.split(' ') : ['-', ''];
                     const date = p.startDate ? new Date(p.startDate).toLocaleDateString('tr-TR') : '-';
                     const msg = 'Yeni Sipariş Onay Bekliyor!';
-                    const link = 'order-details.html'; 
+                    const link = 'order-details.html';
 
                     htmlContent += `
                         <div class="lastnotifications">
@@ -197,16 +233,16 @@ async function fetchAndDisplayOrders() {
     let detailPage = 'order-details.html';
     let filterStatus = [];
     let emptyMsg = 'Sipariş yok.';
-    let nameClass = 'orderrequestnameid'; let dateClass = 'orderrequestdateid'; let showStatus = true; 
+    let nameClass = 'orderrequestnameid'; let dateClass = 'orderrequestdateid'; let showStatus = true;
 
     if (currentUrl.includes('activeorders.html')) {
-        filterStatus = ['Pending', 'InProgress']; 
+        filterStatus = ['Pending', 'InProgress'];
         detailPage = 'active-orders-detail.html'; emptyMsg = 'Henüz aktif sipariş yok.';
         nameClass = 'ordernameid'; dateClass = 'orderdateid';
     } else if (currentUrl.includes('orders.html')) {
-        filterStatus = ['WaitingForApproval']; 
+        filterStatus = ['WaitingForApproval'];
         detailPage = 'order-details.html'; emptyMsg = 'Henüz onay bekleyen talep yok.';
-        nameClass = 'orderrequestnameid'; dateClass = 'orderrequestdateid'; showStatus = true; 
+        nameClass = 'orderrequestnameid'; dateClass = 'orderrequestdateid'; showStatus = true;
     } else if (currentUrl.includes('orders-past.html')) {
         filterStatus = ['Completed', 'Cancelled'];
         detailPage = 'orders-past-details.html'; emptyMsg = 'Geçmiş sipariş yok.';
@@ -216,7 +252,7 @@ async function fetchAndDisplayOrders() {
 
     try {
         const allProjects = await sendApiRequest('/projects', 'GET');
-        if (!allProjects) { container.innerHTML = 'Oturum hatası.'; return; }
+        if (!allProjects) { container.innerHTML = 'Oturum hatası veya veri yok.'; return; }
 
         const filtered = allProjects.filter(p => {
             const amount = Number(p.totalAmount);
@@ -253,22 +289,22 @@ async function fetchAndDisplayOrders() {
     } catch (e) { container.innerHTML = `<div style="color:red; padding:20px; text-align:center;">Hata: ${e.message}</div>`; }
 }
 
-// --- 5. DETAY FONKSİYONU (GÜNCELLENDİ) ---
+// --- 5. DETAY FONKSİYONU ---
 async function fetchOrderDetails(id) {
     try {
         const p = await sendApiRequest(`/projects/${id}`, 'GET');
+        // Eğer token süresi dolduysa ve p null döndüyse işlem yapma
+        if (!p) return;
+
         const setTxt = (i, v) => { const e = document.getElementById(i); if (e) e.innerText = v; };
         const setVal = (i, v) => { const e = document.getElementById(i); if (e) e.value = v; };
         const fill = (i, v) => {
             const e = document.getElementById(i); if (!e) return;
-            const grp = e.closest('.info-group'); // Eğer bir grup içindeyse
-            
-            if (v && v !== '' && v !== '-') { 
-                e.innerText = v; 
-                if (grp) grp.style.display = 'flex'; 
-            } else { 
-                // Eğer veri yoksa, bazı tasarımlarda gizlemek isteyebilirsin.
-                // Şimdilik "Belirtilmemiş" yazalım ki boş görünmesin.
+            const grp = e.closest('.info-group');
+            if (v && v !== '' && v !== '-') {
+                e.innerText = v;
+                if (grp) grp.style.display = 'flex';
+            } else {
                 e.innerText = '-';
                 if (grp) grp.style.display = 'flex';
             }
@@ -278,26 +314,22 @@ async function fetchOrderDetails(id) {
         fill('detailClientName', p.clientName);
         fill('detailCompanyName', p.companyName);
         fill('detailPackage', p.packageName);
-        
-        // --- GÜNCELLEME 1: İşletme Türü ve Ölçeği Eklendi ---
-        fill('detailBusinessType', p.businessType); 
+        fill('detailBusinessType', p.businessType);
         fill('detailBusinessScale', p.businessScale);
 
-        // --- GÜNCELLEME 2: İletişim Kanalı Birleştirildi ---
         let contactInfo = p.clientPhone || '';
         if (p.clientEmail && p.clientEmail !== 'no-email@provided.com') {
             contactInfo += ` / ${p.clientEmail}`;
         }
         fill('detailContact', contactInfo);
-        
+
         fill('detailTrackingCode', p.trackingCode);
         fill('detailDate', p.startDate ? new Date(p.startDate).toLocaleDateString('tr-TR') : null);
         setTxt('detailTotalAmount', p.totalAmount);
 
-        // Durum Rengi ve Metni
         let statusText = ''; let color = '#FF9800';
         const amount = Number(p.totalAmount);
-        
+
         if (p.status === 'WaitingForApproval' || (p.status === 'Pending' && amount === 0)) { statusText = 'Onay Bekliyor'; color = '#999'; }
         else if (p.status === 'Pending') { statusText = 'Ödeme Bekleniyor'; color = '#FF9800'; }
         else if (p.status === 'InProgress') { statusText = 'Hazırlanıyor'; color = '#2196F3'; }
@@ -313,10 +345,7 @@ async function fetchOrderDetails(id) {
         const linkEl = document.getElementById('detailProjectLink');
         if (linkEl) {
             if (p.projectLink && p.projectLink !== '') {
-                // Eğer protokol yoksa https:// ekle
-                const fullUrl = p.projectLink.startsWith('http://') || p.projectLink.startsWith('https://') 
-                    ? p.projectLink 
-                    : 'https://' + p.projectLink;
+                const fullUrl = p.projectLink.startsWith('http') ? p.projectLink : 'https://' + p.projectLink;
                 linkEl.innerHTML = `<a href="${fullUrl}" target="_blank" style="color:#2196F3; text-decoration:underline;">${p.projectLink}</a>`;
             }
             else linkEl.innerText = 'Yok';
@@ -337,32 +366,41 @@ async function fetchOrderDetails(id) {
 // --- SAYFA YÜKLEME YÖNLENDİRMELERİ ---
 document.addEventListener('DOMContentLoaded', () => {
     const currentUrl = window.location.href;
+    const token = getToken();
 
-    // Dashboard
-    if (currentUrl.includes('lumiphadashboard.html')) {
-        if (getApiKey()) {
-             loadDashboardData(); 
-             setInterval(loadDashboardData, 5000); 
-        } else window.location.href = 'admin.html';
+    // Eğer giriş sayfası ise ve zaten token varsa dashboarda at
+    if (currentUrl.includes('admin.html') && !currentUrl.includes('lumiphadashboard.html')) {
+        if (token) {
+            window.location.href = 'lumiphadashboard.html';
+        }
+        return;
     }
-    // Notifications
-    else if (currentUrl.includes('notifications.html')) {
-        if (getApiKey()) fetchAndDisplayNotifications();
-        else window.location.href = 'admin.html';
-    }
-    // Lists (Sipariş Listeleri)
-    else if (currentUrl.includes('orders.html') || currentUrl.includes('activeorders.html') || currentUrl.includes('orders-past.html')) {
-        if (getApiKey()) fetchAndDisplayOrders();
-        else window.location.href = 'admin.html';
-    }
-    // Details (Detay Sayfaları) - BURAYI EKLEDİM, ARTIK OTOMATİK ÇALIŞIR
-    else if (currentUrl.includes('order-details.html') || currentUrl.includes('active-orders-detail.html') || currentUrl.includes('orders-past-details.html')) {
-        if (getApiKey()) {
-            // URL'den ID'yi al
-            const urlParams = new URLSearchParams(window.location.search);
-            const id = urlParams.get('id');
-            if (id) fetchOrderDetails(id);
-            else alert("ID bulunamadı!");
-        } else window.location.href = 'admin.html';
+
+    // Dashboard ve diğer sayfalar için Token Kontrolü
+    if (currentUrl.includes('lumiphadashboard.html') ||
+        currentUrl.includes('notifications.html') ||
+        currentUrl.includes('orders') ||
+        currentUrl.includes('active-orders')) {
+
+        if (token) {
+            if (currentUrl.includes('lumiphadashboard.html')) {
+                loadDashboardData();
+                setInterval(loadDashboardData, 10000); // 10 saniyede bir güncelle
+            }
+            else if (currentUrl.includes('notifications.html')) {
+                fetchAndDisplayNotifications();
+            }
+            else if (currentUrl.includes('order-details') || currentUrl.includes('detail')) {
+                const urlParams = new URLSearchParams(window.location.search);
+                const id = urlParams.get('id');
+                if (id) fetchOrderDetails(id);
+            }
+            else {
+                fetchAndDisplayOrders();
+            }
+        } else {
+            // Token yoksa giriş sayfasına at
+            window.location.href = 'admin.html';
+        }
     }
 });

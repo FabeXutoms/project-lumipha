@@ -38,13 +38,19 @@ async function bootstrap() {
 
   // Rate limit: IP başına 15 dakika içinde max 1000 istek
   app.use(require('express-rate-limit').default({
-    windowMs: 15 * 60 * 1000, 
-    max: 1000, 
+    windowMs: 15 * 60 * 1000,
+    max: 1000,
     standardHeaders: true,
     legacyHeaders: false,
     // EĞER HALA YANLIŞ IP GÖRÜYORSA BU FONKSİYONU EKLEMEK GEREKEBİLİR:
     // keyGenerator: (req) => req.ip // veya req.headers['x-forwarded-for']
   }));
+
+  // Global NoIndex Middleware
+  app.use((req, res, next) => {
+    res.header('X-Robots-Tag', 'noindex, nofollow');
+    next();
+  });
 
 
   app.enableCors({
