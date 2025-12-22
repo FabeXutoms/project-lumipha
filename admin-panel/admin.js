@@ -289,27 +289,30 @@ async function fetchAndDisplayOrders() {
     } catch (e) { container.innerHTML = `<div style="color:red; padding:20px; text-align:center;">Hata: ${e.message}</div>`; }
 }
 
-// --- 5. DETAY FONKSİYONU ---
+// --- 5. DETAY FONKSİYONU (GÜÇLENDİRİLMİŞ) ---
 async function fetchOrderDetails(id) {
+    console.log("Sipariş detayları çekiliyor, ID:", id);
     try {
         const p = await sendApiRequest(`/projects/${id}`, 'GET');
-        // Eğer token süresi dolduysa ve p null döndüyse işlem yapma
-        if (!p) return;
+        if (!p) {
+            console.error("Veri gelmedi, muhtemelen yetki hatası.");
+            return;
+        }
 
-        const setTxt = (i, v) => { const e = document.getElementById(i); if (e) e.innerText = v; };
-        const setVal = (i, v) => { const e = document.getElementById(i); if (e) e.value = v; };
-        const fill = (i, v) => {
-            const e = document.getElementById(i); if (!e) return;
-            const grp = e.closest('.info-group');
-            if (v && v !== '' && v !== '-') {
-                e.innerText = v;
-                if (grp) grp.style.display = 'flex';
-            } else {
-                e.innerText = '-';
-                if (grp) grp.style.display = 'flex';
-            }
+        console.log("Backend'den Gelen Veri:", p); // F12 Konsolda veriyi kontrol et
+
+        const setTxt = (i, v) => {
+            const e = document.getElementById(i);
+            if (e) e.innerText = v || '-';
         };
 
+        const fill = (i, v) => {
+            const e = document.getElementById(i);
+            if (!e) return;
+            e.innerText = (v !== null && v !== undefined && v !== '') ? v : '-';
+        };
+
+        // Verileri Basma
         setTxt('headerTrackingCode', p.trackingCode);
         fill('detailClientName', p.clientName);
         fill('detailCompanyName', p.companyName);
@@ -317,52 +320,39 @@ async function fetchOrderDetails(id) {
         fill('detailBusinessType', p.businessType);
         fill('detailBusinessScale', p.businessScale);
 
-        let contactInfo = p.clientPhone || '';
+        // İletişim Bilgisi
+        let contactInfo = p.clientPhone || '-';
         if (p.clientEmail && p.clientEmail !== 'no-email@provided.com') {
             contactInfo += ` / ${p.clientEmail}`;
         }
         fill('detailContact', contactInfo);
 
         fill('detailTrackingCode', p.trackingCode);
-        fill('detailDate', p.startDate ? new Date(p.startDate).toLocaleDateString('tr-TR') : null);
+
+        // Tarih kısmı (Hata payını sıfırladık)
+        if (p.startDate) {
+            fill('detailDate', new Date(p.startDate).toLocaleDateString('tr-TR'));
+        }
+
         setTxt('detailTotalAmount', p.totalAmount);
 
-        let statusText = ''; let color = '#FF9800';
+        // Durum Metni
+        let statusText = 'Bilinmiyor';
         const amount = Number(p.totalAmount);
+        if (p.status === 'WaitingForApproval' || (p.status === 'Pending' && amount === 0)) statusText = 'Onay Bekliyor';
+        else if (p.status === 'Pending') statusText = 'Ödeme Bekleniyor';
+        else if (p.status === 'InProgress') statusText = 'Hazırlanıyor';
+        else if (p.status === 'Completed') statusText = 'Tamamlandı';
+        else if (p.status === 'Cancelled') statusText = 'İptal Edildi';
 
-        if (p.status === 'WaitingForApproval' || (p.status === 'Pending' && amount === 0)) { statusText = 'Onay Bekliyor'; color = '#999'; }
-        else if (p.status === 'Pending') { statusText = 'Ödeme Bekleniyor'; color = '#FF9800'; }
-        else if (p.status === 'InProgress') { statusText = 'Hazırlanıyor'; color = '#2196F3'; }
-        else if (p.status === 'Completed') { statusText = 'Tamamlandı'; color = '#4CAF50'; }
-        else if (p.status === 'Cancelled') { statusText = 'İptal Edildi'; color = '#F44336'; }
-
-        setTxt('detailStatusText', statusText);
         setTxt('detailStatus', statusText);
-        const badge = document.getElementById('currentStatusBadge');
-        if (badge) { badge.innerText = statusText; badge.style.backgroundColor = color; }
-        setVal('modalStatusSelect', p.status);
 
-        const linkEl = document.getElementById('detailProjectLink');
-        if (linkEl) {
-            if (p.projectLink && p.projectLink !== '') {
-                const fullUrl = p.projectLink.startsWith('http') ? p.projectLink : 'https://' + p.projectLink;
-                linkEl.innerHTML = `<a href="${fullUrl}" target="_blank" style="color:#2196F3; text-decoration:underline;">${p.projectLink}</a>`;
-            }
-            else linkEl.innerText = 'Yok';
-        }
+        console.log("Veriler başarıyla HTML'e yerleştirildi.");
 
-        const list = document.getElementById('paymentHistoryList');
-        if (list) {
-            list.innerHTML = '';
-            if (p.payments?.length) {
-                p.payments.forEach(pay => {
-                    list.innerHTML += `<li><span>${new Date(pay.paymentDate).toLocaleDateString('tr-TR')}</span><strong>${pay.amount} TL</strong></li>`;
-                });
-            } else { list.innerHTML = '<li>Henüz ödeme yok.</li>'; }
-        }
-    } catch (e) { console.error(e); }
+    } catch (e) {
+        console.error("fetchOrderDetails HATASI:", e);
+    }
 }
-
 // --- SAYFA YÜKLEME YÖNLENDİRMELERİ ---
 document.addEventListener('DOMContentLoaded', () => {
     const currentUrl = window.location.href;
