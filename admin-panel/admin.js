@@ -211,18 +211,48 @@ async function fetchAndDisplayNotifications() {
                 }
                 else if (p.status === 'WaitingForApproval') { message = 'Onay Bekliyor'; targetLink = 'order-details.html'; }
 
-                const itemHtml = `
-                    <div class="lastnotifications">
-                        <div class="idinfo">
-                            <a href="${targetLink}?id=${p.id}" class="nameid">
-                                ${names[0]} <span class="lastnameid">${names.slice(1).join(' ')}</span>
-                            </a>
-                            <a href="#" class="dateid">${dateStr}</a>
-                        </div>
-                        <div class="isleminfo"><span class="islemtext">${message}</span></div>
-                        <div class="butonincele"><a href="${targetLink}?id=${p.id}" class="inceletext">Detayı Gör</a></div>
-                    </div>`;
-                notifyContainer.innerHTML += itemHtml;
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'lastnotifications';
+
+                const idInfoDiv = document.createElement('div');
+                idInfoDiv.className = 'idinfo';
+
+                const nameLink = document.createElement('a');
+                nameLink.href = `${targetLink}?id=${p.id}`;
+                nameLink.className = 'nameid';
+                nameLink.textContent = names[0] + ' ';
+
+                const lastNameSpan = document.createElement('span');
+                lastNameSpan.className = 'lastnameid';
+                lastNameSpan.textContent = names.slice(1).join(' ');
+                nameLink.appendChild(lastNameSpan);
+                idInfoDiv.appendChild(nameLink);
+
+                const dateLink = document.createElement('a');
+                dateLink.href = '#';
+                dateLink.className = 'dateid';
+                dateLink.textContent = dateStr;
+                idInfoDiv.appendChild(dateLink);
+                itemDiv.appendChild(idInfoDiv);
+
+                const islemInfoDiv = document.createElement('div');
+                islemInfoDiv.className = 'isleminfo';
+                const islemTextSpan = document.createElement('span');
+                islemTextSpan.className = 'islemtext';
+                islemTextSpan.textContent = message;
+                islemInfoDiv.appendChild(islemTextSpan);
+                itemDiv.appendChild(islemInfoDiv);
+
+                const buttonDiv = document.createElement('div');
+                buttonDiv.className = 'butonincele';
+                const detailLink = document.createElement('a');
+                detailLink.href = `${targetLink}?id=${p.id}`;
+                detailLink.className = 'inceletext';
+                detailLink.textContent = 'Detayı Gör';
+                buttonDiv.appendChild(detailLink);
+                itemDiv.appendChild(buttonDiv);
+
+                notifyContainer.appendChild(itemDiv);
             });
         } else { notifyContainer.innerHTML = '<div style="text-align:center;">Kayıt yok.</div>'; }
     } catch (error) { console.error(error); }
@@ -309,7 +339,7 @@ async function fetchOrderDetails(id) {
             return;
         }
 
-        console.log("Backend'den Gelen Veri:", p);
+        // console.log("Backend'den Gelen Veri:", p); // GÜVENLİK: Hassas verileri loglamıyoruz.
 
         const setTxt = (i, v) => {
             const e = document.getElementById(i);
@@ -341,11 +371,17 @@ async function fetchOrderDetails(id) {
             fill('detailDate', new Date(p.startDate).toLocaleDateString('tr-TR'));
         }
 
-        // Mevcut Linki Göster
+        // Mevcut Linki Göster (XSS Korumalı)
         const linkEl = document.getElementById('detailProjectLink');
         if (linkEl) {
             if (p.projectLink) {
-                linkEl.innerHTML = `<a href="${p.projectLink.startsWith('http') ? p.projectLink : 'https://' + p.projectLink}" target="_blank" style="color: #FF5722;">${p.projectLink}</a>`;
+                linkEl.innerHTML = ''; // Temizle
+                const aIdx = document.createElement('a');
+                aIdx.href = p.projectLink.startsWith('http') ? p.projectLink : 'https://' + p.projectLink;
+                aIdx.target = '_blank';
+                aIdx.style.color = '#FF5722';
+                aIdx.textContent = p.projectLink; // Güvenli metin
+                linkEl.appendChild(aIdx);
             } else {
                 linkEl.innerText = 'Yok';
             }

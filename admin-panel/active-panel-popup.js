@@ -201,18 +201,25 @@ document.addEventListener('DOMContentLoaded', () => {
                     const linkDisplay = document.getElementById('detailProjectLink');
                     if (linkDisplay) {
                         if (yeniLink) {
-                            // Eğer protokol yoksa https:// ekle
-                            const fullUrl = yeniLink.startsWith('http://') || yeniLink.startsWith('https://') 
-                                ? yeniLink 
+                            // Link varsa temizle ve güvenli şekilde oluştur
+                            linkDisplay.innerHTML = '';
+                            const fullUrl = yeniLink.startsWith('http://') || yeniLink.startsWith('https://')
+                                ? yeniLink
                                 : 'https://' + yeniLink;
-                            // Link varsa tıklanabilir yap
-                            linkDisplay.innerHTML = `<a href="${fullUrl}" target="_blank" style="color:#2196F3; text-decoration:underline;">${yeniLink}</a>`;
 
-                            alert('✅ Link başarıyla eklendi/güncellendi!');
+                            const aTag = document.createElement('a');
+                            aTag.href = fullUrl;
+                            aTag.target = "_blank";
+                            aTag.style.color = "#2196F3";
+                            aTag.style.textDecoration = "underline";
+                            aTag.textContent = yeniLink; // XSS Korumalı
+
+                            linkDisplay.appendChild(aTag);
+                            alert('✅ Link güncellendi!');
                         } else {
                             // Link boşsa "Yok" yaz
                             linkDisplay.innerText = 'Yok';
-                            alert('🗑️ Link başarıyla silindi!');
+                            alert('🗑️ Link silindi!');
                         }
                     }
 
