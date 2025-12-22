@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="tr">
+
 <head>
     <meta name="robots" content="noindex, nofollow">
     <link rel="canonical" href="https://www.lumipha.com" />
@@ -8,39 +9,42 @@
     <title>Sipariş Detayı</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
     <section class="navbar">
         <div class="navbartexts">
             <a href="orders.html" class="navbartext2 colorizedtext">Siparişler</a>
             <a href="" class="navbartext2">Akademi</a>
-       </div>
+        </div>
         <a href="lumiphadashboard.html">
             <img src="/images/Symbol.svg" alt="Logo" class="headerlink logo">
-       </a>
-       <div class="navbartexts">
-            <a href="adminsignout.html" class="navbartext1">Admin</a>  
+        </a>
+        <div class="navbartexts">
+            <a href="adminsignout.html" class="navbartext1">Admin</a>
             <a href="notifications.html" class="navbartext1">Bildirimler</a>
-       </div>
+        </div>
     </section>
 
     <div class="orders">
         <div class="headercontainer detail-header">
-            <a href="orders-past.html" class="backbutton"><</a>
-            <p class="headerctext">Sipariş Yönetimi</p>
-            <p class="headerctext colorizedtext"><span class="ordernumbertext" id="headerTrackingCode">...</span></p>
+            <a href="orders-past.html" class="backbutton">
+                << /a>
+                    <p class="headerctext">Sipariş Yönetimi</p>
+                    <p class="headerctext colorizedtext"><span class="ordernumbertext"
+                            id="headerTrackingCode">...</span></p>
         </div>
 
         <div class="detail-container">
-            
+
             <div class="detail-info-box">
                 <h2 class="detail-maintext">Sipariş Bilgileri</h2>
-                
+
                 <div class="info-group">
                     <p class="info-label">İsim Soyisim</p>
                     <p class="info-value"><span class="colorizedtext isimdata" id="detailClientName">...</span></p>
                 </div>
-                
+
                 <div class="info-group">
                     <p class="info-label">İşletme Adı</p>
                     <p class="info-value"><span class="colorizedtext isletmedata" id="detailCompanyName">...</span></p>
@@ -58,7 +62,8 @@
 
                 <div class="info-group">
                     <p class="info-label">Alınacak Hizmet</p>
-                    <p class="info-value colorizedtext"><span class="colorizedtext hizmetdata" id="detailPackage">...</span></p>
+                    <p class="info-value colorizedtext"><span class="colorizedtext hizmetdata"
+                            id="detailPackage">...</span></p>
                 </div>
 
                 <div class="info-group">
@@ -80,7 +85,7 @@
                     <p class="info-label">Talep Tarihi</p>
                     <p class="info-value" id="detailDate">...</p>
                 </div>
-                
+
                 <div class="info-group">
                     <p class="info-label">Mevcut Link</p>
                     <p class="info-value"><span class="colorizedtext" id="detailProjectLink">Yok</span></p>
@@ -96,7 +101,7 @@
     </div>
 
     <div id="geriAlModal" class="modal">
-        <div class="modal-icerik-geriAl"> 
+        <div class="modal-icerik-geriAl">
             <div class="butonlar-geriAl">
                 <h3>Siparişi, "Aktif Siparişlere" almak istediğinize emin misiniz?</h3>
                 <button type="button" id="geriAlEvet" class="btn btn-geriAl">Evet, Geri Al.</button>
@@ -107,7 +112,7 @@
 
     <div id="input-modal" class="modal">
         <div class="modal-input-icerik">
-            <input type="text" id="linkInput" class="link-input" placeholder="Yeni Linki Girin" 
+            <input type="text" id="linkInput" class="link-input" placeholder="Yeni Linki Girin"
                 onkeydown="if(event.key === 'Enter') { event.preventDefault(); document.getElementById('saveLinkBtn').click(); }">
             <button type="button" id="saveLinkBtn" class="btn btn-ready" style="margin-top:10px;">Kaydet</button>
         </div>
@@ -116,22 +121,8 @@
     <script src="config.js"></script>
     <script src="admin.js"></script>
     <script src="past-panel-popup.js"></script>
-    
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const projectId = urlParams.get('id');
 
-            if (projectId && sessionStorage.getItem('lumipha_admin_api_key')) {
-                if(typeof fetchOrderDetails === 'function') {
-                    fetchOrderDetails(projectId);
-                } else {
-                    console.error("fetchOrderDetails fonksiyonu bulunamadı.");
-                }
-            } else {
-                window.location.href = 'orders-past.html';
-            }
-        });
-    </script>
+
 </body>
+
 </html>

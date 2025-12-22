@@ -28,9 +28,11 @@
 
     <div class="orders">
         <div class="headercontainer detail-header">
-            <a href="orders.html" class="backbutton"><</a>
-            <p class="headerctext">Sipariş Yönetimi</p>
-            <p class="headerctext colorizedtext"><span class="ordernumbertext" id="headerTrackingCode">...</span></p>
+            <a href="orders.html" class="backbutton">
+                << /a>
+                    <p class="headerctext">Sipariş Yönetimi</p>
+                    <p class="headerctext colorizedtext"><span class="ordernumbertext"
+                            id="headerTrackingCode">...</span></p>
         </div>
 
         <div class="detail-container">
@@ -60,7 +62,8 @@
 
                 <div class="info-group">
                     <p class="info-label">Alınacak Hizmet</p>
-                    <p class="info-value colorizedtext"><span class="colorizedtext hizmetdata" id="detailPackage">...</span></p>
+                    <p class="info-value colorizedtext"><span class="colorizedtext hizmetdata"
+                            id="detailPackage">...</span></p>
                 </div>
 
                 <div class="info-group">
@@ -89,7 +92,8 @@
                 </div>
 
                 <div class="detail-actions">
-                    <button type="button" class="action-button approve-button" id="fiyatBelirleOnayla">Fiyat Belirle/Onayla</button>
+                    <button type="button" class="action-button approve-button" id="fiyatBelirleOnayla">Fiyat
+                        Belirle/Onayla</button>
                     <button type="button" class="action-button reject-button" id="siparisSil">Siparişi Sil</button>
                 </div>
 
@@ -139,18 +143,8 @@
     <script src="config.js"></script>
     <script src="admin.js"></script>
     <script src="request-panel-popup.js"></script>
-    
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const projectId = urlParams.get('id');
 
-            if (projectId && sessionStorage.getItem('lumipha_admin_api_key')) {
-                fetchOrderDetails(projectId);
-            } else {
-                alert('Hata: Sipariş ID bulunamadı veya giriş yapılmamış.');
-            }
-        });
-    </script>
+
 </body>
+
 </html>

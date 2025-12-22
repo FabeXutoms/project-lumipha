@@ -15,14 +15,14 @@
         <div class="navbartexts">
             <a href="" class="navbartext2 colorizedtext">Siparişler</a>
             <a href="" class="navbartext2">Akademi</a>
-       </div>
+        </div>
         <a href="lumiphadashboard.html">
             <img src="/images/Symbol.svg" alt="Logo" class="headerlink logo">
-       </a>
-       <div class="navbartexts">
-            <a href="adminsignout.html" class="navbartext1">Admin</a>  
+        </a>
+        <div class="navbartexts">
+            <a href="adminsignout.html" class="navbartext1">Admin</a>
             <a href="notifications.html" class="navbartext1">Bildirimler</a>
-       </div>
+        </div>
     </section>
 
     <section class="orders">
@@ -31,24 +31,14 @@
             <a href="activeorders.html" class="headerctext">Aktif Siparişler</a>
             <a href="orders-past.html" class="headerctext">Geçmiş Siparişler</a>
         </div>
-        
+
         <div class="orderscontainer">
-            </div>
+        </div>
     </section>
 
     <script src="/config.js"></script>
     <script src="admin.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Sadece API Key varsa listeyi çek
-            if (sessionStorage.getItem('lumipha_admin_api_key')) {
-                fetchAndDisplayOrders();
-            } else {
-                // Güvenlik: Key yoksa login sayfasına yönlendir
-                window.location.href = 'admin.html';
-            }
-        });
-    </script>
+
 </body>
 
 </html>

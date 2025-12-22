@@ -70,19 +70,7 @@
 
     <script src="config.js"></script>
     <script src="admin.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            if (sessionStorage.getItem('lumipha_admin_api_key')) {
-                // admin.js içindeki fonksiyonu çalıştır
-                if (typeof loadDashboardData === 'function') {
-                    loadDashboardData();
-                }
-            } else {
-                // Key yoksa giriş sayfasına at
-                window.location.href = 'admin.html';
-            }
-        });
-    </script>
+
 </body>
 
 </html>

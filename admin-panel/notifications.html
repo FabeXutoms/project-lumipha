@@ -37,16 +37,7 @@
 
     <script src="/config.js"></script>
     <script src="admin.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            if (sessionStorage.getItem('lumipha_admin_api_key')) {
-                // Tüm bildirimleri yükle (admin.js'deki fonksiyonu çağır)
-                fetchAndDisplayNotifications();
-            } else {
-                window.location.href = 'admin.html';
-            }
-        });
-    </script>
+
 </body>
 
 </html>
