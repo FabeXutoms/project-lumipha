@@ -14,16 +14,19 @@ import { ProjectService } from './project.service';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateStatusDto } from './dto/update-status.dto';
 import { CheckContactDto } from './dto/check-contact.dto';
-import { ApiKeyGuard } from '../auth/api-key/api-key.guard';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { AuditInterceptor } from '../common/interceptors/audit.interceptor';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
+import { UseInterceptors } from '@nestjs/common';
 
 @Controller('projects')
+@UseInterceptors(AuditInterceptor)
 export class ProjectController {
     constructor(private readonly projectService: ProjectService) { }
 
     // 1. DURUM GÜNCELLEME (Yönetim Paneli - GİZLİ)
-    @UseGuards(ApiKeyGuard) // Kilitli kalacak
+    @UseGuards(JwtAuthGuard) // Kilitli kalacak
     @UsePipes(new ValidationPipe({ transform: true }))
     @Post(':projectId/status')
     async updateStatus(
@@ -61,7 +64,7 @@ export class ProjectController {
     }
 
     // 3. ÖDEME KAYDETME (Yönetim Paneli - GİZLİ)
-    @UseGuards(ApiKeyGuard) // Kilitli kalacak
+    @UseGuards(JwtAuthGuard) // Kilitli kalacak
     @UsePipes(new ValidationPipe({ transform: true }))
     @Post('payments')
     async recordPayment(@Body() createPaymentDto: CreatePaymentDto) {
@@ -69,21 +72,21 @@ export class ProjectController {
     }
 
     // 4. TÜM PROJELERİ LİSTELEME (Yönetim Paneli - GİZLİ)
-    @UseGuards(ApiKeyGuard) // Kilitli kalacak
+    @UseGuards(JwtAuthGuard) // Kilitli kalacak
     @Get()
     async getAllProjects() {
         return this.projectService.findAllProjects();
     }
 
     // 5. TEK PROJE GETİRME (Detay Sayfası - GİZLİ)
-    @UseGuards(ApiKeyGuard) // Kilitli kalacak
+    @UseGuards(JwtAuthGuard) // Kilitli kalacak
     @Get(':id')
     async getProjectById(@Param('id') id: string) {
         return this.projectService.findOneProject(parseInt(id, 10));
     }
 
     // 6. PROJE GÜNCELLEME (Fiyat/Link - GİZLİ)
-    @UseGuards(ApiKeyGuard)
+    @UseGuards(JwtAuthGuard)
     @UsePipes(new ValidationPipe({ transform: true }))
     @Patch(':id')
     async updateProject(
@@ -94,7 +97,7 @@ export class ProjectController {
     }
 
     // 7. SİLME (GİZLİ)
-    @UseGuards(ApiKeyGuard)
+    @UseGuards(JwtAuthGuard)
     @Delete(':id')
     async deleteProject(@Param('id') id: string) {
         return this.projectService.deleteProject(parseInt(id, 10));

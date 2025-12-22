@@ -1,5 +1,4 @@
-// src/app.module.ts
-import { Module } from '@nestjs/common';
+import { Module, NestModule, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AdminController } from './admin.controller';
 import { AppService } from './app.service';
@@ -13,6 +12,10 @@ import { ProjectModule } from './project/project.module';
 import { AppLogger } from './common/logger/logger.service';
 import { MailModule } from './mail/mail.module';
 import { ContactModule } from './contact/contact.module';
+import { CommonModule } from './common/common.module';
+import { AuthModule } from './auth/auth.module';
+import { DeliveryModule } from './delivery/delivery.module';
+import { OrderValidationMiddleware } from './common/middleware/order-validation.middleware';
 
 
 
@@ -42,9 +45,15 @@ import { ContactModule } from './contact/contact.module';
     }]),
 
     PrismaModule,
-    TrackingModule, ProjectModule, MailModule, ContactModule
+    TrackingModule, ProjectModule, MailModule, ContactModule, CommonModule, AuthModule, DeliveryModule
   ],
   controllers: [AdminController, AppController],
   providers: [AppService, AppLogger],
 })
-export class AppModule { }
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(OrderValidationMiddleware)
+      .forRoutes({ path: 'projects', method: RequestMethod.POST });
+  }
+}

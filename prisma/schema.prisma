@@ -14,12 +14,14 @@ datasource db {
 model Client {
   id                   Int       @id @default(autoincrement())
   name                 String    @db.VarChar(255)
-  email                String    @unique @db.VarChar(255)
+  email                String    @db.VarChar(255)
+  emailHash            String    @unique @map("email_hash") @db.VarChar(255)
+  phoneHash            String?   @map("phone_hash") @db.VarChar(255)
   otpCode              String?   @map("otp_code") @db.VarChar(10)
   otpExpiresAt         DateTime? @map("otp_expires_at") @db.DateTime(0)
   previousOtpCode      String?   @map("previous_otp_code") @db.VarChar(10)
   previousOtpExpiresAt DateTime? @map("previous_otp_expires_at") @db.DateTime(0)
-  phone                String?   @db.VarChar(50)
+  phone                String?   @db.VarChar(255) // Increased length for encryption validation
   createdAt            DateTime  @default(now()) @map("created_at") @db.DateTime(0)
 
   // İlişkiler
@@ -89,4 +91,31 @@ model ContactMessage {
   isRead    Boolean  @default(false) @map("is_read")
 
   @@map("contact_messages")
+}
+
+// Yönetici modeli
+model Admin {
+  id           Int        @id @default(autoincrement())
+  name         String     @unique @db.VarChar(50)
+  passwordHash String     @map("password_hash") @db.VarChar(255)
+  createdAt    DateTime   @default(now()) @map("created_at") @db.DateTime(0)
+  
+  auditLogs    AuditLog[]
+
+  @@map("admins")
+}
+
+// Denetim Günlüğü modeli
+model AuditLog {
+  id             Int      @id @default(autoincrement())
+  adminId        Int      @map("admin_id")
+  action         String   @db.VarChar(50) // e.g. "POST /projects"
+  targetEndpoint String   @map("target_endpoint") @db.VarChar(255)
+  payload        String?  @db.Text
+  createdAt      DateTime @default(now()) @map("created_at") @db.DateTime(0)
+  
+  admin          Admin    @relation(fields: [adminId], references: [id])
+
+  @@index([adminId])
+  @@map("audit_logs")
 }

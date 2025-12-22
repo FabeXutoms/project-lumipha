@@ -17,6 +17,8 @@ async function bootstrap() {
     bufferLogs: true,
   });
 
+  app.set('trust proxy', 1);
+
   // Helmet ile gelişmiş güvenlik başlıkları ve CSP ekle
   const helmet = require('helmet');
   app.use(helmet({
@@ -36,10 +38,12 @@ async function bootstrap() {
 
   // Rate limit: IP başına 15 dakika içinde max 1000 istek
   app.use(require('express-rate-limit').default({
-    windowMs: 15 * 60 * 1000, // 15 dakika
-    max: 1000, // Her IP için max 1000 istek
-    standardHeaders: true, // RateLimit-* başlıklarını ekle
-    legacyHeaders: false, // X-RateLimit-* başlıklarını kaldır
+    windowMs: 15 * 60 * 1000, 
+    max: 1000, 
+    standardHeaders: true,
+    legacyHeaders: false,
+    // EĞER HALA YANLIŞ IP GÖRÜYORSA BU FONKSİYONU EKLEMEK GEREKEBİLİR:
+    // keyGenerator: (req) => req.ip // veya req.headers['x-forwarded-for']
   }));
 
 

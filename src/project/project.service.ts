@@ -7,11 +7,14 @@ import { CreatePaymentDto } from './dto/create-payment.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
 import { MailService } from '../mail/mail.service';
 
+import { EncryptionService } from '../common/encryption/encryption.service';
+
 @Injectable()
 export class ProjectService {
     constructor(
         private prisma: PrismaService,
-        private mailService: MailService
+        private mailService: MailService,
+        private encryptionService: EncryptionService
     ) { }
 
     // --- YARDIMCI FONKSİYONLAR ---
@@ -53,57 +56,71 @@ export class ProjectService {
         }
     }
 
-    // 2. YENİ PROJE OLUŞTURMA
+    // 2. YENİ PROJE OLUŞTURMA (GÜVENLİ)
     async createNewProject(dto: CreateProjectDto) {
+        // 1. Hash oluştur
+        const emailHash = this.encryptionService.hash(dto.clientEmail);
+        const phoneHash = dto.clientPhone ? this.encryptionService.hash(dto.clientPhone) : null;
+
+        // 2. Hash ile kontrol et
         const existingEmail = await this.prisma.client.findUnique({
-            where: { email: dto.clientEmail },
+            where: { emailHash: emailHash },
         });
         if (existingEmail) {
             throw new ConflictException('Bu e-posta adresi zaten sistemde kayıtlı!');
         }
 
-        if (dto.clientPhone) {
+        if (phoneHash) {
             const existingPhone = await this.prisma.client.findFirst({
-                where: { phone: dto.clientPhone },
+                where: { phoneHash: phoneHash },
             });
             if (existingPhone) {
                 throw new ConflictException('Bu telefon numarası zaten sistemde kayıtlı!');
             }
         }
 
-        const client = await this.prisma.client.create({
-            data: {
-                name: dto.clientName,
-                email: dto.clientEmail,
-                phone: dto.clientPhone,
-            },
+        // 3. Verileri şifrele
+        const encryptedEmail = this.encryptionService.encrypt(dto.clientEmail);
+        const encryptedPhone = dto.clientPhone ? this.encryptionService.encrypt(dto.clientPhone) : null;
+
+        // 4. Transaction ile kayıt
+        return await this.prisma.$transaction(async (prisma) => {
+            const client = await prisma.client.create({
+                data: {
+                    name: dto.clientName,
+                    email: encryptedEmail,      // Şifreli
+                    emailHash: emailHash,       // Hash
+                    phone: encryptedPhone,      // Şifreli
+                    phoneHash: phoneHash,       // Hash
+                },
+            });
+
+            const trackingCode = this.generateTrackingCode();
+            const decimalAmount = new Prisma.Decimal(dto.totalAmount || 0);
+
+            const newProject = await prisma.projectAction.create({
+                data: {
+                    clientId: client.id,
+                    trackingCode: trackingCode,
+                    packageName: dto.packageName,
+                    totalAmount: decimalAmount,
+                    startDate: new Date(),
+                    status: 'WaitingForApproval',
+
+                    companyName: dto.companyName,
+                    businessType: dto.businessType,
+                    businessScale: dto.businessScale,
+                },
+            });
+
+            return {
+                success: true,
+                message: 'Proje ve Müşteri oluşturuldu.',
+                trackingCode: newProject.trackingCode,
+                projectId: newProject.id,
+                clientId: client.id
+            };
         });
-
-        const trackingCode = this.generateTrackingCode();
-        const decimalAmount = new Prisma.Decimal(dto.totalAmount || 0);
-
-        const newProject = await this.prisma.projectAction.create({
-            data: {
-                clientId: client.id,
-                trackingCode: trackingCode,
-                packageName: dto.packageName,
-                totalAmount: decimalAmount,
-                startDate: new Date(),
-                status: 'WaitingForApproval',
-
-                companyName: dto.companyName,
-                businessType: dto.businessType,
-                businessScale: dto.businessScale,
-            },
-        });
-
-        return {
-            success: true,
-            message: 'Proje ve Müşteri oluşturuldu.',
-            trackingCode: newProject.trackingCode,
-            projectId: newProject.id,
-            clientId: client.id
-        };
     }
 
     // 3. ÖDEME KAYDETME
@@ -157,14 +174,25 @@ export class ProjectService {
             const totalPaid = p.payments.reduce((sum, pay) => sum + Number(pay.amount), 0);
             const amount = Number(p.totalAmount);
 
+            // Decrypt client info if needed
+            let clientEmail = p.client.email;
+            let clientPhone = p.client.phone;
+            try {
+                // Check if encrypted (contains IV separator)
+                if (clientEmail.includes(':')) clientEmail = this.encryptionService.decrypt(clientEmail);
+                if (clientPhone && clientPhone.includes(':')) clientPhone = this.encryptionService.decrypt(clientPhone);
+            } catch (e) {
+                // Ignore decryption error, might be legacy data
+            }
+
             return {
                 id: p.id,
                 trackingCode: p.trackingCode,
                 startDate: p.startDate,
                 status: p.status,
                 clientName: p.client.name,
-                clientEmail: p.client.email,
-                clientPhone: p.client.phone,
+                clientEmail: clientEmail,
+                clientPhone: clientPhone,
                 isPaid: totalPaid >= amount && amount > 0,
                 totalAmount: amount,
                 projectLink: p.projectLink
@@ -183,6 +211,14 @@ export class ProjectService {
             throw new NotFoundException(`Proje ID ${id} bulunamadı`);
         }
 
+        // Decrypt
+        let clientEmail = project.client.email;
+        let clientPhone = project.client.phone;
+        try {
+            if (clientEmail.includes(':')) clientEmail = this.encryptionService.decrypt(clientEmail);
+            if (clientPhone && clientPhone.includes(':')) clientPhone = this.encryptionService.decrypt(clientPhone);
+        } catch (e) { }
+
         return {
             id: project.id,
             trackingCode: project.trackingCode,
@@ -193,8 +229,8 @@ export class ProjectService {
             estimatedEndDate: project.estimatedEndDate,
 
             clientName: project.client.name,
-            clientEmail: project.client.email,
-            clientPhone: project.client.phone,
+            clientEmail: clientEmail,
+            clientPhone: clientPhone,
 
             companyName: project.companyName,
             businessType: project.businessType,
@@ -252,9 +288,11 @@ export class ProjectService {
         let client: any = null;
 
         if (dto.phone) {
-            client = await this.prisma.client.findFirst({ where: { phone: dto.phone } });
+            const phoneHash = this.encryptionService.hash(dto.phone);
+            client = await this.prisma.client.findFirst({ where: { phoneHash: phoneHash } });
         } else if (dto.email) {
-            client = await this.prisma.client.findUnique({ where: { email: dto.email } });
+            const emailHash = this.encryptionService.hash(dto.email);
+            client = await this.prisma.client.findUnique({ where: { emailHash: emailHash } });
         }
 
         if (!client) {
@@ -270,9 +308,11 @@ export class ProjectService {
         });
 
         if (dto.email) {
-            await this.mailService.sendOtpEmail(client.email, otp);
+            // Decrypt email before sending? Or just use dto.email which is plain text
+            // Using dto.email is safer/faster since we have it.
+            await this.mailService.sendOtpEmail(dto.email, otp);
         } else {
-            console.log(`[SMS] Telefon: ${client.phone} - Kod: ${otp}`);
+            console.log(`[SMS] Telefon: ${dto.phone} - Kod: ${otp}`);
         }
 
         return {
@@ -298,8 +338,8 @@ export class ProjectService {
         // Eski kodu previousOtpCode'a taşı
         await this.prisma.client.update({
             where: { id: clientId },
-            data: { 
-                otpCode: otp, 
+            data: {
+                otpCode: otp,
                 otpExpiresAt: expiresAt,
                 previousOtpCode: client.otpCode,
                 previousOtpExpiresAt: client.otpExpiresAt
@@ -307,9 +347,14 @@ export class ProjectService {
         });
 
         if (isEmail) {
-            await this.mailService.sendOtpEmail(client.email, otp);
+            // Decrypt email for sending
+            let email = client.email;
+            try { if (email.includes(':')) email = this.encryptionService.decrypt(email); } catch (e) { }
+            await this.mailService.sendOtpEmail(email, otp);
         } else {
-            console.log(`[SMS] Telefon: ${client.phone} - Kod: ${otp}`);
+            let phone = client.phone;
+            try { if (phone && phone.includes(':')) phone = this.encryptionService.decrypt(phone); } catch (e) { }
+            console.log(`[SMS] Telefon: ${phone} - Kod: ${otp}`);
         }
 
         return {
@@ -351,8 +396,8 @@ export class ProjectService {
         // Başarılı - Kodları temizle
         await this.prisma.client.update({
             where: { id: clientId },
-            data: { 
-                otpCode: null, 
+            data: {
+                otpCode: null,
                 otpExpiresAt: null,
                 previousOtpCode: null,
                 previousOtpExpiresAt: null
