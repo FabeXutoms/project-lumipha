@@ -33,7 +33,7 @@ export class MailService {
 
         try {
             await this.transporter.sendMail(mailOptions);
-            console.log(`E-posta gönderildi: ${to}`);
+            // console.log(`E-posta gönderildi: ${to}`); // GÜVENLİK: PII kapatıldı
             return true;
         } catch (error) {
             console.error('E-posta gönderme hatası:', error);
@@ -51,7 +51,7 @@ export class MailService {
 
         try {
             await this.transporter.sendMail(mailOptions);
-            console.log(`İletişim e-postası gönderildi: ${to}`);
+            // console.log(`İletişim e-postası gönderildi: ${to}`); // GÜVENLİK: PII kapatıldı
             return true;
         } catch (error) {
             console.error('İletişim e-postası gönderme hatası:', error);

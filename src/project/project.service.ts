@@ -59,7 +59,7 @@ export class ProjectService {
     // 2. YENİ PROJE OLUŞTURMA (GÜVENLİ)
     async createNewProject(dto: CreateProjectDto) {
         console.log('--- Yeni Proje İsteği Başladı ---');
-        console.log('Gelen Veri:', { email: dto.clientEmail, phone: dto.clientPhone });
+        // console.log('Gelen Veri:', { email: dto.clientEmail, phone: dto.clientPhone }); // GÜVENLİK: PII loglama kapatıldı
 
         // 1. Hash oluştur
         const emailHash = this.encryptionService.hash(dto.clientEmail);
@@ -336,7 +336,7 @@ export class ProjectService {
             // Using dto.email is safer/faster since we have it.
             await this.mailService.sendOtpEmail(dto.email, otp);
         } else {
-            console.log(`[SMS] Telefon: ${dto.phone} - Kod: ${otp}`);
+            // console.log(`[SMS] Telefon: ${dto.phone} - Kod: ${otp}`); // GÜVENLİK: OTP loglama kapatıldı
         }
 
         return {
@@ -378,7 +378,7 @@ export class ProjectService {
         } else {
             let phone = client.phone;
             try { if (phone && phone.includes(':')) phone = this.encryptionService.decrypt(phone); } catch (e) { }
-            console.log(`[SMS] Telefon: ${phone} - Kod: ${otp}`);
+            // console.log(`[SMS] Telefon: ${phone} - Kod: ${otp}`); // GÜVENLİK: OTP loglama kapatıldı
         }
 
         return {

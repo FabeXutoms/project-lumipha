@@ -45,7 +45,7 @@ export class OrderValidationMiddleware implements NestMiddleware {
         message: err.message,
       }));
 
-      console.log('--- Middleware Doğrulama Hatası ---', errorMessages);
+      // console.log('--- Middleware Doğrulama Hatası ---', errorMessages); // GÜVENLİK: Hassas hata detayı loglama kapatıldı
 
       throw new BadRequestException({
         message: 'Validation failed',

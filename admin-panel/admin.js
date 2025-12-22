@@ -158,7 +158,7 @@ async function loadDashboardData() {
                 notifyContainer.innerHTML = '<div style="text-align:center; padding:20px; color:#999;">Bekleyen yeni sipariş yok.</div>';
             } else {
                 const sortedWaiting = waitingList.sort((a, b) => new Date(b.startDate) - new Date(a.startDate));
-                let htmlContent = '';
+                notifyContainer.innerHTML = ''; // Önce temizle
 
                 sortedWaiting.forEach(p => {
                     const names = p.clientName ? p.clientName.split(' ') : ['-', ''];
@@ -166,17 +166,50 @@ async function loadDashboardData() {
                     const msg = 'Yeni Sipariş Onay Bekliyor!';
                     const link = 'order-details.html';
 
-                    htmlContent += `
-                        <div class="lastnotifications">
-                            <div class="idinfo">
-                                <span class="nameid">${names[0]} <span class="lastnameid">${names.slice(1).join(' ')}</span></span>
-                                <span class="dateid">${date}</span>
-                            </div>
-                            <div class="isleminfo"><span class="islemtext" style="color:#FF9800; font-weight:bold;">${msg}</span></div>
-                            <div class="butonincele"><a href="${link}?id=${p.id}" class="inceletext">Detayı Gör</a></div>
-                        </div>`;
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'lastnotifications';
+
+                    const idInfoDiv = document.createElement('div');
+                    idInfoDiv.className = 'idinfo';
+
+                    const nameSpan = document.createElement('span');
+                    nameSpan.className = 'nameid';
+                    nameSpan.textContent = names[0] + ' ';
+
+                    const lastNameSpan = document.createElement('span');
+                    lastNameSpan.className = 'lastnameid';
+                    lastNameSpan.textContent = names.slice(1).join(' ');
+
+                    nameSpan.appendChild(lastNameSpan);
+                    idInfoDiv.appendChild(nameSpan);
+
+                    const dateSpan = document.createElement('span');
+                    dateSpan.className = 'dateid';
+                    dateSpan.textContent = date;
+                    idInfoDiv.appendChild(dateSpan);
+                    itemDiv.appendChild(idInfoDiv);
+
+                    const islemInfoDiv = document.createElement('div');
+                    islemInfoDiv.className = 'isleminfo';
+                    const islemText = document.createElement('span');
+                    islemText.className = 'islemtext';
+                    islemText.style.color = '#FF9800';
+                    islemText.style.fontWeight = 'bold';
+                    islemText.textContent = msg;
+                    islemInfoDiv.appendChild(islemText);
+                    itemDiv.appendChild(islemInfoDiv);
+
+                    const buttonDiv = document.createElement('div');
+                    buttonDiv.className = 'butonincele';
+                    const detailLink = document.createElement('a');
+                    detailLink.href = `${link}?id=${p.id}`;
+                    detailLink.className = 'inceletext';
+                    detailLink.textContent = 'Detayı Gör';
+                    buttonDiv.appendChild(detailLink);
+                    itemDiv.appendChild(buttonDiv);
+
+                    notifyContainer.appendChild(itemDiv);
                 });
-                notifyContainer.innerHTML = htmlContent;
             }
         }
     } catch (e) { console.error("Dashboard yenileme hatası:", e); }
@@ -306,17 +339,56 @@ async function fetchAndDisplayOrders() {
                 else if (p.status === 'Completed') statusText = 'Tamamlandı';
                 else if (p.status === 'Cancelled') statusText = 'İptal Edildi';
 
-                let statusHtml = showStatus ? `<a href="#" class="durumid">${statusText}</a>` : '';
-                container.innerHTML += `
-                    <div class="order">
-                        <div class="orderidinfo">
-                            <a href="${detailPage}?id=${p.id}" class="${nameClass}">${names[0]} <span>${names.slice(1).join(' ')}</span></a>
-                            <a href="#" class="${dateClass}">${date}</a>
-                            ${statusHtml}
-                        </div>
-                        <div class="ordernumber"><a href="#" class="ordernumbertext">${p.trackingCode}</a></div>
-                        <div class="buttonorder"><a href="${detailPage}?id=${p.id}" class="orderbutton">İncele</a></div>
-                    </div>`;
+                const orderDiv = document.createElement('div');
+                orderDiv.className = 'order';
+
+                const infoDiv = document.createElement('div');
+                infoDiv.className = 'orderidinfo';
+
+                const nameLink = document.createElement('a');
+                nameLink.href = `${detailPage}?id=${p.id}`;
+                nameLink.className = nameClass;
+                nameLink.textContent = names[0] + ' ';
+
+                const lastNameSpan = document.createElement('span');
+                lastNameSpan.textContent = names.slice(1).join(' ');
+                nameLink.appendChild(lastNameSpan);
+                infoDiv.appendChild(nameLink);
+
+                const dateLink = document.createElement('a');
+                dateLink.href = '#';
+                dateLink.className = dateClass;
+                dateLink.textContent = date;
+                infoDiv.appendChild(dateLink);
+
+                if (showStatus) {
+                    const statusLink = document.createElement('a');
+                    statusLink.href = '#';
+                    statusLink.className = 'durumid';
+                    statusLink.textContent = statusText;
+                    infoDiv.appendChild(statusLink);
+                }
+                orderDiv.appendChild(infoDiv);
+
+                const numberDiv = document.createElement('div');
+                numberDiv.className = 'ordernumber';
+                const numberLink = document.createElement('a');
+                numberLink.href = '#';
+                numberLink.className = 'ordernumbertext';
+                numberLink.textContent = p.trackingCode;
+                numberDiv.appendChild(numberLink);
+                orderDiv.appendChild(numberDiv);
+
+                const buttonDiv = document.createElement('div');
+                buttonDiv.className = 'buttonorder';
+                const buttonLink = document.createElement('a');
+                buttonLink.href = `${detailPage}?id=${p.id}`;
+                buttonLink.className = 'orderbutton';
+                buttonLink.textContent = 'İncele';
+                buttonDiv.appendChild(buttonLink);
+                orderDiv.appendChild(buttonDiv);
+
+                container.appendChild(orderDiv);
             });
         } else { container.innerHTML = `<div style="padding:20px; text-align:center;">${emptyMsg}</div>`; }
     } catch (e) { container.innerHTML = `<div style="color:red; padding:20px; text-align:center;">Hata: ${e.message}</div>`; }
@@ -368,7 +440,15 @@ async function fetchOrderDetails(id) {
         fill('detailTrackingCode', p.trackingCode);
 
         if (p.startDate) {
-            fill('detailDate', new Date(p.startDate).toLocaleDateString('tr-TR'));
+            // Tarih ve Saat formatı: 23.12.2025 00:24
+            const dateStr = new Date(p.startDate).toLocaleString('tr-TR', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            fill('detailDate', dateStr);
         }
 
         // Mevcut Linki Göster (XSS Korumalı)
