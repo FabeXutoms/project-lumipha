@@ -58,32 +58,45 @@ export class ProjectService {
 
     // 2. YENİ PROJE OLUŞTURMA (GÜVENLİ)
     async createNewProject(dto: CreateProjectDto) {
+        console.log('--- Yeni Proje İsteği Başladı ---');
+        console.log('Gelen Veri:', { email: dto.clientEmail, phone: dto.clientPhone });
+
         // 1. Hash oluştur
         const emailHash = this.encryptionService.hash(dto.clientEmail);
-        const phoneHash = dto.clientPhone ? this.encryptionService.hash(dto.clientPhone) : null;
 
-        // 2. Hash ile kontrol et
+        // KRİTİK DÜZELTME: Telefon boş string ("") gelirse onu null say, hashleme!
+        const cleanPhone = (dto.clientPhone && dto.clientPhone.trim().length > 3) ? dto.clientPhone.trim() : null;
+        const phoneHash = cleanPhone ? this.encryptionService.hash(cleanPhone) : null;
+
+        // 2. Hash ile E-Posta Kontrolü
         const existingEmail = await this.prisma.client.findUnique({
             where: { emailHash: emailHash },
         });
+
         if (existingEmail) {
+            console.error('ÇAKIŞMA: Bu e-posta zaten var! ID:', existingEmail.id);
             throw new ConflictException('Bu e-posta adresi zaten sistemde kayıtlı!');
         }
 
+        // 3. Hash ile Telefon Kontrolü (Sadece telefon varsa bak)
         if (phoneHash) {
             const existingPhone = await this.prisma.client.findFirst({
                 where: { phoneHash: phoneHash },
             });
+
             if (existingPhone) {
+                console.error('ÇAKIŞMA: Bu telefon zaten var! ID:', existingPhone.id);
                 throw new ConflictException('Bu telefon numarası zaten sistemde kayıtlı!');
             }
         }
 
-        // 3. Verileri şifrele
+        // 4. Verileri şifrele
         const encryptedEmail = this.encryptionService.encrypt(dto.clientEmail);
-        const encryptedPhone = dto.clientPhone ? this.encryptionService.encrypt(dto.clientPhone) : null;
+        const encryptedPhone = cleanPhone ? this.encryptionService.encrypt(cleanPhone) : null;
 
-        // 4. Transaction ile kayıt
+        console.log('Kontroller geçildi, kayıt başlıyor...');
+
+        // 5. Transaction ile kayıt
         return await this.prisma.$transaction(async (prisma) => {
             const client = await prisma.client.create({
                 data: {
@@ -91,7 +104,7 @@ export class ProjectService {
                     email: encryptedEmail,      // Şifreli
                     emailHash: emailHash,       // Hash
                     phone: encryptedPhone,      // Şifreli
-                    phoneHash: phoneHash,       // Hash
+                    phoneHash: phoneHash,       // Hash (Varsa)
                 },
             });
 
@@ -110,8 +123,13 @@ export class ProjectService {
                     companyName: dto.companyName,
                     businessType: dto.businessType,
                     businessScale: dto.businessScale,
+
+                    // Eğer link varsa ekle
+                    projectLink: dto.projectLink || null
                 },
             });
+
+            console.log('Kayıt Başarılı. Yeni ID:', newProject.id);
 
             return {
                 success: true,
@@ -122,7 +140,6 @@ export class ProjectService {
             };
         });
     }
-
     // 3. ÖDEME KAYDETME
     async recordPayment(dto: CreatePaymentDto) {
         const existingPayment = await this.prisma.payment.findUnique({
