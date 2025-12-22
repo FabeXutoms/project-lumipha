@@ -58,7 +58,6 @@ async function bootstrap() {
       'https://lumipha.com',
       'https://www.lumipha.com',
       'https://admin.lumipha.com',
-      'http://localhost:3000', // Geliştirme ortamı için
     ],
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     credentials: true,
