@@ -11,31 +11,32 @@ async function main() {
     ];
 
     for (const admin of admins) {
-        // findUnique yerine findFirst kullanıyoruz (Daha güvenli)
-        const existing = await prisma.admin.findFirst({
-            where: { name: admin.name }
+        console.log(`🚀 ${admin.name} kullanıcısı işleniyor...`);
+        const salt = await bcrypt.genSalt(10);
+        const hash = await bcrypt.hash(admin.password, salt);
+
+        // upsert komutu: Varsa güncelle (update), yoksa oluştur (create)
+        // Not: 'name' alanının şemada @unique olması gerekir. 
+        // Eğer unique değilse 'updateMany' kullanacağız.
+
+        await prisma.admin.updateMany({
+            where: { name: admin.name },
+            data: { passwordHash: hash }
         });
 
-        if (!existing) {
-            console.log(`🚀 Admin ekleniyor: ${admin.name}`);
-            const hash = await bcrypt.hash(admin.password, 10);
+        // Eğer hiç yoksa oluşturması için:
+        const check = await prisma.admin.findFirst({ where: { name: admin.name } });
+        if (!check) {
             await prisma.admin.create({
-                data: {
-                    name: admin.name,
-                    passwordHash: hash, // Şemandaki isim buydu
-                },
+                data: { name: admin.name, passwordHash: hash }
             });
+            console.log(`✅ ${admin.name} yeni oluşturuldu.`);
         } else {
-            console.log(`✅ ${admin.name} zaten var, pas geçiliyor.`);
+            console.log(`✅ ${admin.name} şifresi güncellendi.`);
         }
     }
 }
 
 main()
-    .catch((e) => {
-        console.error(e);
-        process.exit(1);
-    })
-    .finally(async () => {
-        await prisma.$disconnect();
-    });
+    .catch((e) => { console.error(e); process.exit(1); })
+    .finally(async () => { await prisma.$disconnect(); });
