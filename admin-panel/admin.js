@@ -3,7 +3,10 @@
 // Token'ı tarayıcıda bu isimle saklayacağız
 const TOKEN_STORAGE_KEY = 'lumipha_admin_token';
 // API adresi (Canlı sunucu)
-const BASE_URL = 'https://www.lumipha.com';
+// API adresi (Config'den al veya varsayılanı kullan)
+const BASE_URL = (typeof CONFIG !== 'undefined' && CONFIG.API_BASE_URL)
+    ? CONFIG.API_BASE_URL
+    : 'https://www.lumipha.com';
 
 // --- YARDIMCI VE GİRİŞ FONKSİYONLARI ---
 
