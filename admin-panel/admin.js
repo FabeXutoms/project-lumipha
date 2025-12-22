@@ -295,10 +295,18 @@ async function fetchAndDisplayOrders() {
 // --- 5. DETAY FONKSİYONU (GÜÇLENDİRİLMİŞ) ---
 async function fetchOrderDetails(id) {
     console.log("Sipariş detayları çekiliyor, ID:", id);
+    if (!id) {
+        alert("Hata: URL'de sipariş ID bulunamadı!");
+        return;
+    }
+
     try {
         const p = await sendApiRequest(`/projects/${id}`, 'GET');
+
         if (!p) {
-            console.error("Veri gelmedi, muhtemelen yetki hatası.");
+            console.error("Veri gelmedi (null döndü). Token yok veya yetki hatası.");
+            // Eğer 401 ise zaten logoutAdmin çağrıldı. Değilse:
+            alert("Veri yüklenemedi. Lütfen tekrar giriş yapın veya internet bağlantınızı kontrol edin.");
             return;
         }
 
@@ -375,25 +383,31 @@ document.addEventListener('DOMContentLoaded', () => {
         currentUrl.includes('orders') ||
         currentUrl.includes('active-orders')) {
 
-        if (token) {
-            if (currentUrl.includes('lumiphadashboard.html')) {
-                loadDashboardData();
-                setInterval(loadDashboardData, 10000); // 10 saniyede bir güncelle
-            }
-            else if (currentUrl.includes('notifications.html')) {
-                fetchAndDisplayNotifications();
-            }
-            else if (currentUrl.includes('order-details') || currentUrl.includes('detail')) {
-                const urlParams = new URLSearchParams(window.location.search);
-                const id = urlParams.get('id');
-                if (id) fetchOrderDetails(id);
-            }
-            else {
-                fetchAndDisplayOrders();
-            }
-        } else {
-            // Token yoksa giriş sayfasına at
+        if (!token) {
+            console.warn("Token bulunamadı, giriş sayfasına yönlendiriliyor...");
             window.location.href = 'admin.html';
+            return;
         }
+
+        console.log("Admin.js başlatıldı. URL:", currentUrl);
+        if (currentUrl.includes('lumiphadashboard.html')) {
+            loadDashboardData();
+            setInterval(loadDashboardData, 10000); // 10 saniyede bir güncelle
+        }
+        else if (currentUrl.includes('notifications.html')) {
+            fetchAndDisplayNotifications();
+        }
+        else if (currentUrl.includes('order-details') || currentUrl.includes('detail')) {
+            const urlParams = new URLSearchParams(window.location.search);
+            const id = urlParams.get('id');
+            if (id) fetchOrderDetails(id);
+        }
+        else {
+            fetchAndDisplayOrders();
+        }
+    } else {
+        // Token yoksa giriş sayfasına at
+        window.location.href = 'admin.html';
     }
+}
 });
