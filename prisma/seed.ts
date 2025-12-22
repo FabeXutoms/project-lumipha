@@ -4,39 +4,36 @@ import * as bcrypt from 'bcrypt';
 const prisma = new PrismaClient();
 
 async function main() {
-    // Şifreleri buradan istediğin gibi güncelle dayı
     const admins = [
-        { name: 'Emirhan', password: '153153123' },
-        { name: 'Yavuz', password: '153153122' },
-        { name: 'Furkan', password: '153153111' },
+        { name: 'Emirhan', password: 'emirhan' },
+        { name: 'Yavuz', password: 'yavuz' },
+        { name: 'Furkan', password: 'furkan' },
     ];
 
     for (const admin of admins) {
-        // İsme göre kontrol et
+        // findUnique yerine findFirst kullanıyoruz (Daha güvenli)
         const existing = await prisma.admin.findFirst({
             where: { name: admin.name }
         });
 
         if (!existing) {
-            console.log(`🚀 Yeni admin ekleniyor: ${admin.name}`);
-            const salt = await bcrypt.genSalt(10);
-            const hash = await bcrypt.hash(admin.password, salt);
-
+            console.log(`🚀 Admin ekleniyor: ${admin.name}`);
+            const hash = await bcrypt.hash(admin.password, 10);
             await prisma.admin.create({
                 data: {
                     name: admin.name,
-                    passwordHash: hash, // Şemadaki kolon adın bu, doğru.
+                    passwordHash: hash, // Şemandaki isim buydu
                 },
             });
         } else {
-            console.log(`✅ Admin ${admin.name} zaten veritabanında var. Güncellenmedi.`);
+            console.log(`✅ ${admin.name} zaten var, pas geçiliyor.`);
         }
     }
 }
 
 main()
     .catch((e) => {
-        console.error('❌ Seed hatası:', e);
+        console.error(e);
         process.exit(1);
     })
     .finally(async () => {
