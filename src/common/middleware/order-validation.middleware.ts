@@ -5,30 +5,38 @@ import * as xss from 'xss';
 
 @Injectable()
 export class OrderValidationMiddleware implements NestMiddleware {
+  // SCHEMA GÜNCELLENDİ: Artık senin gönderdiğin clientName vb. alanları bekliyor
   private schema = z.object({
-    name: z.string().min(2, 'Name must be at least 2 characters'),
-    companyName: z.string().min(1, 'Company name is required'),
-    businessType: z.string().min(1, 'Business type is required'),
-    businessScale: z.string().min(1, 'Business scale is required'),
-    phone: z.string().transform((val) => {
-      // Allow only numbers
+    clientName: z.string().min(2, 'Ad Soyad en az 2 karakter olmalıdır'),
+    companyName: z.string().min(1, 'İşletme adı zorunludur'),
+    businessType: z.string().min(1, 'İşletme türü zorunludur'),
+    businessScale: z.string().min(1, 'İşletme ölçeği zorunludur'),
+    packageName: z.string().optional(), // Paket ismi gelirse kabul et
+    clientPhone: z.string().transform((val) => {
+      // Sadece rakamları al
       const sanitized = val.replace(/[^0-9]/g, '');
       return sanitized;
     }).refine((val) => val.length >= 10, {
-      message: 'Phone number must be at least 10 digits',
+      message: 'Telefon numarası en az 10 haneli olmalıdır',
     }),
-    email: z.string().email('Invalid email format'),
+    clientEmail: z.string().email('Geçersiz e-posta formatı'),
+    totalAmount: z.any().optional(), // Formdan 0 geliyor, hata vermesin
   });
 
   use(req: Request, res: Response, next: NextFunction) {
-    if (Object.keys(req.body).length === 0) {
-       throw new BadRequestException('Request body cannot be empty');
+    // Sadece POST /projects (sipariş oluşturma) isteğinde çalışsın
+    if (req.method !== 'POST') {
+      return next();
     }
 
-    // 1. Sanitize all string inputs in req.body to prevent XSS
+    if (!req.body || Object.keys(req.body).length === 0) {
+      throw new BadRequestException('İstek gövdesi boş olamaz');
+    }
+
+    // 1. XSS Temizliği
     this.sanitizeInput(req.body);
 
-    // 2. Validate using Zod
+    // 2. Zod ile Doğrulama
     const result = this.schema.safeParse(req.body);
 
     if (!result.success) {
@@ -36,14 +44,16 @@ export class OrderValidationMiddleware implements NestMiddleware {
         field: err.path.join('.'),
         message: err.message,
       }));
-      
+
+      console.log('--- Middleware Doğrulama Hatası ---', errorMessages);
+
       throw new BadRequestException({
         message: 'Validation failed',
         errors: errorMessages,
       });
     }
 
-    // 3. Replace body with parsed/transformed data (e.g. phone number stripped)
+    // 3. Temizlenmiş veriyi body'e geri yaz
     req.body = result.data;
 
     next();
