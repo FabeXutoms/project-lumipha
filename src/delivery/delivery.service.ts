@@ -32,7 +32,7 @@ export class DeliveryService {
 
         // Return the full clickable URL (assuming default localhost for now, or from config)
         // In prod, this should come from ENV.
-        const baseUrl = 'http://localhost:3000'; // Default
+        const baseUrl = process.env.BASE_URL || 'https://www.lumipha.com'; // Default
         return {
             token,
             downloadUrl: `${baseUrl}/delivery/download?token=${token}`
