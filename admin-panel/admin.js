@@ -341,6 +341,16 @@ async function fetchOrderDetails(id) {
             fill('detailDate', new Date(p.startDate).toLocaleDateString('tr-TR'));
         }
 
+        // Mevcut Linki Göster
+        const linkEl = document.getElementById('detailProjectLink');
+        if (linkEl) {
+            if (p.projectLink) {
+                linkEl.innerHTML = `<a href="${p.projectLink.startsWith('http') ? p.projectLink : 'https://' + p.projectLink}" target="_blank" style="color: #FF5722;">${p.projectLink}</a>`;
+            } else {
+                linkEl.innerText = 'Yok';
+            }
+        }
+
         setTxt('detailTotalAmount', p.totalAmount);
 
         let statusText = 'Bilinmiyor';
@@ -352,6 +362,7 @@ async function fetchOrderDetails(id) {
         else if (p.status === 'Cancelled') statusText = 'İptal Edildi';
 
         setTxt('detailStatus', statusText);
+        setTxt('detailStatusText', statusText); // Active Orders Detail sayfası için
 
         console.log("Veriler başarıyla HTML'e yerleştirildi.");
 
