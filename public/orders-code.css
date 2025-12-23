@@ -1,13 +1,4 @@
-@font-face {
-    font-family: 'CustomFontBlack';
-    src: url('fonts/Epilogue-Black.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: 'CustomFontExtraLight';
-    src: url('fonts/Epilogue-ExtraLight.ttf') format('truetype');
-    font-weight: 200;
-}
+/* Fonts handled via Google Fonts in HTML */
 
 body {
     margin: 0;
@@ -43,7 +34,7 @@ body {
 }
 
 .orderstitle {
-    font-family: 'CustomFontBlack', sans-serif;
+    font-family: 'Epilogue', sans-serif;
     font-weight: 700;
     font-size: 24px;
     color: #000000;
@@ -55,7 +46,7 @@ body {
 }
 
 .order-main-title {
-    font-family: 'CustomFontBlack', sans-serif;
+    font-family: 'Epilogue', sans-serif;
     font-size: 40px;
     font-weight: 700;
     color: #000000;
@@ -69,7 +60,7 @@ body {
     color: #999999;
     margin-bottom: 32px;
     margin-top: 24px;
-    font-family: 'CustomFontBlack', sans-serif;
+    font-family: 'Epilogue', sans-serif;
 }
 
 .order-input-title {
@@ -78,7 +69,7 @@ body {
     color: #000000;
     margin-bottom: 16px;
     margin-top: 0px;
-    font-family: 'CustomFontBlack', sans-serif;
+    font-family: 'Epilogue', sans-serif;
 }
 
 .order-input {
@@ -95,7 +86,7 @@ body {
 }
 
 .order-code-nan {
-    font-family: 'CustomFontBlack', sans-serif;
+    font-family: 'Epilogue', sans-serif;
     color: #DA3D2F;
     text-decoration: none;
     font-weight: 700;
@@ -151,14 +142,14 @@ body {
 
 .nextbuttontitle {
     color: #fff;
-    font-family: CustomFontBlack, sans-serif;
+    font-family: 'Epilogue', sans-serif;
     font-size: 16px;
     margin: 0;
 }
 
 .backbuttontitle {
     color: #b3b3b3;
-    font-family: CustomFontBlack, sans-serif;
+    font-family: 'Epilogue', sans-serif;
     font-size: 16px;
     margin: 0;
 }
@@ -168,7 +159,7 @@ body {
 }
 
 .oo-title {
-    font-family: 'CustomFontBlack', sans-serif;
+    font-family: 'Epilogue', sans-serif;
     font-size: 40px;
     font-weight: 700;
     color: #000000;
@@ -177,7 +168,7 @@ body {
 }
 
 .oo-title-p {
-    font-family: 'CustomFontExtraLight', sans-serif;
+    font-family: 'Epilogue', sans-serif;
     font-size: 16px;
     font-weight: 200;
     color: #000000;
@@ -187,12 +178,12 @@ body {
 
 .selectedTextFirst,
 .selectedTextCategories {
-    font-family: 'CustomFontBlack', sans-serif;
+    font-family: 'Epilogue', sans-serif;
     font-weight: 700;
 }
 
 .contact-title-text {
-    font-family: 'CustomFontBlack', sans-serif;
+    font-family: 'Epilogue', sans-serif;
     font-size: 14px;
     font-weight: 500;
     color: #000000;
@@ -200,7 +191,7 @@ body {
 }
 
 .contact-container-text {
-    font-family: 'CustomFontExtraLight', sans-serif;
+    font-family: 'Epilogue', sans-serif;
     font-size: 14px;
     font-weight: 700;
     color: #000000;
@@ -234,14 +225,14 @@ body {
     display: flex;
     align-items: center;
     gap: 8px;
-    font-family: 'CustomFontBlack', sans-serif;
+    font-family: 'Epilogue', sans-serif;
     font-size: 16px;
     font-weight: 800;
     color: #000000;
 }
 
 .contacttitleslast {
-    font-family: 'CustomFontExtraLight', sans-serif;
+    font-family: 'Epilogue', sans-serif;
     font-size: 14px;
     font-weight: 400;
     color: #000000;
@@ -250,7 +241,7 @@ body {
 }
 
 .order-main-contacttitle {
-    font-family: 'CustomFontBlack', sans-serif;
+    font-family: 'Epilogue', sans-serif;
     font-size: 40px;
     font-weight: 700;
     color: #000000;
@@ -268,7 +259,7 @@ body {
 }
 
 .downloadlink {
-    font-family: 'CustomFontBlack', sans-serif;
+    font-family: 'Epilogue', sans-serif;
     font-size: 14px;
     font-weight: 500;
     color: #2F3DDA;
@@ -361,7 +352,7 @@ body {
 }
 
 .error-title-text {
-    font-family: 'CustomFontBlack', sans-serif;
+    font-family: 'Epilogue', sans-serif;
     font-size: 40px;
     font-weight: 700;
     color: #000000;
@@ -369,7 +360,7 @@ body {
 }
 
 .error-paragraph-text {
-    font-family: 'CustomFontExtraLight', sans-serif;
+    font-family: 'Epilogue', sans-serif;
     color: #999999;
     font-size: 18px;
 }
@@ -414,7 +405,7 @@ body {
 }
 
 .errorText {
-    font-family: 'CustomFontExtraLight', sans-serif;
+    font-family: 'Epilogue', sans-serif;
 }
 
 .paymentButtonContainer {
@@ -440,7 +431,7 @@ body {
 
 .priceText {
     font-size: 16px;
-    font-family: 'CustomFontExtraLight', sans-serif;
+    font-family: 'Epilogue', sans-serif;
     font-weight: 500;
 }
 
@@ -467,7 +458,7 @@ body {
 
 .priceText {
     font-size: 16px;
-    font-family: 'CustomFontExtraLight', sans-serif;
+    font-family: 'Epilogue', sans-serif;
     font-weight: 500;
 }
 
@@ -475,7 +466,7 @@ body {
     width: 100%;
     background-color: #000;
     color: #Ffffff;
-    font-family: 'CustomFontExtraLight', sans-serif;
+    font-family: 'Epilogue', sans-serif;
     font-size: 16px;
     border: none;
     border-radius: 8px;
