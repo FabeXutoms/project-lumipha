@@ -63,8 +63,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const data = await response.json();
-            console.log('API\'den gelen data:', data);
-            console.log('API\'den gelen data:', data);
+            //console.log('API\'den gelen data:', data);
+            //console.log('API\'den gelen data:', data);
 
             // Verileri Doldur
             populateOrderData(data);
@@ -124,7 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- VERİ DOLDURMA ---
     function populateOrderData(data) {
-        console.log('populateOrderData çağrıldı, status:', data.status, 'totalAmount:', data.totalAmount);
+        //console.log('populateOrderData çağrıldı, status:', data.status, 'totalAmount:', data.totalAmount);
         // Şirket adı varsa onu, yoksa müşteri adını, o da yoksa "Müşteri" yaz
         const ownerName = data.companyName || data.clientName || "Müşteri";
 
@@ -168,10 +168,10 @@ document.addEventListener('DOMContentLoaded', () => {
             if (downloadLink) {
                 downloadLink.style.display = 'block'; // Download linki göster
                 downloadLink.href = data.projectLink || '#';
-                console.log('projectLink:', data.projectLink);
+                //console.log('projectLink:', data.projectLink);
                 downloadLink.onclick = (e) => {
                     e.preventDefault();
-                    console.log('Link tıklandı, açılıyor:', data.projectLink);
+                    //console.log('Link tıklandı, açılıyor:', data.projectLink);
                     if (data.projectLink) {
                         // Eğer protokol yoksa https:// ekle
                         const fullUrl = data.projectLink.startsWith('http://') || data.projectLink.startsWith('https://')
