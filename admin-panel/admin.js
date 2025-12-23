@@ -506,7 +506,8 @@ document.addEventListener('DOMContentLoaded', () => {
         currentUrl.includes('orders') ||
         currentUrl.includes('active-orders') ||
         currentUrl.includes('order-details') ||
-        currentUrl.includes('detail');
+        currentUrl.includes('detail') ||
+        currentUrl.includes('adminsignout');
 
     if (isAdminPage) {
         if (!token) {
