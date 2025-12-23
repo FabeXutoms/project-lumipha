@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             // API'ye Sor
-            const response = await fetch(`/tracking/${trackingCode}`);
+            const response = await fetch(`/tracking/${encodeURIComponent(trackingCode)}`);
 
             if (!response.ok) {
                 throw new Error("Sipariş bulunamadı");
@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
         buttonContainer.classList.remove('step-two-active');
         nextBtnTitle.textContent = "İlerle";
         codeInput.value = '';
-        
+
         // Back butonunun inline style'ını temizle, CSS'in kontrolüne bırak
         backBtn.style.display = '';
         nextBtn.style.display = '';
@@ -174,8 +174,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     console.log('Link tıklandı, açılıyor:', data.projectLink);
                     if (data.projectLink) {
                         // Eğer protokol yoksa https:// ekle
-                        const fullUrl = data.projectLink.startsWith('http://') || data.projectLink.startsWith('https://') 
-                            ? data.projectLink 
+                        const fullUrl = data.projectLink.startsWith('http://') || data.projectLink.startsWith('https://')
+                            ? data.projectLink
                             : 'https://' + data.projectLink;
                         window.open(fullUrl, '_blank');
                     }
