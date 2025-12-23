@@ -40,8 +40,8 @@ describe('ProjectService Code Generation', () => {
         const code = (service as any).generateTrackingCode();
         console.log('Generated Code:', code);
 
-        expect(code).toMatch(/^#[A-Za-z0-9]{9}$/);
-        expect(code.length).toBe(10);
+        expect(code).toMatch(/^#[A-Za-z0-9]{12}$/);
+        expect(code.length).toBe(13);
         expect(code.startsWith('#')).toBe(true);
     });
 
