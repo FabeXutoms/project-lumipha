@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="verification.css">
+</head>
+<body>
+
+    <div class="formheader">
+        <div class="formheaderalignment">
+            <img src="images/Symbol.svg" alt="Logo" class="formheaderlogo">
+            <h1 class="formtitle">Teklif Alın</h1>
+        </div>
+        <img class="formheadericon" src="images/close.svg" alt="" onclick="window.location.href='homepage.html'"style="cursor:pointer;">
+    </div>
+
+    <section class="verification-content-second step-section" id="step2">
+        <div class="container">
+            <div class="content">
+                <h1 class="verification-timer-title">Doğrulama<br>Kodunu Girin</h1>
+
+                <div class="otp-container">
+                    <input type="text" class="otp-input" maxlength="1" inputmode="numeric" pattern="[0-9]*">
+                    <input type="text" class="otp-input" maxlength="1" inputmode="numeric" pattern="[0-9]*">
+                    <input type="text" class="otp-input" maxlength="1" inputmode="numeric" pattern="[0-9]*">
+                    <input type="text" class="otp-input" maxlength="1" inputmode="numeric" pattern="[0-9]*">
+                    <input type="text" class="otp-input" maxlength="1" inputmode="numeric" pattern="[0-9]*">
+                    <input type="text" class="otp-input" maxlength="1" inputmode="numeric" pattern="[0-9]*">
+                </div>
+
+                <p id="resendTimer" class="timer" style="display: none;">Kalan Süreniz (<span id="countdown">01:30</span>)</p>
+                <a id="resendLink" class="resendTimertext" style="display: none;">Kodu Tekrar Gönder</a>
+            </div>
+        </div>
+    </section>
+
+    <div class="verification-buttons">
+        <button class="form-button-back" id="backButton" onclick="prevStep()">
+            <h1 class="backbuttontitle">Geri Dön</h1>
+        </button>
+
+        <button class="form-button-next" id="nextButton" onclick="nextStep()">
+            <h1 class="nextbuttontitle" id="nextBtnText">Onayla</h1>
+        </button>
+    </div>
+</body>
+</html>

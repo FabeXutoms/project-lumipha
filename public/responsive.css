@@ -1,0 +1,95 @@
+/* Responsive Media Queries */
+@media (min-width: 768px) {
+    .portfolyokolaj{
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+        align-items: start;
+    }
+
+    .pcontainerbig{
+        grid-column: 1 / span 2;
+        grid-row: 1;
+        height: 354px;
+    }
+
+    .pcontainermedium{
+        grid-column: 3 / span 2;
+        grid-row: 1;
+        height: 354px;
+    }
+
+    .pcontainersmallgroup{
+        display: flex;
+        gap: 16px;
+        align-items: stretch;
+        grid-row: 2;
+    }
+
+    .pcontainersmallgroup:first-of-type{
+        grid-column: 1 / span 2;
+    }
+
+    .pcontainersmallgroup:nth-of-type(2){
+        grid-column: 3 / span 2;
+    }
+
+    .pcontainersmall{
+        flex: 1 1 0;
+        height: 169px;
+    }
+
+    .partsurec{
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 24px;
+        align-items: start;
+        padding-top: 48px;
+        padding-bottom: 48px;
+    }
+
+    .partsurec > .part-one,
+    .partsurec > .part-info,
+    .partsurec > .part-steps{
+        width: 100%;
+    }
+
+    .part-info{
+        margin-top: 48px;
+    }
+
+    .blueprintContainerAlignment{
+        display: flex;
+        flex-direction: row;
+    }
+
+    .footercontainer{
+        grid-template-columns: repeat(4, 147px);
+    }
+
+    .footerbottomlogowhite{
+        margin-top: 0px;
+    }
+}
+
+@media (max-width: 767px) {
+    .portfolyokolaj{
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .pcontainerbig,
+    .pcontainermedium,
+    .pcontainersmallgroup{
+        grid-column: span 1;
+    }
+
+    .pcontainersmallgroup{
+        flex-direction: column;
+    }
+
+    .pcontainerbig,
+    .pcontainermedium,
+    .pcontainersmall{
+        width: 100%;
+    }
+}

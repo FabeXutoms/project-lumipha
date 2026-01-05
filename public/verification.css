@@ -1,0 +1,562 @@
+@font-face {
+    font-family: 'CustomFontBlack';
+    src: url('fonts/Epilogue-Black.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'CustomFontExtraLight';
+    src: url('fonts/Epilogue-ExtraLight.ttf') format('truetype');
+    font-weight: 200;
+}
+
+body {
+  margin: 0;
+  background-color: #f5f5f5;
+  padding-bottom: 110px;
+}
+
+.verification-code-header {
+  padding: 0px 24px;
+}
+
+.verificationsheader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 0px;
+}
+
+.verificationheaderalignment {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.verificationheaderlogo {
+  width: 40px;
+  height: 40px;
+}
+
+.verificationheadericon {
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+}
+
+.verificationtitle {
+  font-family: 'CustomFontBlack', sans-serif;
+  font-weight: 700;
+  font-size: 24px;
+  color: #000000;
+}
+
+.verification-content {
+  padding: 0px 24px;
+}
+
+.verification-main-title {
+  font-family: 'CustomFontBlack', sans-serif;
+  font-weight: 700;
+  font-size: 40px;
+  color: #000000;
+  margin-bottom: 32px;
+  margin-top: 0;
+}
+
+.verification-p-title {
+  font-family: 'CustomFontRegular', sans-serif;
+  font-weight: 400;
+  font-size: 20px;
+  color: #555555;
+  margin-top: 0;
+  margin-bottom: 32px;
+}
+
+.input-change {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 24px;
+}
+
+.verification-input {
+  font-size: 16px;
+  font-weight: 400;
+  color: #000000;
+  width: 100%;
+  padding: 22px 16px;
+  box-sizing: border-box;
+  border-radius: 8px;
+  background-color: #EEEEEE;
+}
+
+.verification-label {
+  font-family: 'CustomFontBlack', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  color: #000000;
+  margin-bottom: 16px;
+}
+
+.input-changer {
+  font-family: 'CustomFontBlack', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  color: #DA3D2F;
+  text-decoration: none;
+  margin-top: 12px;
+  cursor: pointer;
+}
+
+.help-container {
+  background-color: #f5f5f5;
+  padding: 24px;
+  border-radius: 8px;
+  border: 2px solid #eee;
+  margin-bottom: 150px;
+}
+
+.help-title {
+  font-family: 'CustomFontBlack', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  color: #000000;
+  margin: 0;
+  margin-bottom: 24px;
+}
+
+.help-button {
+  font-family: 'CustomFontBlack', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  color: #FFFFFF;
+  background-color: #eee;
+  border: none;
+  border-radius: 8px;
+  padding: 16px;
+  width: 100%;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.help-title-second {
+  margin: 0;
+  font-family: 'CustomFontBlack', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  color: #000;
+}
+
+.input-changer {
+  align-self: center;
+}
+
+.verificationbuttons {
+  width: 100%;
+  background-color: white;
+  height: 90px;
+  display: flex;
+  justify-content: center;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  align-items: center;
+}
+
+.verification-button-next {
+  width: 354px;
+  border: none;
+  padding: 20px 16px;
+  border-radius: 8px;
+  background-color: #DA3D2F;
+  height: 44px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: width 0.3s ease;
+  cursor: pointer;
+}
+
+.verificationbuttontitle {
+  color: #fff;
+  font-family: CustomFontBlack, sans-serif;
+  font-size: 16px;
+  margin: 0;
+}
+
+.container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+
+.header {
+  padding: 20px;
+  background: #f1f1f1;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.back-btn {
+  background: none;
+  border: none;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+  margin-bottom: 20px;
+  line-height: 1.3;
+}
+
+.otp-container {
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.confirmalignment {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.confirm-p-title {
+  font-family: 'CustomFontBlack', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: #000000;
+  margin: 0;
+}
+
+.otp-input {
+  width: 44px;
+  height: 44px;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  border: none;
+  border-radius: 8px;
+  background-color: #EDEDED;
+  color: #333;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.otp-input.filled {
+  background-color: #DFE0F3; 
+  color: #2F3DDA;
+}
+
+.otp-input:focus {
+  background-color: #2F3DDA;
+  color: #fff;
+}
+
+.timer {
+  text-align: center;
+  color: #777;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.resendTimertext {
+  text-align: center;
+  color: #2F3DDA;
+  align-self: center;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.verification-content-second {
+  padding: 0px 24px;
+}
+
+.verification-timer-title {
+  font-family: 'CustomFontBlack', sans-serif;
+  font-weight: 700;
+  font-size: 40px;
+  color: #000000;
+  margin-bottom: 32px;
+  margin-top: 0;
+}
+
+.timer {
+  text-align: center;
+  color: #777777;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: 'CustomFontBlack', sans-serif;
+}
+
+.otp-container {
+  font-family: 'CustomFontBlack', sans-serif;
+}
+
+.alignment-verification {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.verification-main-title-second {
+  font-family: 'CustomFontBlack', sans-serif;
+  font-weight: 700;
+  font-size: 40px;
+  color: #000000;
+  margin-bottom: 0;
+  margin-top: 0;
+}
+
+.verification-content-third {
+  padding: 0px 24px;
+}
+
+.alignment-verification {
+  margin-bottom: 32px;
+}
+
+.contactcontainer {
+  display: flex;
+  flex-direction: column;
+  margin-top: 8px;
+  margin-bottom: 32px;
+  background-color: #F7F7F7;
+  border: 2px solid #fff;
+  border-radius: 8px;
+  padding: 24px;
+}
+
+.contact-container-text {
+  font-family: 'CustomFontExtraLight', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: #000000;
+  margin-bottom: 16px;
+  margin-top: 0px;
+}
+
+.confirmbutton {
+  width: 100%;
+  border: none;
+  padding: 20px 16px;
+  border-radius: 8px;
+  background-color: #eee;
+  height: 44px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: width 0.3s ease;
+  font-family: 'CustomFontExtraLight', sans-serif;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.step-section {
+    animation: fadeInUp 0.5s ease-out forwards; 
+}
+
+.input-change .verification-input {
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+    color: #000000;
+}
+
+.input-change .verification-input:focus {
+    border: 2px solid #000000 !important;
+    outline: none;
+    opacity: 1;
+}
+
+.input-change .verification-input:active {
+    background-color: #DDDDDD !important;
+    border-color: #DDDDDD !important;
+    color: #000000 !important;
+}
+
+.input-change .verification-input:active::placeholder {
+    color: #000000 !important;
+    opacity: 1;
+}
+
+.input-change .verification-input:focus::placeholder {
+    color: #000000 !important;
+    opacity: 1;
+}
+
+.verification-button-next:active {
+    background-color: rgba(218, 61, 47, 0.12) !important;
+    border: 2px solid #DA3D2F !important;
+    transform: scale(0.98);
+    transition: ease-in-out 0.1s;
+}
+
+.verification-button-next:active .verificationbuttontitle {
+    color: #DA3D2F !important;
+    transition: none;
+}
+
+.help-button:active {
+  background-color: #DDDDDD;
+  transition: ease-in-out 0.1s;
+}
+
+.confirmbutton:active {
+    background-color: #DDDDDD !important;
+    transition: ease-in-out 0.1s;
+}
+.input-error {
+  border: 1px solid #E53935 !important;
+  background-color: #fffafa;
+}
+
+.error-text {
+  color: #E53935;
+  font-size: 13px;
+  margin-top: 8px;
+  text-align: left;
+  font-family: inherit;
+  font-weight: 500;
+  display: none;
+}
+
+#errorText, #otpError {
+    font-family: 'CustomFontBlack', sans-serif !important;
+    color: #DA3D2F !important; 
+    font-size: 14px !important; 
+    margin-top: 8px;
+}
+
+.formheader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 34px 24px;
+}
+
+.formheaderalignment {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.formheaderlogo {
+  width: 37px;
+  height: 28px;
+}
+
+.formheadericon {
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+}
+
+.formtitle {
+  font-family: 'CustomFontBlack', sans-serif;
+  font-weight: 700;
+  font-size: 24px;
+  color: #000000;
+}
+
+.verification-buttons {
+  width: 100%;
+  max-width: 100vw;
+  background-color: white;
+  height: 90px;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  align-items: center;
+  padding: 0 24px;
+  box-sizing: border-box;
+  z-index: 1000;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.form-button-back {
+  flex: 1;
+  max-width: 177px;
+  padding: 20px 16px;
+  border-radius: 8px;
+  background-color: #f5f5f5;
+  border: 2px solid #DDDDDD;
+  height: 44px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.form-button-next {
+  flex: 2;
+  max-width: 354px;
+  border: none;
+  padding: 20px 16px;
+  border-radius: 8px;
+  background-color: #2F3DDA;
+  height: 44px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.backbuttontitle {
+  color: #1b1b1b59;
+  font-family: 'CustomFontBlack', sans-serif;
+  font-size: 16px;
+  margin: 0;
+}
+
+.nextbuttontitle {
+  color: #fff;
+  font-family: 'CustomFontBlack', sans-serif;
+  font-size: 16px;
+  margin: 0;
+}
+
+.form-button-back:active {
+  background-color: #EEEEEE;
+  border: 2px solid #dddddd;
+  transition: ease-in-out 0.1s;
+}
+
+.form-button-back:active .backbuttontitle {
+  color: #000000;
+  transition: ease-in-out 0.1s;
+}
+
+.form-button-next:active {
+  background-color: rgba(47, 61, 218, 0.16);
+  border: 2px solid #2F3DDA;
+  transition: ease-in-out 0.1s;
+}
+
+.form-button-next:active .nextbuttontitle {
+  color: #2F3DDA;
+  transition: ease-in-out 0.1s;
+}
