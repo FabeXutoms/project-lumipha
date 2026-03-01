@@ -503,7 +503,7 @@ async function submitForm() {
     };
 
     try {
-        const response = await fetch('/projects', {
+        const response = await fetch('https://project-lumipha.onrender.com/projects', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

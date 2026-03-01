@@ -211,7 +211,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (btnText) btnText.innerText = "Kontrol...";
 
                 try {
-                    const response = await fetch('/projects/check-contact', {
+                    const response = await fetch('https://project-lumipha.onrender.com/projects/check-contact', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(isEmailMode ? { email: value } : { phone: value })
@@ -262,7 +262,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     console.log('Is Email:', isEmailMode);
 
                     // Backend doğrulama
-                    const response = await fetch('/projects/verify-otp', {
+                    const response = await fetch('https://project-lumipha.onrender.com/projects/verify-otp', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ 
@@ -391,7 +391,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             try {
                 // Backend'e kodu tekrar gönder
-                const response = await fetch('/projects/resend-otp', {
+                const response = await fetch('https://project-lumipha.onrender.com/projects/resend-otp', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ 
