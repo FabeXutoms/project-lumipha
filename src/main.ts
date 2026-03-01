@@ -17,6 +17,9 @@ async function bootstrap() {
     bufferLogs: true,
   });
 
+  // CORS KİLİDİNİ AÇIYORUZ
+app.enableCors();
+
   app.set('trust proxy', 1);
 
   // Helmet ile gelişmiş güvenlik başlıkları ve CSP ekle
