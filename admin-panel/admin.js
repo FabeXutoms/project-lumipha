@@ -121,6 +121,13 @@ function markOrderAsSeen(orderId) {
     }
 }
 
+function markOrderAsUnseen(orderId) {
+    const SEEN_ORDERS_KEY = 'lumipha_seen_orders';
+    let seenList = JSON.parse(localStorage.getItem(SEEN_ORDERS_KEY) || '[]');
+    seenList = seenList.filter(id => id !== orderId);
+    localStorage.setItem(SEEN_ORDERS_KEY, JSON.stringify(seenList));
+}
+
 // --- DASHBOARD VERİLERİNİ YÜKLE ---
 async function loadDashboardData() {
     const notifyContainer = document.getElementById('notificationsContainer');
@@ -299,7 +306,6 @@ async function fetchAndDisplayOrders() {
     let emptyMsg = 'Sipariş yok.';
     let nameClass = 'orderrequestnameid'; let dateClass = 'orderrequestdateid'; let showStatus = true;
 
-        // admin.js içindeki 308-316. satırları bu blokla değiştir:
     if (currentUrl.includes('activeorders')) {
         filterStatus = ['Pending', 'InProgress'];
         detailPage = 'active-orders-detail.html'; 
@@ -312,12 +318,6 @@ async function fetchAndDisplayOrders() {
         filterStatus = ['WaitingForApproval'];
         detailPage = 'order-details.html'; 
         emptyMsg = 'Henüz onay bekleyen talep yok.';
-    }
-
-        // admin.js içinde 315. satırdaki süslü parantezden hemen sonra ekle:
-    else if (currentUrl.endsWith('/') || currentUrl.includes('index')) {
-        // Ana sayfadaysak sayaçları ve bildirimleri yükleyen fonksiyonu çağır
-        loadDashboardData(); 
     }
 
     container.innerHTML = '<div style="padding:20px; text-align:center;">Yükleniyor...</div>';
