@@ -121,7 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     await sendApiRequest(`/projects/${projectId}`, 'PATCH', { totalAmount: belirlenenFiyat });
 
                     // Durumu 'Pending' (Ödeme Bekleniyor) yap -> Aktif Listeye düşer
-                    await sendApiRequest(`/projects/${projectId}/status`, 'POST', { status: 'Pending' });
+                    await sendApiRequest(`/projects/${projectId}/status`, 'POST', { status: 'WaitingForApproval' });
 
                     // Görüldü işaretini kaldır (Tekrar bildirim olsun)
                     if (typeof markOrderAsUnseen === 'function') markOrderAsUnseen(projectId);

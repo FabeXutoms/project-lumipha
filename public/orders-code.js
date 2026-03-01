@@ -196,7 +196,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (nextBtn) nextBtn.style.display = 'flex';
             if (backBtn) backBtn.style.display = 'flex';
         }
-        else if (data.status === 'Pending') {
+        else if (data.status === 'WaitingForApproval' || data.status === 'Pending')
             if (Number(data.totalAmount) > 0) {
                 if (imgPayment) imgPayment.style.display = 'block';
                 statusDescription = 'Sizinle Whatsapp üzerinden iletişime geçtik';

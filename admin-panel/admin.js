@@ -236,7 +236,7 @@ async function fetchAndDisplayNotifications() {
                 if (p.status === 'Completed') { message = 'Tamamlandı'; targetLink = 'orders-past-details.html'; }
                 else if (p.status === 'Cancelled') { message = 'İptal Edildi'; targetLink = 'orders-past-details.html'; }
                 else if (p.status === 'InProgress') { message = 'Hazırlanıyor'; targetLink = 'active-orders-detail.html'; }
-                else if (p.status === 'Pending') {
+                else if (p.status === 'WaitingForApproval' || p.status === 'Pending') {
                     if (amount > 0) { message = 'Ödeme Bekleniyor'; targetLink = 'active-orders-detail.html'; }
                     else { message = 'Fiyat Bekliyor'; targetLink = 'order-details.html'; }
                 }
