@@ -4,9 +4,7 @@
 const TOKEN_STORAGE_KEY = 'lumipha_admin_token';
 // API adresi (Canlı sunucu)
 // API adresi (Config'den al veya varsayılanı kullan)
-const BASE_URL = (typeof CONFIG !== 'undefined' && CONFIG.API_BASE_URL)
-    ? CONFIG.API_BASE_URL
-    : 'https://www.lumipha.com';
+const BASE_URL = 'https://project-lumipha.onrender.com';
 
 // --- YARDIMCI VE GİRİŞ FONKSİYONLARI ---
 

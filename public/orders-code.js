@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             // API'ye Sor
-            const response = await fetch(`/tracking/${encodeURIComponent(trackingCode)}`);
+            const response = await fetch(`https://project-lumipha.onrender.com/tracking/${encodeURIComponent(trackingCode)}`);
 
             if (!response.ok) {
                 throw new Error("Sipariş bulunamadı");

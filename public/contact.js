@@ -126,7 +126,7 @@ if (contactForm) {
 
         try {
             // API'ye gönder
-            const response = await fetch('/contact', {
+            const response = await fetch('https://project-lumipha.onrender.com/contact', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
