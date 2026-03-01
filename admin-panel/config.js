@@ -6,7 +6,7 @@ const CONFIG = {
     API_BASE_URL: 'https://www.lumipha.com',
 
     // Geliştirme Ortamı (Localhost)
-    // API_BASE_URL: 'http://localhost:3000',
+    // API_BASE_URL: 'https://project-lumipha.onrender.com',
 };
 
 // Global olarak erişilebilir yap
