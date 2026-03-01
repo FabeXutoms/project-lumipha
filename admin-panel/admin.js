@@ -299,18 +299,19 @@ async function fetchAndDisplayOrders() {
     let emptyMsg = 'Sipariş yok.';
     let nameClass = 'orderrequestnameid'; let dateClass = 'orderrequestdateid'; let showStatus = true;
 
-    if (currentUrl.includes('activeorders.html')) {
+        // admin.js içindeki 308-316. satırları bu blokla değiştir:
+    if (currentUrl.includes('activeorders')) {
         filterStatus = ['Pending', 'InProgress'];
-        detailPage = 'active-orders-detail.html'; emptyMsg = 'Henüz aktif sipariş yok.';
-        nameClass = 'ordernameid'; dateClass = 'orderdateid';
-    } else if (currentUrl.includes('orders.html')) {
-        filterStatus = ['WaitingForApproval'];
-        detailPage = 'order-details.html'; emptyMsg = 'Henüz onay bekleyen talep yok.';
-        nameClass = 'orderrequestnameid'; dateClass = 'orderrequestdateid'; showStatus = true;
-    } else if (currentUrl.includes('orders-past.html')) {
+        detailPage = 'active-orders-detail.html'; 
+        emptyMsg = 'Henüz aktif sipariş yok.';
+    } else if (currentUrl.includes('orders-past')) {
         filterStatus = ['Completed', 'Cancelled'];
-        detailPage = 'orders-past-details.html'; emptyMsg = 'Geçmiş sipariş yok.';
-        nameClass = 'ordernameid'; dateClass = 'orderdateid'; showStatus = true;
+        detailPage = 'orders-past-details.html'; 
+        emptyMsg = 'Geçmiş sipariş yok.';
+    } else if (currentUrl.includes('orders')) {
+        filterStatus = ['WaitingForApproval'];
+        detailPage = 'order-details.html'; 
+        emptyMsg = 'Henüz onay bekleyen talep yok.';
     }
     container.innerHTML = '<div style="padding:20px; text-align:center;">Yükleniyor...</div>';
 
