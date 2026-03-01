@@ -499,7 +499,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const token = getToken();
 
     // Giriş sayfasındaysak ve token varsa Dashboard'a at
-    if (currentUrl.includes('admin.html') && !currentUrl.includes('lumiphadashboard.html')) {
+    if (currentUrl.includes('admin.html') && !currentUrl.includes('lumiphadashboard')) {
         if (token) {
             window.location.href = 'lumiphadashboard.html';
         }
@@ -507,8 +507,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Admin paneli sayfaları için yetki kontrolü
-    const isAdminPage = currentUrl.includes('lumiphadashboard.html') ||
-        currentUrl.includes('notifications.html') ||
+    const isAdminPage = currentUrl.includes('lumiphadashboard') ||
+        currentUrl.includes('notifications') ||
         currentUrl.includes('orders') ||
         currentUrl.includes('active-orders') ||
         currentUrl.includes('order-details') ||
@@ -524,10 +524,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         console.log("Admin.js başlatıldı. URL:", currentUrl);
 
-        if (currentUrl.includes('lumiphadashboard.html')) {
+        if (currentUrl.includes('lumiphadashboard')) {
             loadDashboardData();
             setInterval(loadDashboardData, 10000);
-        } else if (currentUrl.includes('notifications.html')) {
+        } else if (currentUrl.includes('notifications')) {
             fetchAndDisplayNotifications();
         } else if (currentUrl.includes('order-details') || currentUrl.includes('detail')) {
             const urlParams = new URLSearchParams(window.location.search);
