@@ -313,6 +313,13 @@ async function fetchAndDisplayOrders() {
         detailPage = 'order-details.html'; 
         emptyMsg = 'Henüz onay bekleyen talep yok.';
     }
+
+        // admin.js içinde 315. satırdaki süslü parantezden hemen sonra ekle:
+    else if (currentUrl.endsWith('/') || currentUrl.includes('index')) {
+        // Ana sayfadaysak sayaçları ve bildirimleri yükleyen fonksiyonu çağır
+        loadDashboardData(); 
+    }
+
     container.innerHTML = '<div style="padding:20px; text-align:center;">Yükleniyor...</div>';
 
     try {
