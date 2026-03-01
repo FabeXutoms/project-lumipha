@@ -15,7 +15,7 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
       datasources: {
         db: {
           // BURAYA .env İÇİNDEKİ DATABASE_URL'İ DİREKT YAZIYORUZ
-          url: "mysql://lumipha:Lumipha2025@127.0.0.1:3306/lumipha_db"
+          url: process.env.DATABASE_URL
         },
       },
     });
