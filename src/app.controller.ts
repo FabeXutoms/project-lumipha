@@ -2,10 +2,14 @@ import { Controller, Get, Res } from '@nestjs/common';
 import type { Response } from 'express';
 import { join } from 'path';
 import { AppService } from './app.service';
+import { PrismaService } from './prisma/prisma.service'; // <-- Prisma'yı çağırdık
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) { }
+  constructor(
+    private readonly appService: AppService,
+    private readonly prisma: PrismaService // <-- Prisma'yı dükkana aldık
+  ) { }
 
   // 1. Ana Sayfa (http://IP:3000/)
   @Get()
@@ -17,11 +21,7 @@ export class AppController {
   // 2. Senin İstediğin Kısa Link (http://IP:3000/admin)
   @Get('admin')
   getAdminPanel(@Res() res: Response) {
-    // public -> admin-panel -> activeorders.html yolunu tam veriyoruz
     const filePath = join(process.cwd(), 'public', 'admin-panel', 'activeorders.html');
-
-    // Güvenlik: Dosya gerçekten orada mı diye kontrol etmiyoruz, 
-    // direkt gönderiyoruz; eğer 404 verirse dosya adı veya klasör adı hatalıdır.
     return res.sendFile(filePath);
   }
 
@@ -32,12 +32,22 @@ export class AppController {
     return res.sendFile(filePath);
   }
 
-  // API Sağlık Kontrolü
+  // API Sağlık Kontrolü (Aiven'i uyanık tutan zilimiz)
   @Get('api/health')
-  getHealth(): { status: string; timestamp: string } {
-    return {
-      status: 'ok',
-      timestamp: new Date().toISOString(),
-    };
+  async getHealth() {
+    try {
+      await this.prisma.$queryRawUnsafe('SELECT 1');
+      return {
+        status: 'ok',
+        database: 'connected (Aiven is awake!)',
+        timestamp: new Date().toISOString(),
+      };
+    } catch (error) {
+      return {
+        status: 'error',
+        database: 'sleeping or disconnected',
+        timestamp: new Date().toISOString(),
+      };
+    }
   }
 }

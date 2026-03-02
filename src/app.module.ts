@@ -3,10 +3,11 @@ import { AppController } from './app.controller';
 import { AdminController } from './admin.controller';
 import { AppService } from './app.service';
 import { PrismaModule } from './prisma/prisma.module';
+import { PrismaService } from './prisma/prisma.service'; // <-- EKLENDİ
 import { TrackingModule } from './tracking/tracking.module';
-import { ThrottlerModule } from '@nestjs/throttler'; // İçe aktar
-import { ConfigModule } from '@nestjs/config'; // İçe aktar
-import { ServeStaticModule } from '@nestjs/serve-static'; // Statik dosyalar için
+import { ThrottlerModule } from '@nestjs/throttler'; 
+import { ConfigModule } from '@nestjs/config'; 
+import { ServeStaticModule } from '@nestjs/serve-static'; 
 import { join } from 'path';
 import { ProjectModule } from './project/project.module';
 import { AppLogger } from './common/logger/logger.service';
@@ -17,38 +18,30 @@ import { AuthModule } from './auth/auth.module';
 import { DeliveryModule } from './delivery/delivery.module';
 import { OrderValidationMiddleware } from './common/middleware/order-validation.middleware';
 
-
-
 @Module({
   imports: [
-    // .env dosyasını uygulama genelinde kullanılabilir yap
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-
-    // Statik dosyaları sun (HTML, CSS, JS, images)
     ServeStaticModule.forRoot({
-      rootPath: join(process.cwd(), 'public'), // <--- DİKKAT: Yanına 'public' ekledik!
+      rootPath: join(process.cwd(), 'public'), 
       serveRoot: '/',
-      exclude: ['/api/(.*)', '/tracking/(.*)', '/project/(.*)', '/contact/(.*)'], // API çakışmasın diye regex yaptık
+      exclude: ['/api/(.*)', '/tracking/(.*)', '/project/(.*)', '/contact/(.*)'], 
       serveStaticOptions: {
-        index: false, // Otomatik index'i kapattık, kontrol sende olsun
+        index: false, 
         fallthrough: true,
       },
     }),
-
-    // Rate Limiting'i kuruyoruz:
     ThrottlerModule.forRoot([{
-      // 60 saniyede (süre) en fazla 20 istek (limit) izin ver.
-      ttl: 60000, // 60 saniye (milisaniye cinsinden)
-      limit: 20,  // Maksimum 20 istek
+      ttl: 60000, 
+      limit: 20,  
     }]),
-
     PrismaModule,
     TrackingModule, ProjectModule, MailModule, ContactModule, CommonModule, AuthModule, DeliveryModule
   ],
   controllers: [AdminController, AppController],
-  providers: [AppService, AppLogger],
+  // 👇 İŞTE BÜTÜN SORUNU ÇÖZEN KÜÇÜK EKLEME BURADA (PrismaService'i ekledik) 👇
+  providers: [AppService, AppLogger], 
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
