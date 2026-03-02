@@ -39,14 +39,12 @@ export class AppController {
       await this.prisma.$queryRawUnsafe('SELECT 1');
       return {
         status: 'ok',
-        database: 'connected (Aiven is awake!)',
-        timestamp: new Date().toISOString(),
+        database: 'running',
       };
     } catch (error) {
       return {
         status: 'error',
         database: 'sleeping or disconnected',
-        timestamp: new Date().toISOString(),
       };
     }
   }
