@@ -1,3 +1,10 @@
+const isDev = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+const logger = {
+    log: (...args) => isDev && console.log(...args),
+    warn: (...args) => isDev && console.warn(...args),
+    error: (...args) => isDev && console.error(...args)
+};
+
 // admin.js - GÜNCELLENMİŞ JWT (TOKEN) SİSTEMİ
 
 // Token'ı tarayıcıda bu isimle saklayacağız
@@ -40,7 +47,7 @@ async function sendApiRequest(endpoint, method = 'GET', body = null) {
 
         // Eğer 401 (Yetkisiz) hatası alırsak, token süresi bitmiştir.
         if (response.status === 401) {
-            console.warn("Oturum süresi doldu, çıkış yapılıyor...");
+            logger.warn("Oturum süresi doldu, çıkış yapılıyor...");
             logoutAdmin();
             return null;
         }
@@ -50,7 +57,7 @@ async function sendApiRequest(endpoint, method = 'GET', body = null) {
         return data;
 
     } catch (error) {
-        console.error("API Hatası:", error);
+        logger.error("API Hatası:", error);
         throw error;
     }
 }
@@ -97,7 +104,7 @@ async function loginAdmin(event) {
         }
 
     } catch (error) {
-        console.error("Giriş Hatası:", error);
+        logger.error("Giriş Hatası:", error);
         alert('⚠️ Sunucuya bağlanılamadı. İnternetini kontrol et.');
         if (loginButton) {
             loginButton.innerText = "Giriş Yap";
@@ -217,7 +224,7 @@ async function loadDashboardData() {
                 });
             }
         }
-    } catch (e) { console.error("Dashboard yenileme hatası:", e); }
+    } catch (e) { logger.error("Dashboard yenileme hatası:", e); }
 }
 
 // --- TÜM BİLDİRİMLER ---
@@ -293,7 +300,7 @@ async function fetchAndDisplayNotifications() {
                 notifyContainer.appendChild(itemDiv);
             });
         } else { notifyContainer.innerHTML = '<div style="text-align:center;">Kayıt yok.</div>'; }
-    } catch (error) { console.error(error); }
+    } catch (error) { logger.error(error); }
 }
 
 // --- LİSTELEME FONKSİYONU ---
@@ -402,7 +409,7 @@ async function fetchAndDisplayOrders() {
 
 // --- 5. DETAY FONKSİYONU (GÜÇLENDİRİLMİŞ) ---
 async function fetchOrderDetails(id) {
-    console.log("Sipariş detayları çekiliyor, ID:", id);
+    logger.log("Sipariş detayları çekiliyor, ID:", id);
     if (!id) {
         alert("Hata: URL'de sipariş ID bulunamadı!");
         return;
@@ -412,12 +419,12 @@ async function fetchOrderDetails(id) {
         const p = await sendApiRequest(`/projects/${id}`, 'GET');
 
         if (!p) {
-            console.error("Veri gelmedi (null döndü). Token yok veya yetki hatası.");
+            logger.error("Veri gelmedi (null döndü). Token yok veya yetki hatası.");
             alert("Veri yüklenemedi. Lütfen tekrar giriş yapın veya internet bağlantınızı kontrol edin.");
             return;
         }
 
-        // console.log("Backend'den Gelen Veri:", p); // GÜVENLİK: Hassas verileri loglamıyoruz.
+        // logger.log("Backend'den Gelen Veri:", p); // GÜVENLİK: HİÇBİR Veriyi loglamıyoruz
 
         const setTxt = (i, v) => {
             const e = document.getElementById(i);
@@ -486,10 +493,10 @@ async function fetchOrderDetails(id) {
         setTxt('detailStatus', statusText);
         setTxt('detailStatusText', statusText); // Active Orders Detail sayfası için
 
-        console.log("Veriler başarıyla HTML'e yerleştirildi.");
+        logger.log("Veriler başarıyla HTML'e yerleştirildi.");
 
     } catch (e) {
-        console.error("fetchOrderDetails HATASI:", e);
+        logger.error("fetchOrderDetails HATASI:", e);
     }
 }
 
@@ -517,12 +524,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (isAdminPage) {
         if (!token) {
-            console.warn("Token bulunamadı, giriş sayfasına yönlendiriliyor...");
+            logger.warn("Token bulunamadı, giriş sayfasına yönlendiriliyor...");
             window.location.href = 'admin.html';
             return;
         }
 
-        console.log("Admin.js başlatıldı. URL:", currentUrl);
+        logger.log("Admin.js başlatıldı. URL:", currentUrl);
 
         if (currentUrl.includes('lumiphadashboard')) {
             loadDashboardData();
